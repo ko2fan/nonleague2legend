@@ -1,0 +1,65 @@
+[gd_scene load_steps=5 format=3 uid="uid://ce7e80p3jccnt"]
+
+[ext_resource type="Texture2D" uid="uid://bbmso2w7s17hk" path="res://Sprites/pitch_prototype.png" id="1_a8t71"]
+[ext_resource type="PackedScene" uid="uid://837gjrpl2mu8" path="res://Scenes/football_player.tscn" id="2_vumxj"]
+[ext_resource type="PackedScene" uid="uid://6gceaksn4gck" path="res://Scenes/ball.tscn" id="3_wt82p"]
+[ext_resource type="Texture2D" uid="uid://l2sji30gjgeb" path="res://Sprites/indicator.png" id="4_tgytb"]
+
+[node name="Match" type="Node2D"]
+
+[node name="Pitch" type="Sprite2D" parent="."]
+position = Vector2(640, 317)
+scale = Vector2(2.017, 2)
+texture = ExtResource("1_a8t71")
+
+[node name="FootballPlayer" parent="Pitch" instance=ExtResource("2_vumxj")]
+visible = false
+position = Vector2(-3.38434, -4.87621)
+
+[node name="Ball" parent="Pitch" instance=ExtResource("3_wt82p")]
+visible = false
+
+[node name="BallIndicator" type="Sprite2D" parent="Pitch"]
+texture = ExtResource("4_tgytb")
+offset = Vector2(-128, 0)
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1280.0
+offset_bottom = 720.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -99.5
+offset_right = 99.5
+offset_bottom = 26.0
+grow_horizontal = 2
+theme_override_constants/separation = 10
+
+[node name="HomeTeamName" type="Label" parent="UI/HBoxContainer"]
+layout_mode = 2
+text = "BRISTOL C"
+
+[node name="HomeTeamScore" type="Label" parent="UI/HBoxContainer"]
+layout_mode = 2
+text = "1"
+
+[node name="Divider" type="Label" parent="UI/HBoxContainer"]
+layout_mode = 2
+text = "v"
+
+[node name="AwayTeamScore" type="Label" parent="UI/HBoxContainer"]
+layout_mode = 2
+text = "0"
+
+[node name="AwayTeamName" type="Label" parent="UI/HBoxContainer"]
+layout_mode = 2
+text = "LIVERPOOL"

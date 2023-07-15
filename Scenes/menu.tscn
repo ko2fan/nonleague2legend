@@ -1,0 +1,166 @@
+[gd_scene load_steps=11 format=3 uid="uid://5hsui8nt0nfd"]
+
+[ext_resource type="FontFile" uid="uid://d3vwbaofj8b5o" path="res://fonts/brighton-two-font/BrightontwoSansNbp-MyLw.ttf" id="1_7waly"]
+[ext_resource type="FontFile" uid="uid://dolk6n7kfqvu3" path="res://fonts/brighton-two-font/BrightontwoSmallcapsNbp-v2R7.ttf" id="2_8gapi"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_es36h"]
+bg_color = Color(0.3584, 0.64, 0.3584, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lygjt"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.4, 0.4, 0.4, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kq61s"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1ni8k"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_378hk"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bgtaj"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_r8ico"]
+font = ExtResource("2_8gapi")
+font_size = 96
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_fivyj"]
+font = ExtResource("1_7waly")
+font_size = 64
+font_color = Color(0.886275, 0.101961, 0.137255, 1)
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+
+[node name="Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_es36h")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+custom_minimum_size = Vector2(128, 256)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -36.0
+offset_top = -78.0
+offset_right = 36.0
+offset_bottom = 78.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="NewGameButton" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+tooltip_text = "Start a new game"
+theme_override_colors/font_color = Color(0.886275, 0.101961, 0.137255, 1)
+theme_override_colors/font_pressed_color = Color(0.541176, 0.0666667, 0.0901961, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("1_7waly")
+theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("StyleBoxFlat_lygjt")
+theme_override_styles/hover = SubResource("StyleBoxFlat_kq61s")
+text = "NEW GAME"
+
+[node name="SaveGameButton" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+tooltip_text = "Start a new game"
+theme_override_colors/font_color = Color(0.886275, 0.101961, 0.137255, 1)
+theme_override_colors/font_pressed_color = Color(0.541176, 0.0666667, 0.0901961, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("1_7waly")
+theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("StyleBoxFlat_lygjt")
+theme_override_styles/hover = SubResource("StyleBoxFlat_1ni8k")
+text = "SAVE GAME"
+
+[node name="LoadGameButton" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+tooltip_text = "Start a new game"
+theme_override_colors/font_color = Color(0.886275, 0.101961, 0.137255, 1)
+theme_override_colors/font_pressed_color = Color(0.541176, 0.0666667, 0.0901961, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("1_7waly")
+theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("StyleBoxFlat_lygjt")
+theme_override_styles/hover = SubResource("StyleBoxFlat_378hk")
+text = "LOAD GAME"
+
+[node name="QuitGameButton" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+tooltip_text = "Start a new game"
+theme_override_colors/font_color = Color(0.886275, 0.101961, 0.137255, 1)
+theme_override_colors/font_pressed_color = Color(0.541176, 0.0666667, 0.0901961, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("1_7waly")
+theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("StyleBoxFlat_lygjt")
+theme_override_styles/hover = SubResource("StyleBoxFlat_bgtaj")
+text = "QUIT GAME"
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -142.0
+offset_top = 12.0
+offset_right = 142.0
+offset_bottom = 79.0
+grow_horizontal = 2
+text = "Non-League 2 Legend"
+label_settings = SubResource("LabelSettings_r8ico")
+
+[node name="Version" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -142.0
+offset_top = 12.0
+offset_right = 142.0
+offset_bottom = 79.0
+grow_horizontal = 2
+text = "Non-League 2 Legend"
+label_settings = SubResource("LabelSettings_r8ico")
+
+[node name="URL" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -164.0
+offset_top = -120.0
+offset_right = 164.0
+offset_bottom = -53.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "https://ko2fan.itch.io"
+label_settings = SubResource("LabelSettings_fivyj")
