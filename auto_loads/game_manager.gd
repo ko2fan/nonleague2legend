@@ -4,6 +4,7 @@ class_name GameManager
 
 static var teams = []
 static var current_season = 0
+static var player_index
 
 static func _static_init():
 	randomize()
@@ -29,3 +30,12 @@ static func create_profile():
 
 static func get_teams():
 	return teams
+
+static func set_player_index(team_name):
+	for index in teams.size():
+		if teams[index].team_name == team_name:
+			player_index = index
+			break
+
+static func get_player_team():
+	return teams[player_index]

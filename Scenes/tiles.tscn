@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://bx2fjdq83ffkd"]
+[gd_scene load_steps=4 format=3 uid="uid://bx2fjdq83ffkd"]
 
 [ext_resource type="Theme" uid="uid://dmtrpevvdpawl" path="res://Themes/tiles_theme.tres" id="1_esp6x"]
+[ext_resource type="Script" path="res://Scripts/tiles.gd" id="1_lh1o3"]
 [ext_resource type="LabelSettings" uid="uid://ddcb7kmaryg2c" path="res://Themes/Title_settings.tres" id="2_dq6i2"]
 
 [node name="Tiles" type="Control"]
@@ -10,6 +11,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_lh1o3")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 1

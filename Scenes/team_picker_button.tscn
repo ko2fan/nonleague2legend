@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://cmp40ml8haq17"]
+
+[ext_resource type="Script" path="res://Scripts/team_picker_button.gd" id="1_r8tog"]
+
+[node name="TeamPickerButton" type="Button"]
+offset_right = 8.0
+offset_bottom = 8.0
+script = ExtResource("1_r8tog")
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]
