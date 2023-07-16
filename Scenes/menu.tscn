@@ -1,5 +1,6 @@
-[gd_scene load_steps=11 format=3 uid="uid://5hsui8nt0nfd"]
+[gd_scene load_steps=12 format=3 uid="uid://5hsui8nt0nfd"]
 
+[ext_resource type="Script" path="res://Scripts/menu.gd" id="1_6ttcw"]
 [ext_resource type="FontFile" uid="uid://d3vwbaofj8b5o" path="res://fonts/brighton-two-font/BrightontwoSansNbp-MyLw.ttf" id="1_7waly"]
 [ext_resource type="FontFile" uid="uid://dolk6n7kfqvu3" path="res://fonts/brighton-two-font/BrightontwoSmallcapsNbp-v2R7.ttf" id="2_8gapi"]
 
@@ -50,6 +51,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_6ttcw")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 1
@@ -164,3 +166,8 @@ grow_horizontal = 2
 grow_vertical = 0
 text = "https://ko2fan.itch.io"
 label_settings = SubResource("LabelSettings_fivyj")
+
+[connection signal="pressed" from="Panel/VBoxContainer/NewGameButton" to="." method="_on_new_game_button_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/SaveGameButton" to="." method="_on_save_game_button_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/LoadGameButton" to="." method="_on_load_game_button_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/QuitGameButton" to="." method="_on_quit_game_button_pressed"]

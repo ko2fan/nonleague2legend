@@ -1,0 +1,84 @@
+{
+	"data": "test",
+	"version": "0.0.1",
+	"divisions": [
+		{
+			"name": "Division 1",
+			"teams": [
+				{
+					"team_name": "Arsenal"
+				},
+				{
+					"team_name": "Liverpool"
+				},
+				{
+					"team_name": "Crystal P"
+				},
+				{
+					"team_name": "Leeds"
+				},
+				{
+					"team_name": "Manchester C"
+				},
+				{
+					"team_name": "Manchester U"
+				},
+				{
+					"team_name": "Wimbledon"
+				},
+				{
+					"team_name": "Nottingham F"
+				},
+				{
+					"team_name": "Everton"
+				},
+				{
+					"team_name": "Tottenham"
+				},
+			]
+		},
+		{
+			"name": "Division 2",
+			"teams": [
+				{
+					"team_name": "Oldham"
+				},
+				{
+					"team_name": "West Ham"
+				},
+				{
+					"team_name": "Sheffield W"
+				},
+				{
+					"team_name": "Notts C"
+				},
+				{
+					"team_name": "Millwall"
+				},
+				{
+					"team_name": "Brighton"
+				},
+				{
+					"team_name": "Middlesborough"
+				},
+				{
+					"team_name": "Barnsley"
+				},
+				{
+					"team_name": "Bristol C"
+				},
+				{
+					"team_name": "Oxford"
+				},
+			]
+		}
+	],
+	"surnames": [
+		{
+			"surname": "Townsend"
+		},
+		{
+			"surname": "Wise"
+		}
+	]
+}

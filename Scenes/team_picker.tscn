@@ -1,0 +1,49 @@
+[gd_scene load_steps=4 format=3 uid="uid://dwvdynys0w1c8"]
+
+[ext_resource type="Theme" uid="uid://bbp8lni7g3uau" path="res://Themes/team_picker_theme.tres" id="1_avi13"]
+[ext_resource type="Script" path="res://Scripts/team_picker.gd" id="1_fteqc"]
+[ext_resource type="LabelSettings" uid="uid://ddcb7kmaryg2c" path="res://Themes/Title_settings.tres" id="2_f0fjj"]
+
+[node name="TeamPicker" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_fteqc")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_avi13")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 40.0
+grow_horizontal = 2
+
+[node name="Title" type="Label" parent="Panel/VBoxContainer"]
+layout_mode = 2
+text = "Pick your team"
+label_settings = ExtResource("2_f0fjj")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel/VBoxContainer"]
+custom_minimum_size = Vector2(120, 550)
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="TeamContainer" type="VBoxContainer" parent="Panel/VBoxContainer/ScrollContainer"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_avi13")

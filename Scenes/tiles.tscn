@@ -1,0 +1,88 @@
+[gd_scene load_steps=3 format=3 uid="uid://bx2fjdq83ffkd"]
+
+[ext_resource type="Theme" uid="uid://dmtrpevvdpawl" path="res://Themes/tiles_theme.tres" id="1_esp6x"]
+[ext_resource type="LabelSettings" uid="uid://ddcb7kmaryg2c" path="res://Themes/Title_settings.tres" id="2_dq6i2"]
+
+[node name="Tiles" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_esp6x")
+
+[node name="Title" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -99.0
+offset_right = 99.0
+offset_bottom = 78.0
+grow_horizontal = 2
+text = "Team Name goes here"
+label_settings = ExtResource("2_dq6i2")
+
+[node name="GridContainer" type="GridContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+columns = 4
+
+[node name="ViewSquadButton" type="Button" parent="Panel/GridContainer"]
+custom_minimum_size = Vector2(180, 180)
+layout_mode = 2
+text = "View Squad"
+
+[node name="LeagueTableButton" type="Button" parent="Panel/GridContainer"]
+custom_minimum_size = Vector2(180, 180)
+layout_mode = 2
+text = "League Table"
+
+[node name="ScoutingButton" type="Button" parent="Panel/GridContainer"]
+custom_minimum_size = Vector2(180, 180)
+layout_mode = 2
+text = "Scouting"
+
+[node name="WeekButton" type="Button" parent="Panel/GridContainer"]
+custom_minimum_size = Vector2(180, 180)
+layout_mode = 2
+text = "Week X"
+
+[node name="TacticsButton" type="Button" parent="Panel/GridContainer"]
+custom_minimum_size = Vector2(180, 180)
+layout_mode = 2
+text = "Tactics"
+
+[node name="FinancesButton" type="Button" parent="Panel/GridContainer"]
+custom_minimum_size = Vector2(180, 180)
+layout_mode = 2
+text = "Finances"
+
+[node name="SaveGameButton" type="Button" parent="Panel/GridContainer"]
+custom_minimum_size = Vector2(180, 180)
+layout_mode = 2
+text = "Save Game"
+
+[node name="NextGameButton" type="Button" parent="Panel/GridContainer"]
+custom_minimum_size = Vector2(180, 180)
+layout_mode = 2
+text = "Next Game"
