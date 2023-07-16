@@ -18,8 +18,7 @@ func _ready():
 func _team_picked(index):
 	print("player chose " + team_container.get_child(index).text)
 	GameManager.set_player_index(team_container.get_child(index).text)
-	var root = get_tree().root
-	var child = root.get_node("Management")
+	var child = get_tree().root.get_node("Management")
 	child.change_to_packed_scene(tiles_scene)
 	
 func _exit_tree():

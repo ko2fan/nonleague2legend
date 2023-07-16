@@ -7,3 +7,6 @@ var players = []
 
 var division = 0
 var season_stats
+
+func get_players() -> Array:
+	return players

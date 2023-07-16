@@ -1,0 +1,73 @@
+[gd_scene load_steps=4 format=3 uid="uid://c4fp0mlw5gq06"]
+
+[ext_resource type="Theme" uid="uid://b3mxg4bwyrbo8" path="res://Themes/squad_view_theme.tres" id="1_0iijg"]
+[ext_resource type="Script" path="res://Scripts/squad_view.gd" id="1_bfqas"]
+[ext_resource type="LabelSettings" uid="uid://ddcb7kmaryg2c" path="res://Themes/Title_settings.tres" id="2_x6835"]
+
+[node name="SquadView" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_bfqas")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_0iijg")
+
+[node name="Title" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -47.5
+offset_right = 47.5
+offset_bottom = 78.0
+grow_horizontal = 2
+text = "Squad"
+label_settings = ExtResource("2_x6835")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel"]
+custom_minimum_size = Vector2(600, 500)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PlayerContainer" type="VBoxContainer" parent="Panel/ScrollContainer"]
+layout_mode = 2
+theme = ExtResource("1_0iijg")
+theme_override_constants/separation = 45
+
+[node name="BackButton" type="Button" parent="Panel"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -60.0
+offset_top = -80.0
+offset_right = 60.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Back"
+
+[connection signal="pressed" from="Panel/BackButton" to="." method="_on_back_button_pressed"]

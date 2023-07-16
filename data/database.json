@@ -1,6 +1,5 @@
 {
-	"data": "test",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"divisions": [
 		{
 			"name": "Division 1",
@@ -74,11 +73,25 @@
 		}
 	],
 	"surnames": [
-		{
-			"surname": "Townsend"
-		},
-		{
-			"surname": "Wise"
-		}
+		"Townsend",
+		"Wise",
+		"Waddle",
+		"Pearce",
+		"McAllister",
+		"Blades",
+		"Hateley",
+		"Coton",
+		"Atkinson",
+		"Aldridge",
+		"Duxbury",
+		"Limpar",
+		"Young",
+		"Humphrey",
+		"Currie",
+		"Milligan",
+		"Robins",
+		"Gascoigne",
+		"Beardsley",
+		"Wright"
 	]
 }

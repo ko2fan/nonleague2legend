@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=3 uid="uid://do6krovuib4ns"]
+
+[ext_resource type="Script" path="res://Scripts/player_row.gd" id="1_7ykdh"]
+[ext_resource type="FontFile" uid="uid://d3vwbaofj8b5o" path="res://fonts/brighton-two-font/BrightontwoSansNbp-MyLw.ttf" id="2_eakvs"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_qvmkq"]
+font = ExtResource("2_eakvs")
+font_size = 32
+font_color = Color(0, 0, 0, 1)
+
+[node name="PlayerRow" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_7ykdh")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="SquadNumber" type="Label" parent="HBoxContainer"]
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+label_settings = SubResource("LabelSettings_qvmkq")
+
+[node name="Button" type="Button" parent="HBoxContainer"]
+custom_minimum_size = Vector2(200, 40)
+layout_mode = 2
