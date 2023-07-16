@@ -9,6 +9,8 @@ static var current_season = 0
 static var player_index
 static var next_player_slot = 0
 
+static var initials = [ "A", "B", "C", "D", "D", "E", "F", "G", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "R", "S", "S", "T", "T", "V", "W" ]
+
 static func _static_init():
 	randomize()
 	var database : JSON = preload("res://data/database.json")
@@ -36,7 +38,7 @@ static func create_players(player_data):
 		next_player_slot += 1
 		
 static func generate_name(surname_list):
-	return "A. " + surname_list.pick_random()
+	return initials.pick_random() + ". " + surname_list.pick_random()
 	
 static func generate_player(player_name):
 	var player = Player.new()
