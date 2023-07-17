@@ -6,7 +6,7 @@ static var teams = []
 static var players = []
 
 static var current_season = 0
-static var player_index
+static var human_index
 static var next_player_slot = 0
 
 static var initials = [ "A", "B", "C", "D", "D", "E", "F", "G", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "R", "S", "S", "T", "T", "V", "W" ]
@@ -64,8 +64,8 @@ static func get_teams():
 static func set_player_index(team_name):
 	for index in teams.size():
 		if teams[index].team_name == team_name:
-			player_index = index
+			human_index = index
 			break
 
 static func get_player_team():
-	return teams[player_index]
+	return teams[human_index]
