@@ -50,42 +50,42 @@ grow_vertical = 2
 columns = 4
 
 [node name="ViewSquadButton" type="Button" parent="Panel/GridContainer"]
-custom_minimum_size = Vector2(180, 180)
+custom_minimum_size = Vector2(256, 180)
 layout_mode = 2
 text = "View Squad"
 
 [node name="LeagueTableButton" type="Button" parent="Panel/GridContainer"]
-custom_minimum_size = Vector2(180, 180)
+custom_minimum_size = Vector2(256, 180)
 layout_mode = 2
 text = "League Table"
 
 [node name="ScoutingButton" type="Button" parent="Panel/GridContainer"]
-custom_minimum_size = Vector2(180, 180)
+custom_minimum_size = Vector2(256, 180)
 layout_mode = 2
 text = "Scouting"
 
 [node name="WeekButton" type="Button" parent="Panel/GridContainer"]
-custom_minimum_size = Vector2(180, 180)
+custom_minimum_size = Vector2(256, 180)
 layout_mode = 2
 text = "Week X"
 
 [node name="TacticsButton" type="Button" parent="Panel/GridContainer"]
-custom_minimum_size = Vector2(180, 180)
+custom_minimum_size = Vector2(256, 180)
 layout_mode = 2
 text = "Tactics"
 
 [node name="FinancesButton" type="Button" parent="Panel/GridContainer"]
-custom_minimum_size = Vector2(180, 180)
+custom_minimum_size = Vector2(256, 180)
 layout_mode = 2
 text = "Finances"
 
 [node name="SaveGameButton" type="Button" parent="Panel/GridContainer"]
-custom_minimum_size = Vector2(180, 180)
+custom_minimum_size = Vector2(256, 180)
 layout_mode = 2
 text = "Save Game"
 
 [node name="NextGameButton" type="Button" parent="Panel/GridContainer"]
-custom_minimum_size = Vector2(180, 180)
+custom_minimum_size = Vector2(256, 180)
 layout_mode = 2
 text = "Next Game"
 

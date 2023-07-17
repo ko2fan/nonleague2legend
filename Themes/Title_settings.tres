@@ -1,8 +1,8 @@
 [gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://ddcb7kmaryg2c"]
 
-[ext_resource type="FontFile" uid="uid://d3vwbaofj8b5o" path="res://fonts/brighton-two-font/BrightontwoSansNbp-MyLw.ttf" id="1_81l2v"]
+[ext_resource type="FontFile" uid="uid://dxgro1ckyu2r8" path="res://fonts/quadratum-unum-font/QuadratumUnum-LW0Z.ttf" id="1_6gllv"]
 
 [resource]
-font = ExtResource("1_81l2v")
+font = ExtResource("1_6gllv")
 font_size = 74
 font_color = Color(0, 0, 0.545098, 1)

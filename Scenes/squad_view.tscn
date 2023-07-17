@@ -55,7 +55,7 @@ theme = ExtResource("1_0iijg")
 theme_override_constants/separation = 45
 
 [node name="BackButton" type="Button" parent="Panel"]
-custom_minimum_size = Vector2(120, 0)
+custom_minimum_size = Vector2(180, 0)
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
