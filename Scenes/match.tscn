@@ -1,15 +1,150 @@
-[gd_scene load_steps=5 format=3 uid="uid://ce7e80p3jccnt"]
+[gd_scene load_steps=12 format=3 uid="uid://ce7e80p3jccnt"]
 
 [ext_resource type="Texture2D" uid="uid://bbmso2w7s17hk" path="res://Sprites/pitch_prototype.png" id="1_a8t71"]
+[ext_resource type="Script" path="res://Scripts/match.gd" id="1_tvib6"]
 [ext_resource type="PackedScene" uid="uid://837gjrpl2mu8" path="res://Scenes/football_player.tscn" id="2_vumxj"]
+[ext_resource type="FontFile" uid="uid://dxgro1ckyu2r8" path="res://fonts/quadratum-unum-font/QuadratumUnum-LW0Z.ttf" id="3_b4obx"]
 [ext_resource type="PackedScene" uid="uid://6gceaksn4gck" path="res://Scenes/ball.tscn" id="3_wt82p"]
+[ext_resource type="Script" path="res://Scripts/commentary.gd" id="3_x365g"]
 [ext_resource type="Texture2D" uid="uid://l2sji30gjgeb" path="res://Sprites/indicator.png" id="4_tgytb"]
+[ext_resource type="Theme" uid="uid://dwl0ijkwl54k" path="res://Themes/match_theme.tres" id="4_w05nw"]
+[ext_resource type="LabelSettings" uid="uid://bs1lbthelba53" path="res://Themes/match_settings.tres" id="6_umun2"]
+[ext_resource type="PackedScene" uid="uid://s2mmw2in38sj" path="res://Scenes/match_engine.tscn" id="8_vqxnr"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_5a0nn"]
+font = ExtResource("3_b4obx")
+font_size = 24
 
 [node name="Match" type="Node2D"]
+script = ExtResource("1_tvib6")
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1280.0
+offset_bottom = 720.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="UI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -99.5
+offset_right = 99.5
+offset_bottom = 26.0
+grow_horizontal = 2
+theme_override_constants/separation = 25
+
+[node name="HomeTeamName" type="Label" parent="UI/HBoxContainer"]
+layout_mode = 2
+text = "BRISTOL C"
+label_settings = ExtResource("6_umun2")
+uppercase = true
+
+[node name="HomeTeamScore" type="Label" parent="UI/HBoxContainer"]
+layout_mode = 2
+text = "1"
+label_settings = ExtResource("6_umun2")
+
+[node name="Divider" type="Label" parent="UI/HBoxContainer"]
+layout_mode = 2
+text = "v"
+label_settings = ExtResource("6_umun2")
+
+[node name="AwayTeamScore" type="Label" parent="UI/HBoxContainer"]
+layout_mode = 2
+text = "3"
+label_settings = ExtResource("6_umun2")
+
+[node name="AwayTeamName" type="Label" parent="UI/HBoxContainer"]
+layout_mode = 2
+text = "LIVERPOOL"
+label_settings = ExtResource("6_umun2")
+uppercase = true
+
+[node name="Minute" type="Label" parent="UI"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -23.0
+offset_top = -220.0
+offset_right = 23.0
+offset_bottom = -166.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "90"
+label_settings = ExtResource("6_umun2")
+
+[node name="Commentary" type="ScrollContainer" parent="UI"]
+custom_minimum_size = Vector2(650, 120)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -325.0
+offset_top = -170.0
+offset_right = 325.0
+offset_bottom = -50.0
+grow_horizontal = 2
+grow_vertical = 0
+horizontal_scroll_mode = 0
+script = ExtResource("3_x365g")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Commentary"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/Commentary/VBoxContainer"]
+layout_mode = 2
+text = "Bristol C have possession"
+label_settings = SubResource("LabelSettings_5a0nn")
+
+[node name="Label2" type="Label" parent="UI/Commentary/VBoxContainer"]
+layout_mode = 2
+text = "Player shoots"
+label_settings = SubResource("LabelSettings_5a0nn")
+
+[node name="Label3" type="Label" parent="UI/Commentary/VBoxContainer"]
+layout_mode = 2
+text = "Player scores!"
+label_settings = SubResource("LabelSettings_5a0nn")
+
+[node name="ContinueButton" type="Button" parent="UI"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -66.0
+offset_top = -45.0
+offset_right = 66.0
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("4_w05nw")
+text = "Continue"
 
 [node name="Pitch" type="Sprite2D" parent="."]
-position = Vector2(640, 317)
-scale = Vector2(2.017, 2)
+position = Vector2(640, 280)
+scale = Vector2(1.66, 1.646)
 texture = ExtResource("1_a8t71")
 
 [node name="FootballPlayer" parent="Pitch" instance=ExtResource("2_vumxj")]
@@ -23,43 +158,6 @@ visible = false
 texture = ExtResource("4_tgytb")
 offset = Vector2(-128, 0)
 
-[node name="UI" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = 1280.0
-offset_bottom = 720.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="MatchEngine" parent="." instance=ExtResource("8_vqxnr")]
 
-[node name="HBoxContainer" type="HBoxContainer" parent="UI"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -99.5
-offset_right = 99.5
-offset_bottom = 26.0
-grow_horizontal = 2
-theme_override_constants/separation = 10
-
-[node name="HomeTeamName" type="Label" parent="UI/HBoxContainer"]
-layout_mode = 2
-text = "BRISTOL C"
-
-[node name="HomeTeamScore" type="Label" parent="UI/HBoxContainer"]
-layout_mode = 2
-text = "1"
-
-[node name="Divider" type="Label" parent="UI/HBoxContainer"]
-layout_mode = 2
-text = "v"
-
-[node name="AwayTeamScore" type="Label" parent="UI/HBoxContainer"]
-layout_mode = 2
-text = "0"
-
-[node name="AwayTeamName" type="Label" parent="UI/HBoxContainer"]
-layout_mode = 2
-text = "LIVERPOOL"
+[connection signal="pressed" from="UI/ContinueButton" to="." method="_on_continue_button_pressed"]

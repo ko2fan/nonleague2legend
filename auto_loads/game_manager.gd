@@ -4,6 +4,7 @@ var teams = []
 var players = []
 
 var current_season = 0
+var current_week = 0
 var human_index
 var next_player_slot = 0
 var loaded_game = false
@@ -76,10 +77,11 @@ func get_player_team():
 
 func save_game():
 	var save_file = FileAccess.open("user://savefile.nl", FileAccess.WRITE)
-	var version = 0x1
+	var version = 0x2
 	save_file.store_32(version)
 	save_file.store_32(human_index)
 	save_file.store_32(current_season)
+	save_file.store_32(current_week)
 	save_file.store_32(teams.size())
 	for team in teams:
 		save_file.store_32(team.team_id)
@@ -116,7 +118,28 @@ func load_game():
 				player.squad_number = load_file.get_8()
 				var team_id = load_file.get_32()
 				if team_id != 4294967295:
-					print(team_id)
+					var player_team = teams.filter(func(team): return team.team_id == team_id).front()
+					player_team.players.append(player)
+					player.team = player_team
+				players.append(player)
+		0x2:
+			human_index = load_file.get_32()
+			current_season = load_file.get_32()
+			current_week = load_file.get_32()
+			var num_teams = load_file.get_32()
+			for i in num_teams:
+				var team = Team.new()
+				team.team_id = load_file.get_32()
+				team.team_name = load_file.get_pascal_string()
+				team.division = load_file.get_8()
+				teams.append(team)
+			var num_players = load_file.get_32()
+			for i in num_players:
+				var player = Player.new()
+				player.player_name = load_file.get_pascal_string()
+				player.squad_number = load_file.get_8()
+				var team_id = load_file.get_32()
+				if team_id != 4294967295:
 					var player_team = teams.filter(func(team): return team.team_id == team_id).front()
 					player_team.players.append(player)
 					player.team = player_team
