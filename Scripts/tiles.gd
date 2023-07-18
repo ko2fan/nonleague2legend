@@ -10,3 +10,7 @@ func _ready():
 func _on_view_squad_button_pressed():
 	var child = get_tree().root.get_node("Management")
 	child.change_to_packed_scene(squad_view)
+
+
+func _on_save_game_button_pressed():
+	GameManager.save_game()

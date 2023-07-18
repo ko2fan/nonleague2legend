@@ -12,8 +12,12 @@ func _on_save_game_button_pressed():
 
 
 func _on_load_game_button_pressed():
-	pass # Replace with function body.
-
+	GameManager.load_game()
+	get_tree().change_scene_to_packed(management_ui)
 
 func _on_quit_game_button_pressed():
 	get_tree().quit()
+
+
+func _on_options_button_pressed():
+	pass # Replace with function body.

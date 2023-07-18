@@ -90,3 +90,4 @@ layout_mode = 2
 text = "Next Game"
 
 [connection signal="pressed" from="Panel/GridContainer/ViewSquadButton" to="." method="_on_view_squad_button_pressed"]
+[connection signal="pressed" from="Panel/GridContainer/SaveGameButton" to="." method="_on_save_game_button_pressed"]

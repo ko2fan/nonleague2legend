@@ -2,10 +2,11 @@ extends Node
 
 class_name Team
 
+var team_id = -1
 var team_name = ""
 var players = []
 
-var division = 0
+var division = -1
 var season_stats
 
 func get_players() -> Array:
