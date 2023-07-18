@@ -23,10 +23,13 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="SquadNumber" type="Label" parent="HBoxContainer"]
-custom_minimum_size = Vector2(25, 0)
+custom_minimum_size = Vector2(35, 0)
 layout_mode = 2
 label_settings = SubResource("LabelSettings_qvmkq")
 
 [node name="Button" type="Button" parent="HBoxContainer"]
 custom_minimum_size = Vector2(200, 40)
 layout_mode = 2
+toggle_mode = true
+
+[connection signal="pressed" from="HBoxContainer/Button" to="." method="_on_button_pressed"]
