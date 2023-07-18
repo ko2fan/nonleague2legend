@@ -10,7 +10,7 @@ This game is currently WIP, please be patient as development happens. It will ta
 
 ## Features
 - [X] Pick a team to manage from 20 different teams
-- [ ] Pick your squad from 16 players
+- [X] Pick your squad from 16 players
 - [ ] Build up your stadium
 - [ ] Send scouts to find players
 - [ ] Buy and Sell players
