@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://yw20a1c7d0s0"]
+
+[ext_resource type="Script" path="res://Scripts/division.gd" id="1_tpyh3"]
+
+[node name="Division" type="Node"]
+script = ExtResource("1_tpyh3")

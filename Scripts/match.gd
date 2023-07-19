@@ -19,8 +19,12 @@ var opposition_team
 
 func _ready():
 	player_team = GameManager.get_player_team()
-	opposition_team = GameManager.teams.pick_random()
-	# TODO: fill this with fixture data
+	var fixture = GameManager.get_fixture(player_team)
+	
+	var opposition_id = fixture["away_team"] if fixture["home_team"] == player_team.team_id \
+		else fixture["home_team"]
+	opposition_team = GameManager.get_team_in_division(player_team.division, opposition_id)
+	
 	home_team_label.text = player_team.team_name
 	home_score_label.text = str(0)
 	away_team_label.text = opposition_team.team_name
