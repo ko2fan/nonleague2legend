@@ -1,6 +1,6 @@
 extends Node2D
 
-@onready var management_ui = preload("res://Scenes/management.tscn")
+@onready var results_view = preload("res://Scenes/results.tscn")
 
 @onready var home_team_label = $UI/HBoxContainer/HomeTeamName
 @onready var home_score_label = $UI/HBoxContainer/HomeTeamScore
@@ -19,9 +19,10 @@ var opposition_team
 
 func _ready():
 	player_team = GameManager.get_player_team()
-	var fixture = GameManager.get_fixture(player_team)
+	var div_id = GameManager.get_division_team_id(player_team.division, player_team.team_id)
+	var fixture = GameManager.get_fixture(player_team.division, div_id)
 	
-	var opposition_id = fixture["away_team"] if fixture["home_team"] == player_team.team_id \
+	var opposition_id = fixture["away_team"] if fixture["home_team"] == div_id \
 		else fixture["home_team"]
 	opposition_team = GameManager.get_team_in_division(player_team.division, opposition_id)
 	
@@ -46,6 +47,7 @@ func _on_minute_tick(minute):
 	minute_label.text = str(minute)
 
 func _on_match_ended():
+	GameManager.play_matches()
 	continue_button.show()
 
 func _on_possession_changed(team_possession):
@@ -61,4 +63,4 @@ func _on_possession_changed(team_possession):
 	commentary.add_child(possession_label)
 
 func _on_continue_button_pressed():
-	get_tree().change_scene_to_packed(management_ui)
+	get_tree().change_scene_to_packed(results_view)

@@ -235,11 +235,10 @@ func create_fixtures():
 	for division in divisions:
 		division.create_season_fixtures()
 		
-func get_fixture(team):
-	var division_id = team.division
+func get_fixture(division_id, team_id):
 	var fixtures = divisions[division_id].fixtures[current_week]
 	for fixture in fixtures:
-		if fixture["home_team"] == team.team_id or fixture["away_team"] == team.team_id:
+		if fixture["home_team"] == team_id or fixture["away_team"] == team_id:
 			return fixture
 			
 	print("Error, fixture not found")
@@ -252,7 +251,45 @@ func get_team_in_division(division_id, team_id):
 		return team
 	print("Invalid team id")
 	return null
+
+func get_division_team_id(division_id, team_id):
+	var division = divisions[division_id]
+	var finding_team = teams[team_id]
+	var index = 0
+	for team in division.teams:
+		if finding_team.team_id == teams[team].team_id:
+			return index
+		index += 1
+	return 0
 	
+func play_matches():
+	for division in divisions:
+		var weekly_results = []
+		for fixture in division.fixtures[current_week]:
+			var home_team = fixture["home_team"]
+			var home_score = randi_range(0, 6)
+			var away_team = fixture["away_team"]
+			var away_score = randi_range(0, 5)
+			var result = { "home_team": home_team, "home_score": home_score,
+				"away_team": away_team, "away_score": away_score }
+			weekly_results.append(result)
+		division.results.append(weekly_results)
+	
+func get_results():
+	var results = []
+	for division in divisions:
+		results.append(division.results[current_week])
+	return results
+
+func finish_week():
+	current_week += 1
+	if (current_week > divisions[teams[human_index].division].fixtures.size()):
+		finish_season()
+		
+func finish_season():
+	current_season += 1
+	current_week = 0
+
 func _notification(what):
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		for team in teams:
