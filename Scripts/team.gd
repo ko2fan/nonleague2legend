@@ -7,7 +7,7 @@ var team_name = ""
 var players = []
 
 var division = -1
-var season_stats
+var season_stats = []
 
 func get_players() -> Array:
 	return players
@@ -29,3 +29,13 @@ func switch_players(player_one, player_two):
 func sort_players():
 	players.sort_custom(func(playera, playerb): \
 		return playera.squad_number < playerb.squad_number)
+
+func add_result(our_score, their_score):
+	var stats = season_stats.back() as TeamStats
+	stats.played += 1
+	if our_score > their_score:
+		stats.wins += 1
+	elif our_score == their_score:
+		stats.draws += 1
+	stats.goals_scored += our_score
+	stats.goals_conceded += their_score

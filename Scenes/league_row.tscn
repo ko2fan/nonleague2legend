@@ -1,0 +1,78 @@
+[gd_scene load_steps=3 format=3 uid="uid://cue486lh24b7k"]
+
+[ext_resource type="Script" path="res://Scripts/league_row.gd" id="1_nuxt5"]
+[ext_resource type="LabelSettings" uid="uid://cwt0o32pyw8v3" path="res://Themes/league_row_settings.tres" id="1_o6pdp"]
+
+[node name="LeagueRow" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_nuxt5")
+
+[node name="LineColour" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(1, 1, 1, 0)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="LineColour"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/separation = 25
+
+[node name="Pos" type="Label" parent="LineColour/HBoxContainer"]
+custom_minimum_size = Vector2(35, 0)
+layout_mode = 2
+text = "99"
+label_settings = ExtResource("1_o6pdp")
+
+[node name="Team" type="Label" parent="LineColour/HBoxContainer"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+text = "Very Long Name United"
+label_settings = ExtResource("1_o6pdp")
+
+[node name="Played" type="Label" parent="LineColour/HBoxContainer"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "99"
+label_settings = ExtResource("1_o6pdp")
+
+[node name="Wins" type="Label" parent="LineColour/HBoxContainer"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "99"
+label_settings = ExtResource("1_o6pdp")
+
+[node name="Draws" type="Label" parent="LineColour/HBoxContainer"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "99"
+label_settings = ExtResource("1_o6pdp")
+
+[node name="Losses" type="Label" parent="LineColour/HBoxContainer"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "99"
+label_settings = ExtResource("1_o6pdp")
+
+[node name="GoalsFor" type="Label" parent="LineColour/HBoxContainer"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "99"
+label_settings = ExtResource("1_o6pdp")
+
+[node name="GoalsAgainst" type="Label" parent="LineColour/HBoxContainer"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "99"
+label_settings = ExtResource("1_o6pdp")
+
+[node name="Points" type="Label" parent="LineColour/HBoxContainer"]
+layout_mode = 2
+text = "999"
+label_settings = ExtResource("1_o6pdp")
