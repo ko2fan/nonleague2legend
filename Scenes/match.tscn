@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=3 uid="uid://ce7e80p3jccnt"]
 
 [ext_resource type="Texture2D" uid="uid://bbmso2w7s17hk" path="res://Sprites/pitch_prototype.png" id="1_a8t71"]
-[ext_resource type="Script" path="res://Scripts/match.gd" id="1_wdqix"]
+[ext_resource type="Script" path="res://Scripts/match.gd" id="1_xn6wp"]
 [ext_resource type="PackedScene" uid="uid://837gjrpl2mu8" path="res://Scenes/football_player.tscn" id="2_vumxj"]
 [ext_resource type="FontFile" uid="uid://dxgro1ckyu2r8" path="res://fonts/quadratum-unum-font/QuadratumUnum-LW0Z.ttf" id="3_b4obx"]
 [ext_resource type="PackedScene" uid="uid://6gceaksn4gck" path="res://Scenes/ball.tscn" id="3_wt82p"]
@@ -16,7 +16,7 @@ font = ExtResource("3_b4obx")
 font_size = 24
 
 [node name="Match" type="Node2D"]
-script = ExtResource("1_wdqix")
+script = ExtResource("1_xn6wp")
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
