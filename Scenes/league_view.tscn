@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://fosf8vkw4b20"]
 
-[ext_resource type="Script" path="res://Scripts/league_view.gd" id="1_hb13j"]
 [ext_resource type="Theme" uid="uid://ba4eko3hqyxp3" path="res://Themes/league_theme.tres" id="1_ox708"]
+[ext_resource type="Script" path="res://Scripts/league_view.gd" id="1_s0yvc"]
 [ext_resource type="LabelSettings" uid="uid://ddcb7kmaryg2c" path="res://Themes/Title_settings.tres" id="2_jllxw"]
 [ext_resource type="LabelSettings" uid="uid://b4ymw1mjawc4d" path="res://Themes/league_settings.tres" id="3_n6k2u"]
 
@@ -12,7 +12,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_hb13j")
+script = ExtResource("1_s0yvc")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 1

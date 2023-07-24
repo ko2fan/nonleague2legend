@@ -91,5 +91,6 @@ text = "Next Game"
 
 [connection signal="pressed" from="Panel/GridContainer/ViewSquadButton" to="." method="_on_view_squad_button_pressed"]
 [connection signal="pressed" from="Panel/GridContainer/LeagueTableButton" to="." method="_on_league_table_button_pressed"]
+[connection signal="pressed" from="Panel/GridContainer/TacticsButton" to="." method="_on_tactics_button_pressed"]
 [connection signal="pressed" from="Panel/GridContainer/SaveGameButton" to="." method="_on_save_game_button_pressed"]
 [connection signal="pressed" from="Panel/GridContainer/NextGameButton" to="." method="_on_next_game_button_pressed"]

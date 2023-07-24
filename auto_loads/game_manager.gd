@@ -13,6 +13,10 @@ var next_team_slot = 0
 
 var initials = [ "A", "B", "C", "D", "D", "E", "F", "G", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "R", "S", "S", "T", "T", "V", "W" ]
 
+enum Formation {
+	FORMATION_4_4_2
+}
+
 func _init():
 	randomize()
 	

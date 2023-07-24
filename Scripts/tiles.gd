@@ -6,6 +6,7 @@ extends Control
 @onready var squad_view = preload("res://Scenes/squad_view.tscn")
 @onready var match_view = preload("res://Scenes/match.tscn")
 @onready var league_view = preload("res://Scenes/league_view.tscn")
+@onready var tactics_view = preload("res://Scenes/tactics.tscn")
 
 func _ready():
 	title_label.text = GameManager.get_player_team().team_name
@@ -27,3 +28,8 @@ func _on_next_game_button_pressed():
 func _on_league_table_button_pressed():
 	var child = get_tree().root.get_node("Management")
 	child.change_to_packed_scene(league_view)
+
+
+func _on_tactics_button_pressed():
+	var child = get_tree().root.get_node("Management")
+	child.change_to_packed_scene(tactics_view)
