@@ -11,11 +11,26 @@ var next_player_slot = 0
 var loaded_game = false
 var next_team_slot = 0
 
-var initials = [ "A", "B", "C", "D", "D", "E", "F", "G", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "R", "S", "S", "T", "T", "V", "W" ]
+var initials = [ "A", "B", "C", "D", "D", "E",
+	"F", "G", "G", "H", "I", "J", "K", "L", "M",
+	"N", "O", "P", "R", "S", "S", "T", "T", "V", "W" ]
 
 enum Formation {
 	FORMATION_4_4_2
 }
+
+enum PlayingPosition {
+	ANY = 0,
+	GK = 1,
+	DEF = 2,
+	MID = 4,
+	ATT = 8
+}
+
+var common_positions = [ PlayingPosition.GK, PlayingPosition.DEF, PlayingPosition.DEF,
+	PlayingPosition.DEF, PlayingPosition.DEF + PlayingPosition.MID, PlayingPosition.MID,
+	PlayingPosition.MID, PlayingPosition.MID, PlayingPosition.MID + PlayingPosition.ATT,
+	PlayingPosition.ATT, PlayingPosition.ATT ]
 
 func _init():
 	randomize()
@@ -57,11 +72,30 @@ func create_teams(team_data):
 			div.teams.append(team.team_id)
 		
 func create_players(player_data):
-	for i in 640:
+	var num_gks = 0
+	var num_defs = 0
+	var num_mids = 0
+	var num_atts = 0
+	var filled = false
+	while not filled:
 		var name_generator = generate_name(player_data)
 		var player = generate_player(name_generator)
+		if player.player_position == 1:
+			num_gks += 1
+		elif player.player_position == 2 or player.player_position == 6:
+			num_defs += 1
+		elif player.player_position == 4 or player.player_position == 6 or player.player_position == 12:
+			num_mids += 1
+		elif player.player_position == 8 or player.player_position == 12:
+			num_atts += 1
 		players.append(player)
+		if num_gks >= 3 * teams.size() + 10 and \
+			num_defs >= 7 * teams.size() + 60 and \
+			num_mids >= 6 * teams.size() + 50 and \
+			num_atts >= 4 * teams.size() + 30:
+				filled = true
 		next_player_slot += 1
+	print("Filled " + str(next_player_slot) + " slots in total")
 		
 func generate_name(surname_list):
 	return initials.pick_random() + ". " + surname_list.pick_random()
@@ -69,17 +103,114 @@ func generate_name(surname_list):
 func generate_player(player_name):
 	var player = Player.new()
 	player.player_name = player_name
+	player.player_position = common_positions.pick_random()
+	player.player_skill = randi_range(1, 9)
 	return player
 	
 func assign_players_to_teams():
-	var player_index = 0
+	var unassigned_players = players.duplicate()
+	var keepers = unassigned_players.filter(func(player): return player.player_position == PlayingPosition.GK)
+	
 	for team in teams:
-		for i in 16:
-			var player = players[player_index]
-			player.squad_number = i
+		var squad_number = 0
+		# assign keepers
+		for i in 1:
+			var player = keepers.pop_front()
+			player.squad_number = squad_number
+			unassigned_players.erase(player)
 			player.team = team
 			team.players.append(player)
-			player_index += 1
+			squad_number += 1
+			
+		# assign defenders
+		var defenders = unassigned_players.filter(
+			func(player):
+				return player.player_position == PlayingPosition.DEF or \
+					player.player_position == 6)
+		for i in 4:
+			var player = defenders.pop_front()
+			player.squad_number = squad_number
+			unassigned_players.erase(player)
+			player.team = team
+			team.players.append(player)
+			squad_number += 1
+			
+		# assign midfielders
+		var midfielders = unassigned_players.filter(
+			func(player):
+				return player.player_position == PlayingPosition.MID or \
+					player.player_position == 6 or player.player_position == 12)
+		for i in 4:
+			var player = midfielders.pop_front()
+			player.squad_number = squad_number
+			unassigned_players.erase(player)
+			player.team = team
+			team.players.append(player)
+			squad_number += 1
+			
+		# assign sttackers
+		var attackers = unassigned_players.filter(
+			func(player):
+				return player.player_position == PlayingPosition.ATT or \
+					player.player_position == 12)
+		for i in 2:
+			var player = attackers.pop_front()
+			player.squad_number = squad_number
+			unassigned_players.erase(player)
+			player.team = team
+			team.players.append(player)
+			squad_number += 1
+		
+		# now add reserves
+		
+		# assign keepers
+		for i in 1:
+			var player = keepers.pop_front()
+			player.squad_number = squad_number
+			unassigned_players.erase(player)
+			player.team = team
+			team.players.append(player)
+			squad_number += 1
+			
+		# assign defenders
+		var reserve_defenders = unassigned_players.filter(
+			func(player):
+				return player.player_position == PlayingPosition.DEF or \
+					player.player_position == 6)
+		for i in 2:
+			var player = reserve_defenders.pop_front()
+			player.squad_number = squad_number
+			unassigned_players.erase(player)
+			player.team = team
+			team.players.append(player)
+			squad_number += 1
+			
+		# assign midfielders
+		var reserve_midfielders = unassigned_players.filter(
+			func(player):
+				return player.player_position == PlayingPosition.MID or \
+					player.player_position == 6 or player.player_position == 12)
+		for i in 1:
+			var player = reserve_midfielders.pop_front()
+			player.squad_number = squad_number
+			unassigned_players.erase(player)
+			player.team = team
+			team.players.append(player)
+			squad_number += 1
+			
+		# assign sttackers
+		var reserve_attackers = unassigned_players.filter(
+			func(player):
+				return player.player_position == PlayingPosition.ATT or \
+					player.player_position == 12)
+		for i in 1:
+			var player = reserve_attackers.pop_front()
+			player.squad_number = squad_number
+			unassigned_players.erase(player)
+			player.team = team
+			team.players.append(player)
+			squad_number += 1
+			
 
 func create_profile():
 	new_game()
@@ -98,7 +229,7 @@ func get_player_team():
 
 func save_game():
 	var save_file = FileAccess.open("user://savefile.nl", FileAccess.WRITE)
-	var version = 0x4
+	var version = 0x5
 	save_file.store_32(version)
 	save_file.store_32(human_index)
 	save_file.store_32(current_season)
@@ -139,6 +270,8 @@ func save_game():
 	for player in players:
 		save_file.store_pascal_string(player.player_name)
 		save_file.store_8(player.squad_number)
+		save_file.store_8(player.player_position)
+		save_file.store_8(player.player_skill)
 		if player.team != null:
 			save_file.store_32(player.team.team_id)
 		else:
@@ -149,60 +282,7 @@ func load_game():
 	var load_file = FileAccess.open("user://savefile.nl", FileAccess.READ)
 	var version = load_file.get_32()
 	match version:
-		0x3:
-			human_index = load_file.get_32()
-			current_season = load_file.get_32()
-			current_week = load_file.get_32()
-			var num_divisions = load_file.get_32()
-			for i in num_divisions:
-				var division = Division.new()
-				division.division_id = load_file.get_32()
-				var num_teams = load_file.get_32()
-				for j in num_teams:
-					division.teams.append(load_file.get_32())
-				var num_weekly_fixtures = load_file.get_32()
-				for k in num_weekly_fixtures:
-					var num_fixtures = load_file.get_32()
-					var weekly_fixtures = []
-					for f in num_fixtures:
-						var home_team = load_file.get_32()
-						var away_team = load_file.get_32()
-						var fixture = { "home_team": home_team, "away_team": away_team }
-						weekly_fixtures.append(fixture)
-					division.fixtures.append(weekly_fixtures)
-				var num_weekly_results = load_file.get_32()
-				for l in num_weekly_results:
-					var weekly_results = []
-					var num_results = load_file.get_32()
-					for r in num_results:
-						var home_team = load_file.get_32()
-						var home_score = load_file.get_8()
-						var away_team = load_file.get_32()
-						var away_score = load_file.get_8()
-						var result = { "home_team": home_team, "home_score": home_score,
-							"away_team": away_team, "away_score": away_score }
-						weekly_results.append(result)
-					division.results.append(weekly_results)
-				divisions.append(division)
-			var num_teams = load_file.get_32()
-			for i in num_teams:
-				var team = Team.new()
-				team.team_id = load_file.get_32()
-				team.team_name = load_file.get_pascal_string()
-				team.division = load_file.get_8()
-				teams.append(team)
-			var num_players = load_file.get_32()
-			for i in num_players:
-				var player = Player.new()
-				player.player_name = load_file.get_pascal_string()
-				player.squad_number = load_file.get_8()
-				var team_id = load_file.get_32()
-				if team_id != 4294967295:
-					var player_team = teams.filter(func(team): return team.team_id == team_id).front()
-					player_team.players.append(player)
-					player.team = player_team
-				players.append(player)
-		0x4:
+		0x5:
 			human_index = load_file.get_32()
 			current_season = load_file.get_32()
 			current_week = load_file.get_32()
@@ -258,6 +338,8 @@ func load_game():
 				var player = Player.new()
 				player.player_name = load_file.get_pascal_string()
 				player.squad_number = load_file.get_8()
+				player.player_position = load_file.get_8()
+				player.player_skill = load_file.get_8()
 				var team_id = load_file.get_32()
 				if team_id != 4294967295:
 					var player_team = teams.filter(func(team): return team.team_id == team_id).front()

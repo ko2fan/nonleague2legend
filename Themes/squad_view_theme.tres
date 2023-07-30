@@ -32,7 +32,6 @@ Button/fonts/font = ExtResource("1_il1wl")
 Button/styles/hover = SubResource("StyleBoxFlat_qkxbk")
 Button/styles/normal = SubResource("StyleBoxFlat_1xaqu")
 Panel/styles/panel = SubResource("StyleBoxFlat_f2t3h")
-VBoxContainer/constants/separation = 25
 VScrollBar/styles/grabber = SubResource("StyleBoxFlat_5c6m3")
 VScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_540vo")
 VScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_cxbd7")

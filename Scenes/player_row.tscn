@@ -1,35 +1,57 @@
-[gd_scene load_steps=4 format=3 uid="uid://do6krovuib4ns"]
+[gd_scene load_steps=3 format=3 uid="uid://do6krovuib4ns"]
 
 [ext_resource type="Script" path="res://Scripts/player_row.gd" id="1_7ykdh"]
-[ext_resource type="FontFile" uid="uid://dxgro1ckyu2r8" path="res://fonts/quadratum-unum-font/QuadratumUnum-LW0Z.ttf" id="2_hyf6p"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_qvmkq"]
-font = ExtResource("2_hyf6p")
-font_size = 32
-font_color = Color(0, 0, 0, 1)
+[ext_resource type="LabelSettings" uid="uid://c0ehyrabrqn01" path="res://Themes/player_row_settings.tres" id="2_8qiok"]
 
 [node name="PlayerRow" type="Control"]
+custom_minimum_size = Vector2(442, 45)
 layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -838.0
+offset_bottom = -675.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_7ykdh")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_7ykdh")
+color = Color(1, 1, 1, 0)
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="HBoxContainer" type="HBoxContainer" parent="ColorRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="SquadNumber" type="Label" parent="HBoxContainer"]
+[node name="SquadNumber" type="Label" parent="ColorRect/HBoxContainer"]
 custom_minimum_size = Vector2(35, 0)
 layout_mode = 2
-label_settings = SubResource("LabelSettings_qvmkq")
+label_settings = ExtResource("2_8qiok")
 
-[node name="Button" type="Button" parent="HBoxContainer"]
+[node name="Button" type="Button" parent="ColorRect/HBoxContainer"]
 custom_minimum_size = Vector2(200, 40)
 layout_mode = 2
 toggle_mode = true
 
-[connection signal="pressed" from="HBoxContainer/Button" to="." method="_on_button_pressed"]
+[node name="PlayerPosition" type="Label" parent="ColorRect/HBoxContainer"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+tooltip_text = "Something goes here"
+mouse_filter = 0
+label_settings = ExtResource("2_8qiok")
+
+[node name="PlayerSkill" type="Label" parent="ColorRect/HBoxContainer"]
+custom_minimum_size = Vector2(35, 0)
+layout_mode = 2
+label_settings = ExtResource("2_8qiok")
+
+[connection signal="pressed" from="ColorRect/HBoxContainer/Button" to="." method="_on_button_pressed"]
