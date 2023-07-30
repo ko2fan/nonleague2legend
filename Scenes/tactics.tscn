@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://dawi13xg8symk"]
 
-[ext_resource type="Script" path="res://Scripts/tactics.gd" id="1_f7xgd"]
+[ext_resource type="Script" path="res://Scripts/tactics.gd" id="1_3j27d"]
 [ext_resource type="Theme" uid="uid://c11d3cj1ea56o" path="res://Themes/tactics_theme.tres" id="1_j1ltr"]
 [ext_resource type="LabelSettings" uid="uid://ddcb7kmaryg2c" path="res://Themes/Title_settings.tres" id="2_jdawk"]
 
@@ -11,7 +11,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_f7xgd")
+script = ExtResource("1_3j27d")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 1
