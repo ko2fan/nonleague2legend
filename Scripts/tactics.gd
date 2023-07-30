@@ -25,18 +25,18 @@ func draw_tactic(players):
 			#gk
 			grid_system[2].set_player(shirt_texture, players[0].player_name)
 			#def
-			grid_system[5].set_player(shirt_texture, players[0].player_name)
-			grid_system[6].set_player(shirt_texture, players[0].player_name)
-			grid_system[8].set_player(shirt_texture, players[0].player_name)
-			grid_system[9].set_player(shirt_texture, players[0].player_name)
+			grid_system[5].set_player(shirt_texture, players[1].player_name)
+			grid_system[6].set_player(shirt_texture, players[2].player_name)
+			grid_system[8].set_player(shirt_texture, players[3].player_name)
+			grid_system[9].set_player(shirt_texture, players[4].player_name)
 			#mid
-			grid_system[10].set_player(shirt_texture, players[0].player_name)
-			grid_system[11].set_player(shirt_texture, players[0].player_name)
-			grid_system[13].set_player(shirt_texture, players[0].player_name)
-			grid_system[14].set_player(shirt_texture, players[0].player_name)
+			grid_system[10].set_player(shirt_texture, players[5].player_name)
+			grid_system[11].set_player(shirt_texture, players[6].player_name)
+			grid_system[13].set_player(shirt_texture, players[7].player_name)
+			grid_system[14].set_player(shirt_texture, players[8].player_name)
 			#att
-			grid_system[16].set_player(shirt_texture, players[0].player_name)
-			grid_system[18].set_player(shirt_texture, players[0].player_name)
+			grid_system[16].set_player(shirt_texture, players[9].player_name)
+			grid_system[18].set_player(shirt_texture, players[10].player_name)
 
 
 func _on_back_button_pressed():
