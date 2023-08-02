@@ -28,7 +28,7 @@ func draw_players():
 		player_row.player_selected.connect(_on_player_selected)
 		player_container.add_child(player_row)
 		await get_tree().process_frame
-		player_row.set_player(player)
+		player_row.set_player(player, human_team.formation)
 
 func _exit_tree():
 	cleanup()

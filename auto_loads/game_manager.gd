@@ -16,7 +16,10 @@ var initials = [ "A", "B", "C", "D", "D", "E",
 	"N", "O", "P", "R", "S", "S", "T", "T", "V", "W" ]
 
 enum Formation {
-	FORMATION_4_4_2
+	FORMATION_4_4_2 = 0,
+	FORMATION_4_5_1 = 1,
+	FORMATION_4_3_3 = 2,
+	FORMATION_5_3_2 = 3
 }
 
 enum PlayingPosition {
@@ -229,7 +232,7 @@ func get_player_team():
 
 func save_game():
 	var save_file = FileAccess.open("user://savefile.nl", FileAccess.WRITE)
-	var version = 0x5
+	var version = 0x6
 	save_file.store_32(version)
 	save_file.store_32(human_index)
 	save_file.store_32(current_season)
@@ -266,6 +269,7 @@ func save_game():
 			save_file.store_8(team_stats.draws)
 			save_file.store_8(team_stats.goals_scored)
 			save_file.store_8(team_stats.goals_conceded)
+		save_file.store_8(team.formation)
 	save_file.store_32(players.size())
 	for player in players:
 		save_file.store_pascal_string(player.player_name)
@@ -332,6 +336,72 @@ func load_game():
 					stat.goals_scored = load_file.get_8()
 					stat.goals_conceded = load_file.get_8()
 					team.season_stats.append(stat)
+				team.formation = GameManager.Formation.FORMATION_4_4_2
+				teams.append(team)
+			var num_players = load_file.get_32()
+			for i in num_players:
+				var player = Player.new()
+				player.player_name = load_file.get_pascal_string()
+				player.squad_number = load_file.get_8()
+				player.player_position = load_file.get_8()
+				player.player_skill = load_file.get_8()
+				var team_id = load_file.get_32()
+				if team_id != 4294967295:
+					var player_team = teams.filter(func(team): return team.team_id == team_id).front()
+					player_team.players.append(player)
+					player.team = player_team
+				players.append(player)
+		0x6:
+			human_index = load_file.get_32()
+			current_season = load_file.get_32()
+			current_week = load_file.get_32()
+			var num_divisions = load_file.get_32()
+			for i in num_divisions:
+				var division = Division.new()
+				division.division_id = load_file.get_32()
+				var num_teams = load_file.get_32()
+				for j in num_teams:
+					division.teams.append(load_file.get_32())
+				var num_weekly_fixtures = load_file.get_32()
+				for k in num_weekly_fixtures:
+					var num_fixtures = load_file.get_32()
+					var weekly_fixtures = []
+					for f in num_fixtures:
+						var home_team = load_file.get_32()
+						var away_team = load_file.get_32()
+						var fixture = { "home_team": home_team, "away_team": away_team }
+						weekly_fixtures.append(fixture)
+					division.fixtures.append(weekly_fixtures)
+				var num_weekly_results = load_file.get_32()
+				for l in num_weekly_results:
+					var weekly_results = []
+					var num_results = load_file.get_32()
+					for r in num_results:
+						var home_team = load_file.get_32()
+						var home_score = load_file.get_8()
+						var away_team = load_file.get_32()
+						var away_score = load_file.get_8()
+						var result = { "home_team": home_team, "home_score": home_score,
+							"away_team": away_team, "away_score": away_score }
+						weekly_results.append(result)
+					division.results.append(weekly_results)
+				divisions.append(division)
+			var num_teams = load_file.get_32()
+			for i in num_teams:
+				var team = Team.new()
+				team.team_id = load_file.get_32()
+				team.team_name = load_file.get_pascal_string()
+				team.division = load_file.get_8()
+				var num_stats = load_file.get_32()
+				for team_stats in num_stats:
+					var stat = TeamStats.new()
+					stat.played = load_file.get_8()
+					stat.wins = load_file.get_8()
+					stat.draws = load_file.get_8()
+					stat.goals_scored = load_file.get_8()
+					stat.goals_conceded = load_file.get_8()
+					team.season_stats.append(stat)
+				team.formation = load_file.get_8()
 				teams.append(team)
 			var num_players = load_file.get_32()
 			for i in num_players:
@@ -411,6 +481,18 @@ func finish_week():
 func finish_season():
 	current_season += 1
 	current_week = 0
+	
+func get_formation_name(formation):
+	match formation:
+		Formation.FORMATION_4_4_2:
+			return "4-4-2"
+		Formation.FORMATION_4_5_1:
+			return "4-5-1"
+		Formation.FORMATION_4_3_3:
+			return "4-3-3"
+		Formation.FORMATION_5_3_2:
+			return "5-3-2"
+	return "Unknown"
 
 func _notification(what):
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:

@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=8 format=3 uid="uid://c11d3cj1ea56o"]
+[gd_resource type="Theme" load_steps=13 format=3 uid="uid://c11d3cj1ea56o"]
 
 [ext_resource type="FontFile" uid="uid://dxgro1ckyu2r8" path="res://fonts/quadratum-unum-font/QuadratumUnum-LW0Z.ttf" id="1_rbfi3"]
 
@@ -11,6 +11,57 @@ corner_radius_top_left = 2
 corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_427ib"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.75)
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3vfub"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.07)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kario"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_14t66"]
+bg_color = Color(0, 0, 0.607843, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2qnq3"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 0, 0.607843, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f2t3h"]
 bg_color = Color(0.678431, 0.847059, 0.901961, 1)
@@ -31,6 +82,25 @@ Button/font_sizes/font_size = 32
 Button/fonts/font = ExtResource("1_rbfi3")
 Button/styles/hover = SubResource("StyleBoxFlat_qkxbk")
 Button/styles/normal = SubResource("StyleBoxFlat_1xaqu")
+ItemList/colors/font_color = Color(0, 0, 0.607843, 1)
+ItemList/colors/font_hovered_color = Color(0.95, 0.95, 0.95, 1)
+ItemList/colors/font_outline_color = Color(1, 1, 1, 1)
+ItemList/colors/font_selected_color = Color(1, 1, 1, 1)
+ItemList/colors/guide_color = Color(0.7, 0.7, 0.7, 0.25)
+ItemList/constants/h_separation = 4
+ItemList/constants/icon_margin = 4
+ItemList/constants/line_separation = 2
+ItemList/constants/outline_size = 0
+ItemList/constants/v_separation = 4
+ItemList/font_sizes/font_size = 24
+ItemList/fonts/font = ExtResource("1_rbfi3")
+ItemList/styles/cursor = SubResource("StyleBoxFlat_427ib")
+ItemList/styles/cursor_unfocused = SubResource("StyleBoxFlat_427ib")
+ItemList/styles/focus = SubResource("StyleBoxFlat_427ib")
+ItemList/styles/hovered = SubResource("StyleBoxFlat_3vfub")
+ItemList/styles/panel = SubResource("StyleBoxFlat_kario")
+ItemList/styles/selected = SubResource("StyleBoxFlat_14t66")
+ItemList/styles/selected_focus = SubResource("StyleBoxFlat_2qnq3")
 Panel/styles/panel = SubResource("StyleBoxFlat_f2t3h")
 VBoxContainer/constants/separation = 25
 VScrollBar/styles/grabber = SubResource("StyleBoxFlat_5c6m3")

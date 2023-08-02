@@ -9,6 +9,8 @@ var players = []
 var division = -1
 var season_stats = []
 
+var formation = GameManager.Formation.FORMATION_4_4_2
+
 func get_players() -> Array:
 	return players
 

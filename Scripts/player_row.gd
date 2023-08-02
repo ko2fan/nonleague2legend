@@ -10,7 +10,7 @@ signal player_selected
 
 var squad_number
 
-func set_player(player_details : Player):
+func set_player(player_details : Player, formation):
 	squad_number = player_details.squad_number
 	player_button.text = player_details.player_name
 	squad_label.text = str(player_details.squad_number + 1)
@@ -34,15 +34,25 @@ func set_player(player_details : Player):
 		GameManager.PlayingPosition.ATT:
 			player_position.text = "STR"
 			player_position.tooltip_text = "Striker"
-	match squad_number:
-		0:
-			row_colour.color = Color.WEB_GREEN
-		1,2,3,4:
+	match formation:
+		GameManager.Formation.FORMATION_4_4_2:
+			change_colour(1, 4, 4, 2)
+		GameManager.Formation.FORMATION_4_5_1:
+			change_colour(1, 4, 5, 1)
+		GameManager.Formation.FORMATION_4_3_3:
+			change_colour(1, 4, 3, 3)
+		GameManager.Formation.FORMATION_5_3_2:
+			change_colour(1, 5, 3, 2)
+	
+func change_colour(gk, def, mid, att):
+	if squad_number < 1:
+		row_colour.color = Color.WEB_GREEN
+	elif squad_number <= def:
 			row_colour.color = Color.DEEP_SKY_BLUE
-		5,6,7,8:
-			row_colour.color = Color.YELLOW
-		9,10:
-			row_colour.color = Color.CRIMSON
+	elif squad_number <= def + mid:
+		row_colour.color = Color.YELLOW
+	elif squad_number <= def + mid + att:
+		row_colour.color = Color.CRIMSON
 
 func _on_button_pressed():
 	player_button.button_pressed = true
