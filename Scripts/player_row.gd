@@ -45,7 +45,7 @@ func set_player(player_details : Player, formation):
 			change_colour(1, 5, 3, 2)
 	
 func change_colour(gk, def, mid, att):
-	if squad_number < 1:
+	if squad_number < gk:
 		row_colour.color = Color.WEB_GREEN
 	elif squad_number <= def:
 			row_colour.color = Color.DEEP_SKY_BLUE

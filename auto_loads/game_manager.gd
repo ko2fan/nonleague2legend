@@ -493,6 +493,15 @@ func get_formation_name(formation):
 		Formation.FORMATION_5_3_2:
 			return "5-3-2"
 	return "Unknown"
+	
+func get_players_by_position(position):
+	var matching_position = position
+	match position:
+		3:
+			matching_position = 4
+		4:
+			matching_position = 8
+	return players.filter(func(player): return (player.player_position & matching_position) == matching_position)
 
 func _notification(what):
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:

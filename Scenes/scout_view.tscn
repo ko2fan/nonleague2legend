@@ -1,0 +1,115 @@
+[gd_scene load_steps=6 format=3 uid="uid://cqe02nac78yfp"]
+
+[ext_resource type="Script" path="res://Scripts/scout_view.gd" id="1_o1kce"]
+[ext_resource type="Theme" uid="uid://dsm4fsf4wqwvg" path="res://Themes/scout_view_theme.tres" id="1_qjisd"]
+[ext_resource type="LabelSettings" uid="uid://ddcb7kmaryg2c" path="res://Themes/Title_settings.tres" id="2_p4dsx"]
+[ext_resource type="Theme" uid="uid://b3mxg4bwyrbo8" path="res://Themes/squad_view_theme.tres" id="4_awmjl"]
+[ext_resource type="PackedScene" uid="uid://22jfea3ikxr4" path="res://Scenes/scout_row.tscn" id="4_p23gr"]
+
+[node name="ScoutView" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_o1kce")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_qjisd")
+
+[node name="Title" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -231.0
+offset_right = 231.0
+offset_bottom = 91.0
+grow_horizontal = 2
+text = "Scout Players"
+label_settings = ExtResource("2_p4dsx")
+
+[node name="ReturnButton" type="Button" parent="Panel"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -51.5
+offset_top = -60.0
+offset_right = 51.5
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Return"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel"]
+visible = false
+custom_minimum_size = Vector2(550, 400)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_qjisd")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/ScrollContainer"]
+layout_mode = 2
+theme = ExtResource("1_qjisd")
+
+[node name="ScoutRow" parent="Panel/ScrollContainer/VBoxContainer" instance=ExtResource("4_p23gr")]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_top = 90.0
+offset_right = 20.0
+offset_bottom = 130.0
+grow_horizontal = 2
+theme_override_constants/separation = 40
+
+[node name="ScoutPosition" type="OptionButton" parent="Panel/HBoxContainer"]
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+theme = ExtResource("4_awmjl")
+item_count = 5
+selected = 0
+popup/item_0/text = "Position"
+popup/item_0/id = 0
+popup/item_0/disabled = true
+popup/item_1/text = "GK"
+popup/item_1/id = 1
+popup/item_2/text = "DEF"
+popup/item_2/id = 2
+popup/item_3/text = "MID"
+popup/item_3/id = 3
+popup/item_4/text = "ATT"
+popup/item_4/id = 4
+
+[node name="ScoutButton" type="Button" parent="Panel/HBoxContainer"]
+layout_mode = 2
+text = "Scout"
+
+[connection signal="pressed" from="Panel/ReturnButton" to="." method="_on_return_button_pressed"]
+[connection signal="item_selected" from="Panel/HBoxContainer/ScoutPosition" to="." method="_on_scout_position_item_selected"]
+[connection signal="pressed" from="Panel/HBoxContainer/ScoutButton" to="." method="_on_scout_button_pressed"]
