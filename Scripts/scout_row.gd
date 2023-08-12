@@ -6,7 +6,11 @@ extends HBoxContainer
 
 signal player_purchased
 
+var player_id
+var price
+
 func set_player_row(player : Player):
+	player_id = player.player_id
 	player_name.text = player.player_name
 	match player.player_position:
 		GameManager.PlayingPosition.GK:
@@ -28,3 +32,7 @@ func set_player_row(player : Player):
 			player_position.text = "STR"
 			player_position.tooltip_text = "Striker"
 	player_cost.text = str(player.player_skill * 100) + "K"
+	price = player.player_skill * 100000
+
+func _on_purchase_button_pressed():
+	emit_signal("player_purchased", player_id, price)

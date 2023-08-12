@@ -39,3 +39,7 @@ func _on_tactics_button_pressed():
 func _on_scouting_button_pressed():
 	var child = get_tree().root.get_node("Management")
 	child.change_to_packed_scene(scouting_view)
+
+
+func _on_finances_button_pressed():
+	print("Money: " + str(GameManager.get_player_team().finances.current_money))

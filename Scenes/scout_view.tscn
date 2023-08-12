@@ -1,10 +1,16 @@
-[gd_scene load_steps=6 format=3 uid="uid://cqe02nac78yfp"]
+[gd_scene load_steps=8 format=3 uid="uid://cqe02nac78yfp"]
 
 [ext_resource type="Script" path="res://Scripts/scout_view.gd" id="1_o1kce"]
 [ext_resource type="Theme" uid="uid://dsm4fsf4wqwvg" path="res://Themes/scout_view_theme.tres" id="1_qjisd"]
 [ext_resource type="LabelSettings" uid="uid://ddcb7kmaryg2c" path="res://Themes/Title_settings.tres" id="2_p4dsx"]
 [ext_resource type="Theme" uid="uid://b3mxg4bwyrbo8" path="res://Themes/squad_view_theme.tres" id="4_awmjl"]
+[ext_resource type="FontFile" uid="uid://dxgro1ckyu2r8" path="res://fonts/quadratum-unum-font/QuadratumUnum-LW0Z.ttf" id="4_nxgc6"]
 [ext_resource type="PackedScene" uid="uid://22jfea3ikxr4" path="res://Scenes/scout_row.tscn" id="4_p23gr"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_prvxs"]
+font = ExtResource("4_nxgc6")
+font_size = 20
+font_color = Color(0, 0, 0.545098, 1)
 
 [node name="ScoutView" type="Control"]
 layout_mode = 3
@@ -35,6 +41,22 @@ offset_bottom = 91.0
 grow_horizontal = 2
 text = "Scout Players"
 label_settings = ExtResource("2_p4dsx")
+
+[node name="ErrorLabel" type="Label" parent="Panel"]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -98.73
+offset_right = 20.0
+offset_bottom = -75.73
+grow_horizontal = 2
+grow_vertical = 0
+label_settings = SubResource("LabelSettings_prvxs")
 
 [node name="ReturnButton" type="Button" parent="Panel"]
 layout_mode = 1
