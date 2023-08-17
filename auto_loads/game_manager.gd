@@ -155,15 +155,12 @@ func assign_players_to_teams():
 				max_midfielders = 4
 				min_attackers = 2
 				max_attackers = 3
-		var squad_number = 0
+		
 		# assign keepers
 		for i in 1:
 			var player = keepers.pop_front()
-			player.squad_number = squad_number
+			add_player_to_team(player, team)
 			unassigned_players.erase(player)
-			player.team = team
-			team.players.append(player)
-			squad_number += 1
 			
 		# assign defenders
 		var defenders = unassigned_players.filter(
@@ -172,11 +169,8 @@ func assign_players_to_teams():
 					player.player_position == 6)
 		for i in min_defenders:
 			var player = defenders.pop_front()
-			player.squad_number = squad_number
+			add_player_to_team(player, team)
 			unassigned_players.erase(player)
-			player.team = team
-			team.players.append(player)
-			squad_number += 1
 			
 		# assign midfielders
 		var midfielders = unassigned_players.filter(
@@ -185,11 +179,8 @@ func assign_players_to_teams():
 					player.player_position == 6 or player.player_position == 12)
 		for i in min_midfielders:
 			var player = midfielders.pop_front()
-			player.squad_number = squad_number
+			add_player_to_team(player, team)
 			unassigned_players.erase(player)
-			player.team = team
-			team.players.append(player)
-			squad_number += 1
 			
 		# assign sttackers
 		var attackers = unassigned_players.filter(
@@ -198,22 +189,16 @@ func assign_players_to_teams():
 					player.player_position == 12)
 		for i in min_attackers:
 			var player = attackers.pop_front()
-			player.squad_number = squad_number
+			add_player_to_team(player, team)
 			unassigned_players.erase(player)
-			player.team = team
-			team.players.append(player)
-			squad_number += 1
 		
 		# now add reserves
 		
 		# assign keepers
 		for i in 1:
 			var player = keepers.pop_front()
-			player.squad_number = squad_number
+			add_player_to_team(player, team)
 			unassigned_players.erase(player)
-			player.team = team
-			team.players.append(player)
-			squad_number += 1
 			
 		# assign defenders
 		var reserve_defenders = unassigned_players.filter(
@@ -222,11 +207,8 @@ func assign_players_to_teams():
 					player.player_position == 6)
 		for i in (max_defenders - min_defenders):
 			var player = reserve_defenders.pop_front()
-			player.squad_number = squad_number
+			add_player_to_team(player, team)
 			unassigned_players.erase(player)
-			player.team = team
-			team.players.append(player)
-			squad_number += 1
 			
 		# assign midfielders
 		var reserve_midfielders = unassigned_players.filter(
@@ -235,11 +217,8 @@ func assign_players_to_teams():
 					player.player_position == 6 or player.player_position == 12)
 		for i in (max_midfielders - min_midfielders):
 			var player = reserve_midfielders.pop_front()
-			player.squad_number = squad_number
+			add_player_to_team(player, team)
 			unassigned_players.erase(player)
-			player.team = team
-			team.players.append(player)
-			squad_number += 1
 			
 		# assign sttackers
 		var reserve_attackers = unassigned_players.filter(
@@ -248,11 +227,8 @@ func assign_players_to_teams():
 					player.player_position == 12)
 		for i in (max_attackers - min_attackers):
 			var player = reserve_attackers.pop_front()
-			player.squad_number = squad_number
+			add_player_to_team(player, team)
 			unassigned_players.erase(player)
-			player.team = team
-			team.players.append(player)
-			squad_number += 1
 			
 func add_player_to_team(player, team):
 	player.team = team
