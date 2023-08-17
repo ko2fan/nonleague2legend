@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://c4fp0mlw5gq06"]
+[gd_scene load_steps=6 format=3 uid="uid://c4fp0mlw5gq06"]
 
 [ext_resource type="Theme" uid="uid://b3mxg4bwyrbo8" path="res://Themes/squad_view_theme.tres" id="1_0iijg"]
 [ext_resource type="Script" path="res://Scripts/squad_view.gd" id="1_bfqas"]
 [ext_resource type="LabelSettings" uid="uid://ddcb7kmaryg2c" path="res://Themes/Title_settings.tres" id="2_x6835"]
 [ext_resource type="PackedScene" uid="uid://do6krovuib4ns" path="res://Scenes/player_row.tscn" id="4_rb622"]
+[ext_resource type="LabelSettings" uid="uid://d3mmd84mdix24" path="res://Themes/squad_settings.tres" id="5_kb50u"]
 
 [node name="SquadView" type="Control"]
 layout_mode = 3
@@ -110,12 +111,28 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -60.0
-offset_top = -80.0
-offset_right = 60.0
-offset_bottom = -40.0
+offset_left = -90.0
+offset_top = -65.0
+offset_right = 90.0
+offset_bottom = -25.0
 grow_horizontal = 2
 grow_vertical = 0
 text = "Back"
+
+[node name="ErrorMessage" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -100.0
+offset_right = 20.0
+offset_bottom = -77.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "An error has occured"
+label_settings = ExtResource("5_kb50u")
 
 [connection signal="pressed" from="Panel/BackButton" to="." method="_on_back_button_pressed"]

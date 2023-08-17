@@ -1,6 +1,7 @@
 extends Control
 
 signal player_selected
+signal sell_player
 
 @onready var row_colour = $ColorRect
 @onready var player_button = $ColorRect/HBoxContainer/Button
@@ -57,3 +58,7 @@ func change_colour(gk, def, mid, att):
 func _on_button_pressed():
 	player_button.button_pressed = true
 	emit_signal("player_selected", squad_number)
+
+
+func _on_sell_button_pressed():
+	emit_signal("sell_player", squad_number)

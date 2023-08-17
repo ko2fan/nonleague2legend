@@ -4,12 +4,12 @@
 [ext_resource type="LabelSettings" uid="uid://c0ehyrabrqn01" path="res://Themes/player_row_settings.tres" id="2_8qiok"]
 
 [node name="PlayerRow" type="Control"]
-custom_minimum_size = Vector2(442, 45)
+custom_minimum_size = Vector2(600, 45)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -838.0
+offset_right = -680.0
 offset_bottom = -675.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -35,23 +35,33 @@ grow_vertical = 2
 [node name="SquadNumber" type="Label" parent="ColorRect/HBoxContainer"]
 custom_minimum_size = Vector2(35, 0)
 layout_mode = 2
+text = "18"
 label_settings = ExtResource("2_8qiok")
 
 [node name="Button" type="Button" parent="ColorRect/HBoxContainer"]
 custom_minimum_size = Vector2(200, 40)
 layout_mode = 2
 toggle_mode = true
+text = "A test Player"
 
 [node name="PlayerPosition" type="Label" parent="ColorRect/HBoxContainer"]
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
 tooltip_text = "Something goes here"
 mouse_filter = 0
+text = "D/M"
 label_settings = ExtResource("2_8qiok")
 
 [node name="PlayerSkill" type="Label" parent="ColorRect/HBoxContainer"]
-custom_minimum_size = Vector2(35, 0)
+custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
+text = "14"
 label_settings = ExtResource("2_8qiok")
 
+[node name="SellButton" type="Button" parent="ColorRect/HBoxContainer"]
+custom_minimum_size = Vector2(67, 0)
+layout_mode = 2
+text = "SELL"
+
 [connection signal="pressed" from="ColorRect/HBoxContainer/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="ColorRect/HBoxContainer/SellButton" to="." method="_on_sell_button_pressed"]
