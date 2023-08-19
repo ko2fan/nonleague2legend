@@ -9,6 +9,7 @@ var current_week = 0
 var human_index
 var next_player_slot = 0
 var loaded_game = false
+var game_started = false
 var next_team_slot = 0
 
 var initials = [ "A", "B", "C", "D", "D", "E",
@@ -248,8 +249,120 @@ func set_player_index(team_name):
 			human_index = index
 			break
 
+func get_last_division():
+	return divisions.back()
+
+func move_team_to_division(team, division_index):
+	var old_division_index = team.division
+	team.division = division_index
+	var division = divisions[division_index]
+	division.teams.append(team.team_id)
+	var division_old = divisions[old_division_index]
+	division_old.teams.erase(team.team_id)
+
 func get_player_team():
 	return teams[human_index]
+	
+func create_fixtures():
+	for division in divisions:
+		division.create_season_fixtures()
+		
+func get_fixture(division_id, team_id):
+	var fixtures = divisions[division_id].fixtures[current_week]
+	for fixture in fixtures:
+		if fixture["home_team"] == team_id or fixture["away_team"] == team_id:
+			return fixture
+			
+	print("Error, fixture not found")
+	return { "home_team": 0, "away_team": 0 }
+
+func get_team_in_division(division_id, team_id):
+	var division = divisions[division_id]
+	if team_id < division.teams.size():
+		return teams[division.teams[team_id]]
+	print("Invalid team id")
+	return null
+
+func get_division_team_id(division_id, team_id):
+	var division = divisions[division_id]
+	var finding_team = teams[team_id]
+	var index = 0
+	for team in division.teams:
+		if finding_team.team_id == teams[team].team_id:
+			return index
+		index += 1
+	return 0
+	
+func get_player_by_id(player_id):
+	return players.filter(func(player): return player.player_id == player_id).front()
+	
+func play_matches():
+	for division in divisions:
+		var weekly_results = []
+		for fixture in division.fixtures[current_week]:
+			var home_team_id = fixture["home_team"]
+			var home_score = randi_range(0, 6)
+			var away_team_id = fixture["away_team"]
+			var away_score = randi_range(0, 5)
+			var result = { "home_team": home_team_id, "home_score": home_score,
+				"away_team": away_team_id, "away_score": away_score }
+			weekly_results.append(result)
+			var home_team = get_team_in_division(division.division_id, home_team_id) as Team
+			home_team.add_result(home_score, away_score)
+			var away_team = get_team_in_division(division.division_id, away_team_id) as Team
+			away_team.add_result(away_score, home_score)
+		division.results.append(weekly_results)
+	
+func get_results():
+	var results = []
+	for division in divisions:
+		results.append(division.results[current_week])
+	return results
+
+func finish_week():
+	current_week += 1		
+	if (current_week > divisions[teams[human_index].division].fixtures.size()):
+		finish_season()
+		
+func finish_season():
+	current_season += 1
+	current_week = 0
+	
+func get_formation_name(formation):
+	match formation:
+		Formation.FORMATION_4_4_2:
+			return "4-4-2"
+		Formation.FORMATION_4_5_1:
+			return "4-5-1"
+		Formation.FORMATION_4_3_3:
+			return "4-3-3"
+		Formation.FORMATION_5_3_2:
+			return "5-3-2"
+	return "Unknown"
+	
+func get_players_by_position(position):
+	var matching_position = position
+	match position:
+		3:
+			matching_position = 4
+		4:
+			matching_position = 8
+	return players.filter(func(player): return (player.player_position & matching_position) == matching_position)
+
+func _notification(what):
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		for team in teams:
+			for team_stats in team.season_stats:
+				team_stats.queue_free()
+			team.finances.queue_free()
+			team.queue_free()
+		for player in players:
+				player.queue_free()
+#		for season in seasons:
+#			season.queue_free()
+		for division in divisions:
+			division.queue_free()
+		get_tree().quit()
 
 func save_game():
 	var save_file = FileAccess.open("user://savefile.nl", FileAccess.WRITE)
@@ -515,105 +628,3 @@ func load_game():
 				players.append(player)
 	load_file.close()
 	loaded_game = true
-
-
-func create_fixtures():
-	for division in divisions:
-		division.create_season_fixtures()
-		
-func get_fixture(division_id, team_id):
-	var fixtures = divisions[division_id].fixtures[current_week]
-	for fixture in fixtures:
-		if fixture["home_team"] == team_id or fixture["away_team"] == team_id:
-			return fixture
-			
-	print("Error, fixture not found")
-	return { "home_team": 0, "away_team": 0 }
-
-func get_team_in_division(division_id, team_id):
-	var division = divisions[division_id]
-	if team_id < division.teams.size():
-		return teams[division.teams[team_id]]
-	print("Invalid team id")
-	return null
-
-func get_division_team_id(division_id, team_id):
-	var division = divisions[division_id]
-	var finding_team = teams[team_id]
-	var index = 0
-	for team in division.teams:
-		if finding_team.team_id == teams[team].team_id:
-			return index
-		index += 1
-	return 0
-	
-func get_player_by_id(player_id):
-	return players.filter(func(player): return player.player_id == player_id).front()
-	
-func play_matches():
-	for division in divisions:
-		var weekly_results = []
-		for fixture in division.fixtures[current_week]:
-			var home_team_id = fixture["home_team"]
-			var home_score = randi_range(0, 6)
-			var away_team_id = fixture["away_team"]
-			var away_score = randi_range(0, 5)
-			var result = { "home_team": home_team_id, "home_score": home_score,
-				"away_team": away_team_id, "away_score": away_score }
-			weekly_results.append(result)
-			var home_team = get_team_in_division(division.division_id, home_team_id) as Team
-			home_team.add_result(home_score, away_score)
-			var away_team = get_team_in_division(division.division_id, away_team_id) as Team
-			away_team.add_result(away_score, home_score)
-		division.results.append(weekly_results)
-	
-func get_results():
-	var results = []
-	for division in divisions:
-		results.append(division.results[current_week])
-	return results
-
-func finish_week():
-	current_week += 1		
-	if (current_week > divisions[teams[human_index].division].fixtures.size()):
-		finish_season()
-		
-func finish_season():
-	current_season += 1
-	current_week = 0
-	
-func get_formation_name(formation):
-	match formation:
-		Formation.FORMATION_4_4_2:
-			return "4-4-2"
-		Formation.FORMATION_4_5_1:
-			return "4-5-1"
-		Formation.FORMATION_4_3_3:
-			return "4-3-3"
-		Formation.FORMATION_5_3_2:
-			return "5-3-2"
-	return "Unknown"
-	
-func get_players_by_position(position):
-	var matching_position = position
-	match position:
-		3:
-			matching_position = 4
-		4:
-			matching_position = 8
-	return players.filter(func(player): return (player.player_position & matching_position) == matching_position)
-
-func _notification(what):
-	if what == NOTIFICATION_WM_CLOSE_REQUEST:
-		for team in teams:
-			for team_stats in team.season_stats:
-				team_stats.queue_free()
-			team.finances.queue_free()
-			team.queue_free()
-		for player in players:
-				player.queue_free()
-#		for season in seasons:
-#			season.queue_free()
-		for division in divisions:
-			division.queue_free()
-		get_tree().quit()

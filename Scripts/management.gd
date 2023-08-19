@@ -8,7 +8,7 @@ extends Node
 var current_scene
 
 func _ready():
-	if GameManager.loaded_game:
+	if GameManager.loaded_game or GameManager.game_started:
 		change_to_packed_scene(tiles_view)
 	else:
 		change_to_packed_scene(team_picker_view)
