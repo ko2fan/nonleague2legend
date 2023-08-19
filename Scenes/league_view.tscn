@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://fosf8vkw4b20"]
+[gd_scene load_steps=6 format=3 uid="uid://fosf8vkw4b20"]
 
 [ext_resource type="Theme" uid="uid://ba4eko3hqyxp3" path="res://Themes/league_theme.tres" id="1_ox708"]
 [ext_resource type="Script" path="res://Scripts/league_view.gd" id="1_s0yvc"]
 [ext_resource type="LabelSettings" uid="uid://ddcb7kmaryg2c" path="res://Themes/Title_settings.tres" id="2_jllxw"]
 [ext_resource type="LabelSettings" uid="uid://b4ymw1mjawc4d" path="res://Themes/league_settings.tres" id="3_n6k2u"]
+[ext_resource type="PackedScene" uid="uid://cue486lh24b7k" path="res://Scenes/league_row.tscn" id="4_4n4xo"]
 
 [node name="LeagueView" type="Control"]
 layout_mode = 3
@@ -52,7 +53,13 @@ grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Panel/ScrollContainer"]
 layout_mode = 2
-theme_override_constants/separation = 30
+theme_override_constants/separation = 3
+
+[node name="LeagueRow" parent="Panel/ScrollContainer/VBoxContainer" instance=ExtResource("4_4n4xo")]
+layout_mode = 2
+
+[node name="LeagueRow2" parent="Panel/ScrollContainer/VBoxContainer" instance=ExtResource("4_4n4xo")]
+layout_mode = 2
 
 [node name="BackButton" type="Button" parent="Panel"]
 layout_mode = 1

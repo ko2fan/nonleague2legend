@@ -7,6 +7,7 @@ extends Control
 @onready var tiles = preload("res://Scenes/tiles.tscn")
 
 func _ready():
+	cleanup()
 	var season = GameManager.current_season
 	var division_id = GameManager.get_player_team().division
 	var division = GameManager.divisions[division_id]
@@ -27,11 +28,18 @@ func _ready():
 		league_entry.ga = stats.goals_conceded
 		league_entry.points = (stats.wins * 3) + stats.draws
 		row.call_deferred("set_row", league_entry)
+		if league_entry.team_name == GameManager.get_player_team().team_name:
+			row.call_deferred("set_colour", Color.AQUAMARINE)
 		league_table.add_child(row)
 		league_position += 1
 	title.text = "Division " + str(division_id + 1)
 
+func cleanup():
+	for child in league_table.get_children():
+		child.queue_free()
+		league_table.remove_child(child)
 
 func _on_back_button_pressed():
+	cleanup()
 	var child = get_tree().root.get_node("Management")
 	child.change_to_packed_scene(tiles)
