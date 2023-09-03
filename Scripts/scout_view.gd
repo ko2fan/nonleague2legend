@@ -7,6 +7,7 @@ extends Control
 @onready var scout_row = preload("res://Scenes/scout_row.tscn")
 @onready var tiles_scene = preload("res://Scenes/tiles.tscn")
 
+
 var scout_position
 
 func cleanup():
@@ -40,15 +41,7 @@ func show_players(players):
 		player_row.set_player_row(player)
 
 func purchase_player(player_id, price):
-	# move money from one team to another
-	var human_team = GameManager.get_player_team()
-	if human_team.finances.current_money < price:
-		error_label.text = "Not enough money"
-		error_label.show()
-		return
-	human_team.finances.current_money -= price
-	var player = GameManager.get_player_by_id(player_id)
-	GameManager.add_player_to_team(player, human_team)
-	var players = GameManager.get_players_by_position(scout_position)
-	players = players.filter(func(player): return player.team != human_team)
-	show_players(players.slice(0, 10))
+	# go to bid on player
+	GameManager.bid_on_player(GameManager.get_player_team(), player_id, price)
+	
+	

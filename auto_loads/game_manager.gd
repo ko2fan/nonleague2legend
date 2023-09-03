@@ -11,6 +11,11 @@ var next_player_slot = 0
 var loaded_game = false
 var game_started = false
 var next_team_slot = 0
+var max_team_size = 20
+
+@onready var bid_player = preload("res://Scenes/bid_player.tscn")
+var old_scene
+var queued_bids = []
 
 var initials = [ "A", "B", "C", "D", "D", "E",
 	"F", "G", "G", "H", "I", "J", "K", "L", "M",
@@ -47,9 +52,7 @@ func new_game():
 	
 	create_teams(team_data)
 	create_players(player_data)
-	
 	assign_players_to_teams()
-	
 	create_fixtures()
 	
 func create_teams(team_data):
@@ -348,6 +351,27 @@ func get_players_by_position(position):
 		4:
 			matching_position = 8
 	return players.filter(func(player): return (player.player_position & matching_position) == matching_position)
+	
+func bid_on_player(team, player, price):
+	var bid = Bid.new()
+	bid.team = team
+	bid.player = player
+	bid.price = price
+	queued_bids.append(bid)
+	old_scene = get_tree().current_scene
+	get_tree().root.add_child(bid_player.instantiate())
+
+func buy_player(player_id, price):
+	# TODO: move money from one team to another
+	var human_team = get_player_team()
+	if human_team.get_team_size() > max_team_size:
+		return "Not enough space in squad"
+	if human_team.finances.current_money < price:
+		return "Not enough money"
+	human_team.finances.current_money -= price
+	var player = get_player_by_id(player_id)
+	add_player_to_team(player, human_team)
+	return "Bid was accepted"
 
 func _notification(what):
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
@@ -362,6 +386,8 @@ func _notification(what):
 #			season.queue_free()
 		for division in divisions:
 			division.queue_free()
+		for bid in queued_bids:
+			bid.queue_free()
 		get_tree().quit()
 
 func save_game():

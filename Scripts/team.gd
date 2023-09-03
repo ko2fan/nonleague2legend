@@ -14,6 +14,9 @@ var finances
 
 func get_players() -> Array:
 	return players
+	
+func get_team_size():
+	return players.size()
 
 func get_player(squad_number):
 	sort_players()

@@ -1,0 +1,165 @@
+[gd_scene load_steps=5 format=3 uid="uid://bpdhbdgn8grdd"]
+
+[ext_resource type="Script" path="res://Scripts/bid_player.gd" id="1_20c1k"]
+[ext_resource type="Theme" uid="uid://dsm4fsf4wqwvg" path="res://Themes/scout_view_theme.tres" id="1_btnud"]
+[ext_resource type="LabelSettings" uid="uid://ddcb7kmaryg2c" path="res://Themes/Title_settings.tres" id="2_2ua6k"]
+[ext_resource type="LabelSettings" uid="uid://dob13bdcrshfy" path="res://Themes/bid_player_settings.tres" id="4_w2idq"]
+
+[node name="BidPlayer" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_20c1k")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_btnud")
+
+[node name="PlayerName" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_top = 30.0
+offset_right = 20.0
+offset_bottom = 53.0
+grow_horizontal = 2
+text = "Player Name"
+label_settings = ExtResource("2_2ua6k")
+
+[node name="Bids" type="HBoxContainer" parent="Panel"]
+custom_minimum_size = Vector2(500, 3)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -110.0
+offset_right = 250.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 150
+
+[node name="Teams" type="VBoxContainer" parent="Panel/Bids"]
+layout_mode = 2
+
+[node name="TeamName" type="Label" parent="Panel/Bids/Teams"]
+layout_mode = 2
+text = "Liverpool"
+label_settings = ExtResource("4_w2idq")
+
+[node name="TeamName2" type="Label" parent="Panel/Bids/Teams"]
+layout_mode = 2
+text = "Man Utd"
+label_settings = ExtResource("4_w2idq")
+
+[node name="TeamName3" type="Label" parent="Panel/Bids/Teams"]
+layout_mode = 2
+text = "Arsenal"
+label_settings = ExtResource("4_w2idq")
+
+[node name="Offer" type="VBoxContainer" parent="Panel/Bids"]
+layout_mode = 2
+
+[node name="OfferAmount" type="Label" parent="Panel/Bids/Offer"]
+layout_mode = 2
+text = "120K"
+label_settings = ExtResource("4_w2idq")
+
+[node name="OfferAmount2" type="Label" parent="Panel/Bids/Offer"]
+layout_mode = 2
+text = "115K"
+label_settings = ExtResource("4_w2idq")
+
+[node name="OfferAmount3" type="Label" parent="Panel/Bids/Offer"]
+layout_mode = 2
+text = "125K"
+label_settings = ExtResource("4_w2idq")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -209.0
+offset_top = 150.0
+offset_right = 209.0
+offset_bottom = 190.0
+grow_horizontal = 2
+theme_override_constants/separation = 20
+
+[node name="HumanOffer" type="Label" parent="Panel/HBoxContainer"]
+layout_mode = 2
+text = "Your offer:"
+label_settings = ExtResource("4_w2idq")
+
+[node name="OfferBox" type="LineEdit" parent="Panel/HBoxContainer"]
+custom_minimum_size = Vector2(85, 0)
+layout_mode = 2
+theme = ExtResource("1_btnud")
+text = "100K"
+placeholder_text = "100K"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/HBoxContainer"]
+layout_mode = 2
+
+[node name="ButtonUp" type="Button" parent="Panel/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "+"
+
+[node name="ButtonDown" type="Button" parent="Panel/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "-"
+
+[node name="SubmitBid" type="Button" parent="Panel/HBoxContainer"]
+layout_mode = 2
+text = "Submit Bid"
+
+[node name="AcceptedBid" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -111.5
+offset_top = 20.0
+offset_right = 111.5
+offset_bottom = 55.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Team has accepted"
+label_settings = ExtResource("4_w2idq")
+
+[node name="BackButton" type="Button" parent="Panel"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -35.0
+offset_top = -55.0
+offset_right = 35.0
+offset_bottom = -15.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Done"
+
+[connection signal="text_changed" from="Panel/HBoxContainer/OfferBox" to="." method="_on_offer_box_text_changed"]
+[connection signal="pressed" from="Panel/HBoxContainer/VBoxContainer/ButtonUp" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Panel/HBoxContainer/VBoxContainer/ButtonDown" to="." method="_on_button_down_pressed"]
+[connection signal="pressed" from="Panel/HBoxContainer/SubmitBid" to="." method="_on_submit_bid_pressed"]
+[connection signal="pressed" from="Panel/BackButton" to="." method="_on_back_button_pressed"]
