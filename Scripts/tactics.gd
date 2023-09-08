@@ -44,68 +44,68 @@ func draw_tactic():
 	match formation:
 		GameManager.Formation.FORMATION_4_4_2:
 			#gk
-			grid_system[2].set_player(shirt_texture, players[0].player_name, Color.WEB_GREEN)
+			grid_system[2].set_player(shirt_texture, players[0].player_name, GameManager.positional_colour["GK"])
 			#def
-			grid_system[5].set_player(shirt_texture, players[1].player_name, Color.DEEP_SKY_BLUE)
-			grid_system[6].set_player(shirt_texture, players[2].player_name, Color.DEEP_SKY_BLUE)
-			grid_system[8].set_player(shirt_texture, players[3].player_name, Color.DEEP_SKY_BLUE)
-			grid_system[9].set_player(shirt_texture, players[4].player_name, Color.DEEP_SKY_BLUE)
+			grid_system[5].set_player(shirt_texture, players[1].player_name, GameManager.positional_colour["DEF"])
+			grid_system[6].set_player(shirt_texture, players[2].player_name, GameManager.positional_colour["DEF"])
+			grid_system[8].set_player(shirt_texture, players[3].player_name, GameManager.positional_colour["DEF"])
+			grid_system[9].set_player(shirt_texture, players[4].player_name, GameManager.positional_colour["DEF"])
 			#mid
-			grid_system[10].set_player(shirt_texture, players[5].player_name, Color.YELLOW)
-			grid_system[11].set_player(shirt_texture, players[6].player_name, Color.YELLOW)
-			grid_system[13].set_player(shirt_texture, players[7].player_name, Color.YELLOW)
-			grid_system[14].set_player(shirt_texture, players[8].player_name, Color.YELLOW)
+			grid_system[10].set_player(shirt_texture, players[5].player_name, GameManager.positional_colour["MID"])
+			grid_system[11].set_player(shirt_texture, players[6].player_name, GameManager.positional_colour["MID"])
+			grid_system[13].set_player(shirt_texture, players[7].player_name, GameManager.positional_colour["MID"])
+			grid_system[14].set_player(shirt_texture, players[8].player_name, GameManager.positional_colour["MID"])
 			#att
-			grid_system[16].set_player(shirt_texture, players[9].player_name, Color.CRIMSON)
-			grid_system[18].set_player(shirt_texture, players[10].player_name, Color.CRIMSON)
+			grid_system[16].set_player(shirt_texture, players[9].player_name, GameManager.positional_colour["ATT"])
+			grid_system[18].set_player(shirt_texture, players[10].player_name, GameManager.positional_colour["ATT"])
 		GameManager.Formation.FORMATION_4_5_1:
 			#gk
-			grid_system[2].set_player(shirt_texture, players[0].player_name, Color.WEB_GREEN)
+			grid_system[2].set_player(shirt_texture, players[0].player_name, GameManager.positional_colour["GK"])
 			#def
-			grid_system[5].set_player(shirt_texture, players[1].player_name, Color.DEEP_SKY_BLUE)
-			grid_system[6].set_player(shirt_texture, players[2].player_name, Color.DEEP_SKY_BLUE)
-			grid_system[8].set_player(shirt_texture, players[3].player_name, Color.DEEP_SKY_BLUE)
-			grid_system[9].set_player(shirt_texture, players[4].player_name, Color.DEEP_SKY_BLUE)
+			grid_system[5].set_player(shirt_texture, players[1].player_name, GameManager.positional_colour["DEF"])
+			grid_system[6].set_player(shirt_texture, players[2].player_name, GameManager.positional_colour["DEF"])
+			grid_system[8].set_player(shirt_texture, players[3].player_name, GameManager.positional_colour["DEF"])
+			grid_system[9].set_player(shirt_texture, players[4].player_name, GameManager.positional_colour["DEF"])
 			#mid
-			grid_system[10].set_player(shirt_texture, players[5].player_name, Color.YELLOW)
-			grid_system[11].set_player(shirt_texture, players[6].player_name, Color.YELLOW)
-			grid_system[12].set_player(shirt_texture, players[7].player_name, Color.YELLOW)
-			grid_system[13].set_player(shirt_texture, players[8].player_name, Color.YELLOW)
-			grid_system[14].set_player(shirt_texture, players[9].player_name, Color.YELLOW)
+			grid_system[10].set_player(shirt_texture, players[5].player_name, GameManager.positional_colour["MID"])
+			grid_system[11].set_player(shirt_texture, players[6].player_name, GameManager.positional_colour["MID"])
+			grid_system[12].set_player(shirt_texture, players[7].player_name, GameManager.positional_colour["MID"])
+			grid_system[13].set_player(shirt_texture, players[8].player_name, GameManager.positional_colour["MID"])
+			grid_system[14].set_player(shirt_texture, players[9].player_name, GameManager.positional_colour["MID"])
 			#att
-			grid_system[17].set_player(shirt_texture, players[10].player_name, Color.CRIMSON)
+			grid_system[17].set_player(shirt_texture, players[10].player_name, GameManager.positional_colour["ATT"])
 		GameManager.Formation.FORMATION_4_3_3:
 			#gk
-			grid_system[2].set_player(shirt_texture, players[0].player_name, Color.WEB_GREEN)
+			grid_system[2].set_player(shirt_texture, players[0].player_name, GameManager.positional_colour["GK"])
 			#def
-			grid_system[5].set_player(shirt_texture, players[1].player_name, Color.DEEP_SKY_BLUE)
-			grid_system[6].set_player(shirt_texture, players[2].player_name, Color.DEEP_SKY_BLUE)
-			grid_system[8].set_player(shirt_texture, players[3].player_name, Color.DEEP_SKY_BLUE)
-			grid_system[9].set_player(shirt_texture, players[4].player_name, Color.DEEP_SKY_BLUE)
+			grid_system[5].set_player(shirt_texture, players[1].player_name, GameManager.positional_colour["DEF"])
+			grid_system[6].set_player(shirt_texture, players[2].player_name, GameManager.positional_colour["DEF"])
+			grid_system[8].set_player(shirt_texture, players[3].player_name, GameManager.positional_colour["DEF"])
+			grid_system[9].set_player(shirt_texture, players[4].player_name, GameManager.positional_colour["DEF"])
 			#mid
-			grid_system[11].set_player(shirt_texture, players[5].player_name, Color.YELLOW)
-			grid_system[12].set_player(shirt_texture, players[6].player_name, Color.YELLOW)
-			grid_system[13].set_player(shirt_texture, players[7].player_name, Color.YELLOW)
+			grid_system[11].set_player(shirt_texture, players[5].player_name, GameManager.positional_colour["MID"])
+			grid_system[12].set_player(shirt_texture, players[6].player_name, GameManager.positional_colour["MID"])
+			grid_system[13].set_player(shirt_texture, players[7].player_name, GameManager.positional_colour["MID"])
 			#att
-			grid_system[16].set_player(shirt_texture, players[8].player_name, Color.CRIMSON)
-			grid_system[17].set_player(shirt_texture, players[9].player_name, Color.CRIMSON)
-			grid_system[18].set_player(shirt_texture, players[10].player_name, Color.CRIMSON)
+			grid_system[16].set_player(shirt_texture, players[8].player_name, GameManager.positional_colour["ATT"])
+			grid_system[17].set_player(shirt_texture, players[9].player_name, GameManager.positional_colour["ATT"])
+			grid_system[18].set_player(shirt_texture, players[10].player_name, GameManager.positional_colour["ATT"])
 		GameManager.Formation.FORMATION_5_3_2:
 			#gk
-			grid_system[2].set_player(shirt_texture, players[0].player_name, Color.WEB_GREEN)
+			grid_system[2].set_player(shirt_texture, players[0].player_name, GameManager.positional_colour["GK"])
 			#def
-			grid_system[5].set_player(shirt_texture, players[1].player_name, Color.DEEP_SKY_BLUE)
-			grid_system[6].set_player(shirt_texture, players[2].player_name, Color.DEEP_SKY_BLUE)
-			grid_system[7].set_player(shirt_texture, players[3].player_name, Color.DEEP_SKY_BLUE)
-			grid_system[8].set_player(shirt_texture, players[4].player_name, Color.DEEP_SKY_BLUE)
-			grid_system[9].set_player(shirt_texture, players[5].player_name, Color.DEEP_SKY_BLUE)
+			grid_system[5].set_player(shirt_texture, players[1].player_name, GameManager.positional_colour["DEF"])
+			grid_system[6].set_player(shirt_texture, players[2].player_name, GameManager.positional_colour["DEF"])
+			grid_system[7].set_player(shirt_texture, players[3].player_name, GameManager.positional_colour["DEF"])
+			grid_system[8].set_player(shirt_texture, players[4].player_name, GameManager.positional_colour["DEF"])
+			grid_system[9].set_player(shirt_texture, players[5].player_name, GameManager.positional_colour["DEF"])
 			#mid
-			grid_system[11].set_player(shirt_texture, players[6].player_name, Color.YELLOW)
-			grid_system[12].set_player(shirt_texture, players[7].player_name, Color.YELLOW)
-			grid_system[13].set_player(shirt_texture, players[8].player_name, Color.YELLOW)
+			grid_system[11].set_player(shirt_texture, players[6].player_name, GameManager.positional_colour["MID"])
+			grid_system[12].set_player(shirt_texture, players[7].player_name, GameManager.positional_colour["MID"])
+			grid_system[13].set_player(shirt_texture, players[8].player_name, GameManager.positional_colour["MID"])
 			#att
-			grid_system[16].set_player(shirt_texture, players[9].player_name, Color.CRIMSON)
-			grid_system[18].set_player(shirt_texture, players[10].player_name, Color.CRIMSON)
+			grid_system[16].set_player(shirt_texture, players[9].player_name, GameManager.positional_colour["ATT"])
+			grid_system[18].set_player(shirt_texture, players[10].player_name, GameManager.positional_colour["ATT"])
 
 func _on_back_button_pressed():
 	var child = get_tree().root.get_node("Management")

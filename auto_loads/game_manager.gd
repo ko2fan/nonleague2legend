@@ -20,6 +20,13 @@ var queued_bids = []
 var initials = [ "A", "B", "C", "D", "D", "E",
 	"F", "G", "G", "H", "I", "J", "K", "L", "M",
 	"N", "O", "P", "R", "S", "S", "T", "T", "V", "W" ]
+	
+var positional_colour = {
+	"GK" = Color.LAWN_GREEN,
+	"DEF" = Color.DEEP_SKY_BLUE,
+	"MID" = Color.YELLOW,
+	"ATT" = Color.CRIMSON
+}
 
 enum Formation {
 	FORMATION_4_4_2 = 0,

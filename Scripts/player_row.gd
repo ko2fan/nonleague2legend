@@ -47,13 +47,13 @@ func set_player(player_details : Player, formation):
 	
 func change_colour(gk, def, mid, att):
 	if squad_number < gk:
-		row_colour.color = Color.WEB_GREEN
+		row_colour.color = GameManager.positional_colour["GK"]
 	elif squad_number <= def:
-			row_colour.color = Color.DEEP_SKY_BLUE
+			row_colour.color = GameManager.positional_colour["DEF"]
 	elif squad_number <= def + mid:
-		row_colour.color = Color.YELLOW
+		row_colour.color = GameManager.positional_colour["MID"]
 	elif squad_number <= def + mid + att:
-		row_colour.color = Color.CRIMSON
+		row_colour.color = GameManager.positional_colour["ATT"]
 
 func _on_button_pressed():
 	player_button.button_pressed = true

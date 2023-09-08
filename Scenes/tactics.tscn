@@ -59,7 +59,7 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.231373, 1, 0.117647, 1)
+color = Color(0.0509804, 0.431373, 0.176471, 0.811765)
 
 [node name="TacticGrid" type="GridContainer" parent="Panel/Pitch"]
 custom_minimum_size = Vector2(650, 480)
