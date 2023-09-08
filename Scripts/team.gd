@@ -21,7 +21,10 @@ func get_team_size():
 func get_player(squad_number):
 	sort_players()
 	return players[squad_number]
-	
+
+func get_finances():
+	return finances
+
 func switch_players(player_one, player_two):
 	var switch_player_one
 	var switch_player_two
