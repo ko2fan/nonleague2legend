@@ -7,7 +7,7 @@
 [sub_resource type="LabelSettings" id="LabelSettings_r8ico"]
 font = ExtResource("3_fsxhm")
 font_size = 72
-font_color = Color(0, 0, 0, 1)
+font_color = Color(0, 0, 0.545098, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_fivyj"]
 font = ExtResource("3_fsxhm")
