@@ -2,6 +2,7 @@ extends Control
 
 @onready var income_table = $Panel/HBoxContainer/Income
 @onready var expenses_table = $Panel/HBoxContainer/Expenses
+@onready var cash = $Panel/CurrentMoney
 
 @onready var tiles = preload("res://Scenes/tiles.tscn")
 
@@ -17,6 +18,7 @@ func _ready():
 			var expense_label = Label.new()
 			expense_label.text = expense.entry_name + ": £" + expense.entry_amount
 			expenses_table.add_child(expense_label)
+	cash.text = "Cash: £{0}".format([Utils.CommaNumber(team_finances.current_money)])
 	
 func cleanup():
 	for child in income_table.get_children():
