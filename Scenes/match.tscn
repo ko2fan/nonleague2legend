@@ -152,7 +152,6 @@ visible = false
 position = Vector2(-3.38434, -4.87621)
 
 [node name="Ball" parent="Pitch" instance=ExtResource("3_wt82p")]
-visible = false
 
 [node name="BallIndicator" type="Sprite2D" parent="Pitch"]
 texture = ExtResource("4_tgytb")

@@ -14,6 +14,7 @@ var next_team_slot = 0
 var max_team_size = 20
 
 @onready var bid_player = preload("res://Scenes/bid_player.tscn")
+@onready var match_event_prefab = preload("res://Scenes/match_event.tscn")
 var old_scene
 var queued_bids = []
 
@@ -313,18 +314,97 @@ func play_matches():
 		var weekly_results = []
 		for fixture in division.fixtures[current_week]:
 			var home_team_id = fixture["home_team"]
-			var home_score = randi_range(0, 6)
 			var away_team_id = fixture["away_team"]
-			var away_score = randi_range(0, 5)
-			var result = { "home_team": home_team_id, "home_score": home_score,
-				"away_team": away_team_id, "away_score": away_score }
-			weekly_results.append(result)
+			
 			var home_team = get_team_in_division(division.division_id, home_team_id) as Team
-			home_team.add_result(home_score, away_score)
 			var away_team = get_team_in_division(division.division_id, away_team_id) as Team
-			away_team.add_result(away_score, home_score)
+			
+			var result = play_match(home_team, away_team)
+			weekly_results.append(result)
+			
+			home_team.add_result(result)
+			away_team.add_result(result)
 		division.results.append(weekly_results)
+
+func play_match(home_team, away_team):
+	var home_goals = 0
+	var away_goals = 0
+	var events = []
+	var teams_playing = [home_team, away_team]
 	
+	var ball_position = 0
+	var current_team_possession = 0
+	var goal_scored = false
+	
+	for minute in 90:
+		goal_scored = false
+		if minute == 45:
+			events.append(create_half_time_event())
+			continue
+		
+		var random_chance = randi_range(1, 6)
+		random_chance += randi_range(1, 6)
+	
+		if current_team_possession == 0:
+			ball_position += 1
+		else:
+			ball_position -= 1
+		if ball_position < -8 or ball_position > 8:
+			goal_scored = true
+	
+		if goal_scored:
+			var team_scored = teams_playing[current_team_possession]
+			var player_scored = team_scored.get_players().filter(func(player):
+				return player.player_position != PlayingPosition.GK).pick_random()
+			
+			var event = create_goal_event(home_team.team_id,
+				away_team.team_id,
+				current_team_possession,
+				player_scored.player_id,
+				minute)
+			
+			if current_team_possession == 0:
+				home_goals += 1
+			else:
+				away_goals += 1
+				
+			ball_position = 0
+			current_team_possession = 1 if current_team_possession == 0 else 0
+			events.append(event)
+		elif random_chance > 9:
+			current_team_possession = 1 if current_team_possession == 0 else 0
+			
+	return { "home_team": get_division_team_id(home_team.division, home_team.team_id),
+		"away_team": get_division_team_id(away_team.division, away_team.team_id),
+		"home_team_goals": home_goals,
+		"away_team_goals": away_goals,
+		"match_events": events
+		}
+
+func create_half_time_event():
+	var match_event = match_event_prefab.instantiate()
+	match_event.minute = 45
+	match_event.event_type = MatchEngine.MatchEvent.HALF_TIME
+	return match_event
+	
+func create_goal_event(home_team_id, away_team_id, team_scored, player_scored, minute_scored):
+	var match_event = match_event_prefab.instantiate()
+	match_event.team_id = home_team_id if team_scored == 0 else away_team_id
+	match_event.player_id = player_scored
+	match_event.minute = minute_scored
+	match_event.event_type = MatchEngine.MatchEvent.GOAL
+	return match_event
+
+func get_player_match(week):
+	var division_id = get_player_team().division
+	var team_id = get_division_team_id(division_id, get_player_team().team_id)
+	var division = divisions[division_id]
+	var results = division.results[week]
+	var player_result = results.filter(
+		func(result): 
+			return result["home_team"] == team_id or result["away_team"] == team_id).front()
+	return player_result["match_events"]
+
 func get_results():
 	var results = []
 	for division in divisions:
@@ -333,9 +413,22 @@ func get_results():
 
 func finish_week():
 	current_week += 1
-	# TODO: Update finances for all teams
-	teams[human_index].finances.income.append()
-	teams[human_index].finances.expense.append()
+	# Add gate receipts
+	var gate_receipts = FinanceEntry.new()
+	gate_receipts.entry_name = "Gate Receipts"
+	gate_receipts.entry_amount = randi_range(25000, 60000)
+	
+	teams[human_index].finances.income.append([gate_receipts])
+	# Deduct wages
+	var wages = FinanceEntry.new()
+	wages.entry_name = "Wages"
+	wages.entry_amount = randi_range(15000, 25000)
+	
+	teams[human_index].finances.expense.append([wages])
+	
+	teams[human_index].finances.current_money += gate_receipts.entry_amount
+	teams[human_index].finances.current_money -= wages.entry_amount
+	
 	if (current_week > divisions[teams[human_index].division].fixtures.size()):
 		finish_season()
 		
@@ -403,6 +496,10 @@ func _notification(what):
 #		for season in seasons:
 #			season.queue_free()
 		for division in divisions:
+			for weekly_result in division.results:
+				for match_result in weekly_result:
+					for event in match_result["match_events"]:
+						event.queue_free()
 			division.queue_free()
 		for bid in queued_bids:
 			bid.queue_free()
@@ -410,7 +507,7 @@ func _notification(what):
 
 func save_game():
 	var save_file = FileAccess.open("user://savefile.nl", FileAccess.WRITE)
-	var version = 0x8
+	var version = 0x9
 	save_file.store_32(version)
 	save_file.store_32(human_index)
 	save_file.store_32(current_season)
@@ -432,9 +529,15 @@ func save_game():
 			save_file.store_32(weekly_results.size())
 			for result in weekly_results:
 				save_file.store_32(result["home_team"])
-				save_file.store_8(result["home_score"])
+				save_file.store_8(result["home_team_goals"])
 				save_file.store_32(result["away_team"])
-				save_file.store_8(result["away_score"])
+				save_file.store_8(result["away_team_goals"])
+				save_file.store_8(result["match_events"].size())
+				for event in result["match_events"]:
+					save_file.store_32(event.team_id)
+					save_file.store_32(event.player_id)
+					save_file.store_8(event.minute)
+					save_file.store_32(event.event_type)
 	save_file.store_32(teams.size())
 	for team in teams:
 		save_file.store_32(team.team_id)
@@ -453,14 +556,12 @@ func save_game():
 		for week in team.finances.income:
 			save_file.store_8(week.size())
 			for income in week:
-				save_file.store_8(income.size())
 				save_file.store_pascal_string(income.entry_name)
 				save_file.store_32(income.entry_amount)
 		save_file.store_8(team.finances.expense.size())
 		for week in team.finances.expense:
 			save_file.store_8(week.size())
 			for expense in week:
-				save_file.store_8(expense.size())
 				save_file.store_pascal_string(expense.entry_name)
 				save_file.store_32(expense.entry_amount)
 	save_file.store_32(players.size())
@@ -480,7 +581,7 @@ func load_game():
 	var load_file = FileAccess.open("user://savefile.nl", FileAccess.READ)
 	var version = load_file.get_32()
 	match version:
-		0x7:
+		0x9:
 			human_index = load_file.get_32()
 			current_season = load_file.get_32()
 			current_week = load_file.get_32()
@@ -507,79 +608,23 @@ func load_game():
 					var num_results = load_file.get_32()
 					for r in num_results:
 						var home_team = load_file.get_32()
-						var home_score = load_file.get_8()
+						var home_goals = load_file.get_8()
 						var away_team = load_file.get_32()
-						var away_score = load_file.get_8()
-						var result = { "home_team": home_team, "home_score": home_score,
-							"away_team": away_team, "away_score": away_score }
-						weekly_results.append(result)
-					division.results.append(weekly_results)
-				divisions.append(division)
-			var num_teams = load_file.get_32()
-			for i in num_teams:
-				var team = Team.new()
-				team.team_id = load_file.get_32()
-				team.team_name = load_file.get_pascal_string()
-				team.division = load_file.get_8()
-				var num_stats = load_file.get_32()
-				for team_stats in num_stats:
-					var stat = TeamStats.new()
-					stat.played = load_file.get_8()
-					stat.wins = load_file.get_8()
-					stat.draws = load_file.get_8()
-					stat.goals_scored = load_file.get_8()
-					stat.goals_conceded = load_file.get_8()
-					team.season_stats.append(stat)
-				team.formation = load_file.get_8()
-				team.finances = TeamFinances.new()
-				team.finances.current_money = load_file.get_32()
-				teams.append(team)
-			var num_players = load_file.get_32()
-			for i in num_players:
-				var player = Player.new()
-				player.player_id = load_file.get_32()
-				player.player_name = load_file.get_pascal_string()
-				player.squad_number = load_file.get_8()
-				player.player_position = load_file.get_8()
-				player.player_skill = load_file.get_8()
-				var team_id = load_file.get_32()
-				if team_id != 4294967295:
-					var player_team = teams.filter(func(team): return team.team_id == team_id).front()
-					player_team.players.append(player)
-					player.team = player_team
-				players.append(player)
-		0x8:
-			human_index = load_file.get_32()
-			current_season = load_file.get_32()
-			current_week = load_file.get_32()
-			var num_divisions = load_file.get_32()
-			for i in num_divisions:
-				var division = Division.new()
-				division.division_id = load_file.get_32()
-				var num_teams = load_file.get_32()
-				for j in num_teams:
-					division.teams.append(load_file.get_32())
-				var num_weekly_fixtures = load_file.get_32()
-				for k in num_weekly_fixtures:
-					var num_fixtures = load_file.get_32()
-					var weekly_fixtures = []
-					for f in num_fixtures:
-						var home_team = load_file.get_32()
-						var away_team = load_file.get_32()
-						var fixture = { "home_team": home_team, "away_team": away_team }
-						weekly_fixtures.append(fixture)
-					division.fixtures.append(weekly_fixtures)
-				var num_weekly_results = load_file.get_32()
-				for l in num_weekly_results:
-					var weekly_results = []
-					var num_results = load_file.get_32()
-					for r in num_results:
-						var home_team = load_file.get_32()
-						var home_score = load_file.get_8()
-						var away_team = load_file.get_32()
-						var away_score = load_file.get_8()
-						var result = { "home_team": home_team, "home_score": home_score,
-							"away_team": away_team, "away_score": away_score }
+						var away_goals = load_file.get_8()
+						var events_size = load_file.get_8()
+						var events = []
+						for e in events_size:
+							var event = match_event_prefab.instantiate()
+							event.team_id = load_file.get_32()
+							event.player_id = load_file.get_32()
+							event.minute = load_file.get_8()
+							event.event_type = load_file.get_32()
+							events.append(event)
+						var result = { "home_team": home_team,
+									"away_team": away_team,
+									"home_team_goals": home_goals,
+									"away_team_goals": away_goals,
+									"match_events": events }
 						weekly_results.append(result)
 					division.results.append(weekly_results)
 				divisions.append(division)

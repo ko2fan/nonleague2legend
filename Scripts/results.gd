@@ -14,9 +14,9 @@ func _ready():
 		result_container.add_child(division_label)
 		for result in division:
 			var home_team = GameManager.get_team_in_division(div, result["home_team"])
-			var home_score = result["home_score"]
+			var home_score = result["home_team_goals"]
 			var away_team = GameManager.get_team_in_division(div, result["away_team"])
-			var away_score = result["away_score"]
+			var away_score = result["away_team_goals"]
 			
 			var result_label = Label.new()
 			result_label.text = home_team.team_name + " " + str(home_score) + \

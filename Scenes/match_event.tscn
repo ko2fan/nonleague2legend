@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://b5n5f8viry3mw"]
+
+[ext_resource type="Script" path="res://Scripts/match_event.gd" id="1_plvc8"]
+
+[node name="MatchEvent" type="Node"]
+script = ExtResource("1_plvc8")

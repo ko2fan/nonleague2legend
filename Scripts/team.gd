@@ -62,12 +62,21 @@ func sort_players():
 	players.sort_custom(func(playera, playerb): \
 		return playera.squad_number < playerb.squad_number)
 
-func add_result(our_score, their_score):
+func add_result(result):
 	var stats = season_stats.back() as TeamStats
 	stats.played += 1
-	if our_score > their_score:
-		stats.wins += 1
-	elif our_score == their_score:
+	var is_home = GameManager.get_team_in_division(division, result["home_team"]).team_id == team_id
+	var home_goals = result["home_team_goals"]
+	var away_goals = result["away_team_goals"]
+	if home_goals == away_goals:
 		stats.draws += 1
-	stats.goals_scored += our_score
-	stats.goals_conceded += their_score
+	if is_home:
+		if home_goals > away_goals:
+			stats.wins += 1
+		stats.goals_scored += home_goals
+		stats.goals_conceded += away_goals
+	else:
+		if home_goals < away_goals:
+			stats.wins += 1
+		stats.goals_scored += away_goals
+		stats.goals_conceded += home_goals
