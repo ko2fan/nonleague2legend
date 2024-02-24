@@ -453,18 +453,23 @@ func finish_week():
 	var player_team : Team = get_player_team()
 	var fixture = get_fixture(player_team.division, player_team.team_id)
 	var was_home = fixture["home_team"] == player_team.team_id
-	if was_home:
-		var gate_receipts = FinanceEntry.new()
-		gate_receipts.entry_name = "Gate Receipts"
-		gate_receipts.entry_amount = randi_range(25000, 60000)
 	
-		player_team.finances.income.append([gate_receipts])
-		player_team.finances.current_money += gate_receipts.entry_amount
+	var gate_receipts = FinanceEntry.new()
+	gate_receipts.entry_name = "Gate Receipts"
+	gate_receipts.entry_amount = 0
+	if was_home:
+		gate_receipts.entry_amount = randi_range(25000, 60000)
+	player_team.finances.income.append([gate_receipts])
+	player_team.finances.current_money += gate_receipts.entry_amount
 	
 	# Deduct wages
+	var players = player_team.get_players()
+	var total_skill = 0
+	for player : Player in players:
+		total_skill += player.player_skill
 	var wages = FinanceEntry.new()
 	wages.entry_name = "Wages"
-	wages.entry_amount = randi_range(15000, 25000)
+	wages.entry_amount = total_skill * 5000
 	
 	player_team.finances.expense.append([wages])
 	player_team.finances.current_money -= wages.entry_amount
