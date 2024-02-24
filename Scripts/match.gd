@@ -62,6 +62,12 @@ func _on_match_event(match_event_type : MatchEngine.MatchEventType, match_event)
 		MatchEngine.MatchEventType.HALF_TIME:
 			match_event_label.text = "Half Time, the score is " + \
 				str(match_engine.current_home_goals) + " - " + str(match_engine.current_away_goals)
+		MatchEngine.MatchEventType.YELLOW_CARD:
+			match_event_label.text = GameManager.get_player_by_id(match_event.player_id).player_name + \
+				" has been booked"
+		MatchEngine.MatchEventType.RED_CARD:
+			match_event_label.text = GameManager.get_player_by_id(match_event.player_id).player_name + \
+				" has been sent off!"
 	commentary.add_child(match_event_label)
 	
 func _on_possession_changed(team_possession):

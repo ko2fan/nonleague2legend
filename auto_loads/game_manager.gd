@@ -349,6 +349,23 @@ func play_match(home_team, away_team):
 		
 		var random_chance = randi_range(1, 6)
 		random_chance += randi_range(1, 6)
+		var more_chance = randi_range(1, 6)
+		more_chance += randi_range(1, 6)
+		
+		if random_chance == 2 and more_chance == 2:
+			var team_effected = teams_playing.pick_random()
+			var player = team_effected.get_players().pick_random()
+			player.suspended = 1
+			var player_id = player.player_id
+			var event = create_sendingoff_event(player_id, minute)
+			events.append(event)
+		if random_chance < 5 and more_chance < 5:
+			var team_effected = teams_playing.pick_random()
+			var player = team_effected.get_players().pick_random()
+			player.yellow_cards += 1
+			var player_id = player.player_id
+			var event = create_booking_event(player_id, minute)
+			events.append(event)
 	
 		if current_team_possession == 0:
 			ball_position += 1
@@ -398,6 +415,20 @@ func create_goal_event(home_team_id, away_team_id, team_scored, player_scored, m
 	match_event.player_id = player_scored
 	match_event.minute = minute_scored
 	match_event.event_type = MatchEngine.MatchEventType.GOAL
+	return match_event
+	
+func create_booking_event(player_booked, minute_booked):
+	var match_event = match_event_prefab.instantiate()
+	match_event.player_id = player_booked
+	match_event.minute = minute_booked
+	match_event.event_type = MatchEngine.MatchEventType.YELLOW_CARD
+	return match_event
+	
+func create_sendingoff_event(player_sentoff, minute_sentoff):
+	var match_event = match_event_prefab.instantiate()
+	match_event.player_id = player_sentoff
+	match_event.minute = minute_sentoff
+	match_event.event_type = MatchEngine.MatchEventType.RED_CARD
 	return match_event
 
 func get_player_match(week):
@@ -516,11 +547,13 @@ func _notification(what):
 
 func save_game():
 	var save_file = FileAccess.open("user://savefile.nl", FileAccess.WRITE)
-	var version = 0x9
+	var version = 0x10
 	save_file.store_32(version)
+	# GLOBALS
 	save_file.store_32(human_index)
 	save_file.store_32(current_season)
 	save_file.store_32(current_week)
+	# DIVISIONS
 	save_file.store_32(divisions.size())
 	for division in divisions:
 		save_file.store_32(division.division_id)
@@ -547,6 +580,7 @@ func save_game():
 					save_file.store_32(event.player_id)
 					save_file.store_8(event.minute)
 					save_file.store_32(event.event_type)
+	# TEAMS
 	save_file.store_32(teams.size())
 	for team in teams:
 		save_file.store_32(team.team_id)
@@ -573,6 +607,7 @@ func save_game():
 			for expense in week:
 				save_file.store_pascal_string(expense.entry_name)
 				save_file.store_32(expense.entry_amount)
+	# PLAYERS
 	save_file.store_32(players.size())
 	for player in players:
 		save_file.store_32(player.player_id)
@@ -580,6 +615,10 @@ func save_game():
 		save_file.store_8(player.squad_number)
 		save_file.store_8(player.player_position)
 		save_file.store_8(player.player_skill)
+		save_file.store_16(player.matches_played)
+		save_file.store_16(player.goals_scored)
+		save_file.store_8(player.yellow_cards)
+		save_file.store_8(player.suspended)
 		if player.team != null:
 			save_file.store_32(player.team.team_id)
 		else:
@@ -598,8 +637,8 @@ func load_game():
 			for i in num_divisions:
 				var division = Division.new()
 				division.division_id = load_file.get_32()
-				var num_teams = load_file.get_32()
-				for j in num_teams:
+				var num_teams_in_div = load_file.get_32()
+				for j in num_teams_in_div:
 					division.teams.append(load_file.get_32())
 				var num_weekly_fixtures = load_file.get_32()
 				for k in num_weekly_fixtures:
@@ -684,6 +723,114 @@ func load_game():
 				player.squad_number = load_file.get_8()
 				player.player_position = load_file.get_8()
 				player.player_skill = load_file.get_8()
+				player.matches_played = 0
+				player.goals_scored = 0
+				player.yellow_cards = 0
+				player.suspended = 0
+				var team_id = load_file.get_32()
+				if team_id != 4294967295:
+					var player_team = teams.filter(func(team): return team.team_id == team_id).front()
+					player_team.players.append(player)
+					player.team = player_team
+				players.append(player)
+		0x10:
+			human_index = load_file.get_32()
+			current_season = load_file.get_32()
+			current_week = load_file.get_32()
+			var num_divisions = load_file.get_32()
+			for i in num_divisions:
+				var division = Division.new()
+				division.division_id = load_file.get_32()
+				var num_teams_in_div = load_file.get_32()
+				for j in num_teams_in_div:
+					division.teams.append(load_file.get_32())
+				var num_weekly_fixtures = load_file.get_32()
+				for k in num_weekly_fixtures:
+					var num_fixtures = load_file.get_32()
+					var weekly_fixtures = []
+					for f in num_fixtures:
+						var home_team = load_file.get_32()
+						var away_team = load_file.get_32()
+						var fixture = { "home_team": home_team, "away_team": away_team }
+						weekly_fixtures.append(fixture)
+					division.fixtures.append(weekly_fixtures)
+				var num_weekly_results = load_file.get_32()
+				for l in num_weekly_results:
+					var weekly_results = []
+					var num_results = load_file.get_32()
+					for r in num_results:
+						var home_team = load_file.get_32()
+						var home_goals = load_file.get_8()
+						var away_team = load_file.get_32()
+						var away_goals = load_file.get_8()
+						var events_size = load_file.get_8()
+						var events = []
+						for e in events_size:
+							var event = match_event_prefab.instantiate()
+							event.team_id = load_file.get_32()
+							event.player_id = load_file.get_32()
+							event.minute = load_file.get_8()
+							event.event_type = load_file.get_32()
+							events.append(event)
+						var result = { "home_team": home_team,
+									"away_team": away_team,
+									"home_team_goals": home_goals,
+									"away_team_goals": away_goals,
+									"match_events": events }
+						weekly_results.append(result)
+					division.results.append(weekly_results)
+				divisions.append(division)
+			var num_teams = load_file.get_32()
+			for i in num_teams:
+				var team = Team.new()
+				team.team_id = load_file.get_32()
+				team.team_name = load_file.get_pascal_string()
+				team.division = load_file.get_8()
+				var num_stats = load_file.get_32()
+				for team_stats in num_stats:
+					var stat = TeamStats.new()
+					stat.played = load_file.get_8()
+					stat.wins = load_file.get_8()
+					stat.draws = load_file.get_8()
+					stat.goals_scored = load_file.get_8()
+					stat.goals_conceded = load_file.get_8()
+					team.season_stats.append(stat)
+				team.formation = load_file.get_8()
+				team.finances = TeamFinances.new()
+				team.finances.current_money = load_file.get_32()
+				var num_income_weeks = load_file.get_8()
+				for week in num_income_weeks:
+					var week_income = []
+					var num_income = load_file.get_8()
+					for income in num_income:
+						var entry = FinanceEntry.new()
+						entry.entry_name = load_file.get_pascal_string()
+						entry.entry_amount = load_file.get_32()
+						week_income.append(entry)
+					team.finances.income.append(week_income)
+				var num_expense_weeks = load_file.get_8()
+				for week in num_expense_weeks:
+					var week_expense = []
+					var num_expense = load_file.get_8()
+					for expense in num_expense:
+						var entry = FinanceEntry.new()
+						entry.entry_name = load_file.get_pascal_string()
+						entry.entry_amount = load_file.get_32()
+						week_expense.append(entry)
+					team.finances.expense.append(week_expense)
+				teams.append(team)
+			var num_players = load_file.get_32()
+			for i in num_players:
+				var player = Player.new()
+				player.player_id = load_file.get_32()
+				player.player_name = load_file.get_pascal_string()
+				player.squad_number = load_file.get_8()
+				player.player_position = load_file.get_8()
+				player.player_skill = load_file.get_8()
+				player.matches_played = load_file.get_16()
+				player.goals_scored = load_file.get_16()
+				player.yellow_cards = load_file.get_8()
+				player.suspended = load_file.get_8()
 				var team_id = load_file.get_32()
 				if team_id != 4294967295:
 					var player_team = teams.filter(func(team): return team.team_id == team_id).front()
