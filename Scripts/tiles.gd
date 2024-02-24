@@ -1,7 +1,8 @@
 extends Control
 
 @onready var title_label = $Panel/Title
-@onready var week_button = $Panel/GridContainer/WeekButton
+@onready var week_button = %WeekButton
+@onready var next_match_label = %NextMatchLabel
 
 @onready var squad_view = preload("res://Scenes/squad_view.tscn")
 @onready var match_view = preload("res://Scenes/match.tscn")
@@ -11,8 +12,16 @@ extends Control
 @onready var finances = preload("res://Scenes/finances.tscn")
 
 func _ready():
-	title_label.text = GameManager.get_player_team().team_name
+	var player_team := GameManager.get_player_team()
+	title_label.text = player_team.team_name
 	week_button.text = "Week " + str(GameManager.current_week + 1)
+	var fixture = GameManager.get_fixture(player_team.division, player_team.team_id)
+	var next_match := "TEAM_ID"
+	if fixture["home_team"] == player_team.team_id:
+		next_match = GameManager.get_team(fixture["away_team"]).team_name
+	else:
+		next_match = GameManager.get_team(fixture["home_team"]).team_name 
+	next_match_label.text = "Next match vs " + next_match 
 
 func _on_view_squad_button_pressed():
 	var child = get_tree().root.get_node("Management")

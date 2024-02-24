@@ -7,4 +7,4 @@ var player_id : int
 # minute the event happened
 var minute : int
 # event type
-var event_type : MatchEngine.MatchEvent
+var event_type : MatchEngine.MatchEventType

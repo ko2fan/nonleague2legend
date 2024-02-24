@@ -273,23 +273,28 @@ func move_team_to_division(team, division_index):
 	var division_old = divisions[old_division_index]
 	division_old.teams.erase(team.team_id)
 
-func get_player_team():
+func get_player_team() -> Team:
 	return teams[human_index]
+	
+func get_team(team_id) -> Team:
+	for team in teams:
+		if team.team_id == team_id:
+			return team
+	return null
 	
 func create_fixtures():
 	for division in divisions:
 		division.create_season_fixtures()
 		
 func get_fixture(division_id, team_id):
-	var fixtures = divisions[division_id].fixtures[current_week]
-	for fixture in fixtures:
-		if fixture["home_team"] == team_id or fixture["away_team"] == team_id:
-			return fixture
-			
-	print("Error, fixture not found")
-	return { "home_team": 0, "away_team": 0 }
+	var division = divisions[division_id]
+	var fixture = division.get_fixture(current_week, team_id)
+	
+	if (fixture["home_team"] == 0 or fixture["away_team"] == 0):
+		print("Error, fixture not found")
+	return fixture
 
-func get_team_in_division(division_id, team_id):
+func get_team_in_division(division_id : int, team_id : int):
 	var division = divisions[division_id]
 	if team_id < division.teams.size():
 		return teams[division.teams[team_id]]
@@ -384,7 +389,7 @@ func play_match(home_team, away_team):
 func create_half_time_event():
 	var match_event = match_event_prefab.instantiate()
 	match_event.minute = 45
-	match_event.event_type = MatchEngine.MatchEvent.HALF_TIME
+	match_event.event_type = MatchEngine.MatchEventType.HALF_TIME
 	return match_event
 	
 func create_goal_event(home_team_id, away_team_id, team_scored, player_scored, minute_scored):
@@ -392,7 +397,7 @@ func create_goal_event(home_team_id, away_team_id, team_scored, player_scored, m
 	match_event.team_id = home_team_id if team_scored == 0 else away_team_id
 	match_event.player_id = player_scored
 	match_event.minute = minute_scored
-	match_event.event_type = MatchEngine.MatchEvent.GOAL
+	match_event.event_type = MatchEngine.MatchEventType.GOAL
 	return match_event
 
 func get_player_match(week):
@@ -413,21 +418,25 @@ func get_results():
 
 func finish_week():
 	current_week += 1
-	# Add gate receipts
-	var gate_receipts = FinanceEntry.new()
-	gate_receipts.entry_name = "Gate Receipts"
-	gate_receipts.entry_amount = randi_range(25000, 60000)
+	# Add gate receipts if home
+	var player_team : Team = get_player_team()
+	var fixture = get_fixture(player_team.division, player_team.team_id)
+	var was_home = fixture["home_team"] == player_team.team_id
+	if was_home:
+		var gate_receipts = FinanceEntry.new()
+		gate_receipts.entry_name = "Gate Receipts"
+		gate_receipts.entry_amount = randi_range(25000, 60000)
 	
-	teams[human_index].finances.income.append([gate_receipts])
+		player_team.finances.income.append([gate_receipts])
+		player_team.finances.current_money += gate_receipts.entry_amount
+	
 	# Deduct wages
 	var wages = FinanceEntry.new()
 	wages.entry_name = "Wages"
 	wages.entry_amount = randi_range(15000, 25000)
 	
-	teams[human_index].finances.expense.append([wages])
-	
-	teams[human_index].finances.current_money += gate_receipts.entry_amount
-	teams[human_index].finances.current_money -= wages.entry_amount
+	player_team.finances.expense.append([wages])
+	player_team.finances.current_money -= wages.entry_amount
 	
 	if (current_week > divisions[teams[human_index].division].fixtures.size()):
 		finish_season()

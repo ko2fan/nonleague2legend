@@ -26,7 +26,7 @@ var playing = true
 var timer = 0
 var match_speed = 0.5
 
-enum MatchEvent { GOAL, HALF_TIME, }
+enum MatchEventType { GOAL, HALF_TIME, }
 enum MatchTeam { HOME_TEAM = 0, AWAY_TEAM = 1 }
 
 func _ready():
@@ -48,14 +48,14 @@ func _process(delta):
 				var event = match_events[current_event]
 				if event.minute == current_minute:
 					match event.event_type:
-						MatchEvent.HALF_TIME:
-							emit_signal("match_event", MatchEvent.HALF_TIME)
-						MatchEvent.GOAL:
+						MatchEventType.HALF_TIME:
+							emit_signal("match_event", MatchEventType.HALF_TIME, event)
+						MatchEventType.GOAL:
 							if event.team_id == home_team_id:
 								current_home_goals += 1
 							else:
 								current_away_goals += 1
-							emit_signal("match_event", MatchEvent.GOAL)
+							emit_signal("match_event", MatchEventType.GOAL, event)
 					current_event += 1
 		if current_minute == 90:
 			playing = false

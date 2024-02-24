@@ -1,8 +1,14 @@
-[gd_scene load_steps=4 format=3 uid="uid://bx2fjdq83ffkd"]
+[gd_scene load_steps=6 format=3 uid="uid://bx2fjdq83ffkd"]
 
 [ext_resource type="Theme" uid="uid://dmtrpevvdpawl" path="res://Themes/tiles_theme.tres" id="1_esp6x"]
 [ext_resource type="Script" path="res://Scripts/tiles.gd" id="1_lh1o3"]
 [ext_resource type="LabelSettings" uid="uid://ddcb7kmaryg2c" path="res://Themes/Title_settings.tres" id="2_dq6i2"]
+[ext_resource type="FontFile" uid="uid://dxgro1ckyu2r8" path="res://fonts/quadratum-unum-font/QuadratumUnum-LW0Z.ttf" id="4_4l535"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_jn0dc"]
+font = ExtResource("4_4l535")
+font_size = 44
+font_color = Color(1, 0, 0, 1)
 
 [node name="Tiles" type="Control"]
 layout_mode = 3
@@ -33,6 +39,20 @@ offset_bottom = 78.0
 grow_horizontal = 2
 text = "Team Name goes here"
 label_settings = ExtResource("2_dq6i2")
+
+[node name="NextMatchLabel" type="Label" parent="Panel"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -241.5
+offset_top = 100.0
+offset_right = 241.5
+offset_bottom = 152.0
+grow_horizontal = 2
+text = "Next Match vs TEAM_ID"
+label_settings = SubResource("LabelSettings_jn0dc")
 
 [node name="GridContainer" type="GridContainer" parent="Panel"]
 layout_mode = 1
@@ -65,6 +85,7 @@ layout_mode = 2
 text = "Scouting"
 
 [node name="WeekButton" type="Button" parent="Panel/GridContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(256, 180)
 layout_mode = 2
 text = "Week X"

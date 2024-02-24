@@ -15,24 +15,16 @@ extends Node2D
 @onready var ball_indicator = $Pitch/BallIndicator
 @onready var ball_sprite = $Pitch/Ball
 
-var player_team
-var opposition_team
-
 var home_team
 var away_team
 
 func _ready():
 	GameManager.play_matches()
-	player_team = GameManager.get_player_team()
-	var player_id = GameManager.get_division_team_id(player_team.division, player_team.team_id)
-	var fixture = GameManager.get_fixture(player_team.division, player_id)
+	var player_team = GameManager.get_player_team()
+	var fixture = GameManager.get_fixture(player_team.division, player_team.team_id)
 	
-	var opposition_id = fixture["away_team"] if fixture["home_team"] == player_id \
-		else fixture["home_team"]
-	opposition_team = GameManager.get_team_in_division(player_team.division, opposition_id)
-	
-	home_team = player_team if fixture["home_team"] == player_id else opposition_team
-	away_team = player_team if fixture["away_team"] == player_id else opposition_team
+	home_team = GameManager.get_team(fixture["home_team"])
+	away_team = GameManager.get_team(fixture["away_team"])
 	
 	home_team_label.text = home_team.team_name
 	home_score_label.text = str(0)
@@ -59,15 +51,17 @@ func _on_minute_tick(minute):
 func _on_match_ended():
 	continue_button.show()
 
-func _on_match_event(match_event : MatchEngine.MatchEvent):
+func _on_match_event(match_event_type : MatchEngine.MatchEventType, match_event):
 	var match_event_label = Label.new()
-	match match_event:
-		MatchEngine.MatchEvent.GOAL:
-			match_event_label.text = "GOAL!!!"
+	var team_name = GameManager.get_team(match_event.team_id).team_name
+	match match_event_type:
+		MatchEngine.MatchEventType.GOAL:
+			match_event_label.text = "GOAL!!! for " + team_name
 			home_score_label.text = str(match_engine.current_home_goals)
 			away_score_label.text = str(match_engine.current_away_goals)
-		MatchEngine.MatchEvent.HALF_TIME:
-			match_event_label.text = "Half Time"
+		MatchEngine.MatchEventType.HALF_TIME:
+			match_event_label.text = "Half Time, the score is " + \
+				str(match_engine.current_home_goals) + " - " + str(match_engine.current_away_goals)
 	commentary.add_child(match_event_label)
 	
 func _on_possession_changed(team_possession):
