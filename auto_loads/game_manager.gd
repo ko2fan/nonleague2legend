@@ -464,6 +464,7 @@ func get_results():
 	return results
 
 func finish_week():
+	var last_match = get_player_match(current_week)
 	current_week += 1
 	# Add gate receipts if home
 	var player_team : Team = get_player_team()
@@ -474,7 +475,8 @@ func finish_week():
 	gate_receipts.entry_name = "Gate Receipts"
 	gate_receipts.entry_amount = 0
 	if was_home:
-		gate_receipts.entry_amount = randi_range(25000, 60000)
+		var attendance = last_match["match_stats"].attendance
+		gate_receipts.entry_amount = attendance * 5
 	player_team.finances.income.append([gate_receipts])
 	player_team.finances.current_money += gate_receipts.entry_amount
 	
