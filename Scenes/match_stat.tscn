@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://d2xg6kma56hyw"]
+
+[ext_resource type="Script" path="res://Scripts/match_stats.gd" id="1_vedau"]
+
+[node name="MatchStat" type="Node"]
+script = ExtResource("1_vedau")

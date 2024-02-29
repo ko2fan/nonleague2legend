@@ -15,6 +15,8 @@ var max_team_size = 20
 
 @onready var bid_player = preload("res://Scenes/bid_player.tscn")
 @onready var match_event_prefab = preload("res://Scenes/match_event.tscn")
+@onready var match_stat_prefab = preload("res://Scenes/match_stat.tscn")
+
 var old_scene
 var queued_bids = []
 
@@ -335,11 +337,19 @@ func play_match(home_team, away_team):
 	var home_goals = 0
 	var away_goals = 0
 	var events = []
+	var stats = match_stat_prefab.instantiate()
 	var teams_playing = [home_team, away_team]
 	
 	var ball_position = 0
 	var current_team_possession = 0
 	var goal_scored = false
+	var home_possession_mins = 0
+	var away_possession_mins = 0
+	
+	# in 1990 lowest attendance was 1,139
+	# highest 47,245
+	# as per: https://european-football-statistics.co.uk/attn/archive/eng/aveeng1990.htm
+	stats.attendance = randi_range(1139, 47245)
 	
 	for minute in 90:
 		goal_scored = false
@@ -369,8 +379,10 @@ func play_match(home_team, away_team):
 	
 		if current_team_possession == 0:
 			ball_position += 1
+			home_possession_mins += 1
 		else:
 			ball_position -= 1
+			away_possession_mins += 1
 		if ball_position < -8 or ball_position > 8:
 			goal_scored = true
 	
@@ -395,12 +407,16 @@ func play_match(home_team, away_team):
 			events.append(event)
 		elif random_chance > 9:
 			current_team_possession = 1 if current_team_possession == 0 else 0
-			
+	
+	stats.home_possession_percent = home_possession_mins / 90
+	stats.away_possession_percent = away_possession_mins / 90
+	
 	return { "home_team": get_division_team_id(home_team.division, home_team.team_id),
 		"away_team": get_division_team_id(away_team.division, away_team.team_id),
 		"home_team_goals": home_goals,
 		"away_team_goals": away_goals,
-		"match_events": events
+		"match_events": events,
+		"match_stats": stats,
 		}
 
 func create_half_time_event():
@@ -439,7 +455,7 @@ func get_player_match(week):
 	var player_result = results.filter(
 		func(result): 
 			return result["home_team"] == team_id or result["away_team"] == team_id).front()
-	return player_result["match_events"]
+	return player_result
 
 func get_results():
 	var results = []
@@ -463,9 +479,9 @@ func finish_week():
 	player_team.finances.current_money += gate_receipts.entry_amount
 	
 	# Deduct wages
-	var players = player_team.get_players()
+	var team_players = player_team.get_players()
 	var total_skill = 0
-	for player : Player in players:
+	for player : Player in team_players:
 		total_skill += player.player_skill
 	var wages = FinanceEntry.new()
 	wages.entry_name = "Wages"
@@ -500,7 +516,8 @@ func get_players_by_position(position):
 			matching_position = 4
 		4:
 			matching_position = 8
-	return players.filter(func(player): return (player.player_position & matching_position) == matching_position)
+	return players.filter(func(player): 
+		return (player.player_position & matching_position) == matching_position)
 	
 func bid_on_player(team, player, price):
 	var bid = Bid.new()
@@ -545,6 +562,7 @@ func _notification(what):
 				for match_result in weekly_result:
 					for event in match_result["match_events"]:
 						event.queue_free()
+					match_result["match_stats"].queue_free()
 			division.queue_free()
 		for bid in queued_bids:
 			bid.queue_free()
@@ -552,7 +570,7 @@ func _notification(what):
 
 func save_game():
 	var save_file = FileAccess.open("user://savefile.nl", FileAccess.WRITE)
-	var version = 0x10
+	var version = 0x11
 	save_file.store_32(version)
 	# GLOBALS
 	save_file.store_32(human_index)
@@ -579,6 +597,17 @@ func save_game():
 				save_file.store_8(result["home_team_goals"])
 				save_file.store_32(result["away_team"])
 				save_file.store_8(result["away_team_goals"])
+				# match stats
+				save_file.store_32(result["stats"].attendance)
+				save_file.store_8(result["stats"].home_shots_on_target)
+				save_file.store_8(result["stats"].home_shots_off_target)
+				save_file.store_8(result["stats"].home_possession_percent)
+				save_file.store_8(result["stats"].home_corners)
+				save_file.store_8(result["stats"].away_shots_on_target)
+				save_file.store_8(result["stats"].away_shots_off_target)
+				save_file.store_8(result["stats"].away_possession_percent)
+				save_file.store_8(result["stats"].away_corners)
+				# match events
 				save_file.store_8(result["match_events"].size())
 				for event in result["match_events"]:
 					save_file.store_32(event.team_id)
@@ -664,6 +693,7 @@ func load_game():
 						var home_goals = load_file.get_8()
 						var away_team = load_file.get_32()
 						var away_goals = load_file.get_8()
+						var stats = match_stat_prefab.instantiate()
 						var events_size = load_file.get_8()
 						var events = []
 						for e in events_size:
@@ -677,7 +707,8 @@ func load_game():
 									"away_team": away_team,
 									"home_team_goals": home_goals,
 									"away_team_goals": away_goals,
-									"match_events": events }
+									"match_events": events,
+									"match_stats": stats }
 						weekly_results.append(result)
 					division.results.append(weekly_results)
 				divisions.append(division)
@@ -769,6 +800,7 @@ func load_game():
 						var away_team = load_file.get_32()
 						var away_goals = load_file.get_8()
 						var events_size = load_file.get_8()
+						var stats = match_stat_prefab.instantiate()
 						var events = []
 						for e in events_size:
 							var event = match_event_prefab.instantiate()
@@ -781,7 +813,125 @@ func load_game():
 									"away_team": away_team,
 									"home_team_goals": home_goals,
 									"away_team_goals": away_goals,
-									"match_events": events }
+									"match_events": events,
+									"match_stats": stats }
+						weekly_results.append(result)
+					division.results.append(weekly_results)
+				divisions.append(division)
+			var num_teams = load_file.get_32()
+			for i in num_teams:
+				var team = Team.new()
+				team.team_id = load_file.get_32()
+				team.team_name = load_file.get_pascal_string()
+				team.division = load_file.get_8()
+				var num_stats = load_file.get_32()
+				for team_stats in num_stats:
+					var stat = TeamStats.new()
+					stat.played = load_file.get_8()
+					stat.wins = load_file.get_8()
+					stat.draws = load_file.get_8()
+					stat.goals_scored = load_file.get_8()
+					stat.goals_conceded = load_file.get_8()
+					team.season_stats.append(stat)
+				team.formation = load_file.get_8()
+				team.finances = TeamFinances.new()
+				team.finances.current_money = load_file.get_32()
+				var num_income_weeks = load_file.get_8()
+				for week in num_income_weeks:
+					var week_income = []
+					var num_income = load_file.get_8()
+					for income in num_income:
+						var entry = FinanceEntry.new()
+						entry.entry_name = load_file.get_pascal_string()
+						entry.entry_amount = load_file.get_32()
+						week_income.append(entry)
+					team.finances.income.append(week_income)
+				var num_expense_weeks = load_file.get_8()
+				for week in num_expense_weeks:
+					var week_expense = []
+					var num_expense = load_file.get_8()
+					for expense in num_expense:
+						var entry = FinanceEntry.new()
+						entry.entry_name = load_file.get_pascal_string()
+						entry.entry_amount = load_file.get_32()
+						week_expense.append(entry)
+					team.finances.expense.append(week_expense)
+				teams.append(team)
+			var num_players = load_file.get_32()
+			for i in num_players:
+				var player = Player.new()
+				player.player_id = load_file.get_32()
+				player.player_name = load_file.get_pascal_string()
+				player.squad_number = load_file.get_8()
+				player.player_position = load_file.get_8()
+				player.player_skill = load_file.get_8()
+				player.matches_played = load_file.get_16()
+				player.goals_scored = load_file.get_16()
+				player.yellow_cards = load_file.get_8()
+				player.suspended = load_file.get_8()
+				var team_id = load_file.get_32()
+				if team_id != 4294967295:
+					var player_team = teams.filter(func(team): return team.team_id == team_id).front()
+					player_team.players.append(player)
+					player.team = player_team
+				players.append(player)
+		0x11:
+			human_index = load_file.get_32()
+			current_season = load_file.get_32()
+			current_week = load_file.get_32()
+			var num_divisions = load_file.get_32()
+			for i in num_divisions:
+				var division = Division.new()
+				division.division_id = load_file.get_32()
+				var num_teams_in_div = load_file.get_32()
+				for j in num_teams_in_div:
+					division.teams.append(load_file.get_32())
+				var num_weekly_fixtures = load_file.get_32()
+				for k in num_weekly_fixtures:
+					var num_fixtures = load_file.get_32()
+					var weekly_fixtures = []
+					for f in num_fixtures:
+						var home_team = load_file.get_32()
+						var away_team = load_file.get_32()
+						var fixture = { "home_team": home_team, "away_team": away_team }
+						weekly_fixtures.append(fixture)
+					division.fixtures.append(weekly_fixtures)
+				var num_weekly_results = load_file.get_32()
+				for l in num_weekly_results:
+					var weekly_results = []
+					var num_results = load_file.get_32()
+					for r in num_results:
+						var home_team = load_file.get_32()
+						var home_goals = load_file.get_8()
+						var away_team = load_file.get_32()
+						var away_goals = load_file.get_8()
+						# match stats
+						var stats = match_stat_prefab.instantiate()
+						stats.attendance = load_file.get_32()
+						stats.home_shots_on_target = load_file.get_8()
+						stats.home_shots_off_target = load_file.get_8()
+						stats.home_possession_percent = load_file.get_8()
+						stats.home_corners = load_file.get_8()
+						stats.away_shots_on_target = load_file.get_8()
+						stats.away_shots_off_target = load_file.get_8()
+						stats.away_possession_percent = load_file.get_8()
+						stats.away_corners = load_file.get_8()
+						#match events
+						var events_size = load_file.get_8()
+						var events = []
+						for e in events_size:
+							var event = match_event_prefab.instantiate()
+							event.team_id = load_file.get_32()
+							event.player_id = load_file.get_32()
+							event.minute = load_file.get_8()
+							event.event_type = load_file.get_32()
+							events.append(event)
+						var result = { "home_team": home_team,
+									"away_team": away_team,
+									"home_team_goals": home_goals,
+									"away_team_goals": away_goals,
+									"match_events": events,
+									"match_stats": stats }
 						weekly_results.append(result)
 					division.results.append(weekly_results)
 				divisions.append(division)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://ce7e80p3jccnt"]
+[gd_scene load_steps=13 format=3 uid="uid://ce7e80p3jccnt"]
 
 [ext_resource type="Texture2D" uid="uid://bbmso2w7s17hk" path="res://Sprites/pitch_prototype.png" id="1_a8t71"]
 [ext_resource type="Script" path="res://Scripts/match.gd" id="1_xn6wp"]
@@ -14,6 +14,10 @@
 [sub_resource type="LabelSettings" id="LabelSettings_5a0nn"]
 font = ExtResource("3_b4obx")
 font_size = 24
+
+[sub_resource type="LabelSettings" id="LabelSettings_yob8t"]
+font = ExtResource("3_b4obx")
+font_size = 19
 
 [node name="Match" type="Node2D"]
 script = ExtResource("1_xn6wp")
@@ -141,6 +145,44 @@ grow_horizontal = 2
 grow_vertical = 0
 theme = ExtResource("4_w05nw")
 text = "Continue"
+
+[node name="MatchStats" type="VBoxContainer" parent="UI"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 22.0
+offset_top = 80.0
+offset_right = 196.0
+offset_bottom = 238.0
+
+[node name="Title" type="Label" parent="UI/MatchStats"]
+layout_mode = 2
+text = "Match Stats:"
+label_settings = SubResource("LabelSettings_yob8t")
+
+[node name="Attendance" type="Label" parent="UI/MatchStats"]
+layout_mode = 2
+text = "Attendance: 0"
+label_settings = SubResource("LabelSettings_yob8t")
+
+[node name="ShotsOnTarget" type="Label" parent="UI/MatchStats"]
+layout_mode = 2
+text = "Shots On Target: 0"
+label_settings = SubResource("LabelSettings_yob8t")
+
+[node name="ShotsOffTarget" type="Label" parent="UI/MatchStats"]
+layout_mode = 2
+text = "Shots Off Target: 0"
+label_settings = SubResource("LabelSettings_yob8t")
+
+[node name="Corners" type="Label" parent="UI/MatchStats"]
+layout_mode = 2
+text = "Corners: 0"
+label_settings = SubResource("LabelSettings_yob8t")
+
+[node name="Possession" type="Label" parent="UI/MatchStats"]
+layout_mode = 2
+text = "Possession: 60%"
+label_settings = SubResource("LabelSettings_yob8t")
 
 [node name="Pitch" type="Sprite2D" parent="."]
 position = Vector2(640, 280)

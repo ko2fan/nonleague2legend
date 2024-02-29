@@ -8,6 +8,12 @@ extends Node2D
 @onready var away_score_label = $UI/HBoxContainer/AwayTeamScore
 @onready var commentary = $UI/Commentary/VBoxContainer
 
+@onready var match_stats_attendance = %MatchStats/Attendance
+@onready var match_stats_shotson = %MatchStats/ShotsOnTarget
+@onready var match_stats_shotsoff = %MatchStats/ShotsOffTarget
+@onready var match_stats_corners = %MatchStats/Corners
+@onready var match_stats_possession = %MatchStats/Possession
+
 @onready var minute_label = $UI/Minute
 @onready var continue_button = $UI/ContinueButton
 @onready var match_engine : MatchEngine = $MatchEngine
@@ -34,8 +40,12 @@ func _ready():
 	minute_label.text = str(0)
 	continue_button.hide()
 	
-	var match_events = GameManager.get_player_match(GameManager.current_week)
+	var the_match = GameManager.get_player_match(GameManager.current_week)
+	var match_events = the_match["match_events"]
+	var match_stats = the_match["match_stats"]
 	match_engine.set_match(home_team.team_id, away_team.team_id, match_events)
+	match_stats_attendance.text = "Attendance: " + str(match_stats.attendance)
+	
 	# bind to the match engine signals
 	match_engine.match_event.connect(_on_match_event)
 	match_engine.minute_tick.connect(_on_minute_tick)
