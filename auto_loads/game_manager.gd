@@ -485,7 +485,8 @@ func finish_week():
 		total_skill += player.player_skill
 	var wages = FinanceEntry.new()
 	wages.entry_name = "Wages"
-	wages.entry_amount = total_skill * 5000
+	wages.entry_amount = total_skill * 500
+	print(str(total_skill))
 	
 	player_team.finances.expense.append([wages])
 	player_team.finances.current_money -= wages.entry_amount
