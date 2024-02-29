@@ -70,6 +70,8 @@ func create_teams(team_data):
 	for division in team_data:
 		var div = Division.new()
 		div.division_id = next_division_slot
+		div.attendance_min = division["attendance_min"]
+		div.attendance_max = division["attendance_max"]
 		divisions.append(div)
 		next_division_slot += 1
 		for team_name in division["teams"]:
@@ -333,7 +335,7 @@ func play_matches():
 			away_team.add_result(result)
 		division.results.append(weekly_results)
 
-func play_match(home_team, away_team):
+func play_match(home_team : Team, away_team : Team):
 	var home_goals = 0
 	var away_goals = 0
 	var events = []
@@ -346,10 +348,12 @@ func play_match(home_team, away_team):
 	var home_possession_mins = 0
 	var away_possession_mins = 0
 	
+	var division = divisions[home_team.division]
+	
 	# in 1990 lowest attendance was 1,139
 	# highest 47,245
 	# as per: https://european-football-statistics.co.uk/attn/archive/eng/aveeng1990.htm
-	stats.attendance = randi_range(1139, 47245)
+	stats.attendance = randi_range(division.attendance_min, division.attendance_max)
 	
 	for minute in 90:
 		goal_scored = false
@@ -601,15 +605,15 @@ func save_game():
 				save_file.store_32(result["away_team"])
 				save_file.store_8(result["away_team_goals"])
 				# match stats
-				save_file.store_32(result["stats"].attendance)
-				save_file.store_8(result["stats"].home_shots_on_target)
-				save_file.store_8(result["stats"].home_shots_off_target)
-				save_file.store_8(result["stats"].home_possession_percent)
-				save_file.store_8(result["stats"].home_corners)
-				save_file.store_8(result["stats"].away_shots_on_target)
-				save_file.store_8(result["stats"].away_shots_off_target)
-				save_file.store_8(result["stats"].away_possession_percent)
-				save_file.store_8(result["stats"].away_corners)
+				save_file.store_32(result["match_stats"].attendance)
+				save_file.store_8(result["match_stats"].home_shots_on_target)
+				save_file.store_8(result["match_stats"].home_shots_off_target)
+				save_file.store_8(result["match_stats"].home_possession_percent)
+				save_file.store_8(result["match_stats"].home_corners)
+				save_file.store_8(result["match_stats"].away_shots_on_target)
+				save_file.store_8(result["match_stats"].away_shots_off_target)
+				save_file.store_8(result["match_stats"].away_possession_percent)
+				save_file.store_8(result["match_stats"].away_corners)
 				# match events
 				save_file.store_8(result["match_events"].size())
 				for event in result["match_events"]:

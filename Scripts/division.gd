@@ -2,7 +2,10 @@ extends Node
 
 class_name Division
 
-var division_id = -1
+var division_id := -1
+
+var attendance_min := 0
+var attendance_max := 0
 
 var fixtures = []
 var results = []
