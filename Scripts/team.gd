@@ -15,6 +15,9 @@ var finances
 func get_players() -> Array:
 	return players
 	
+func get_picked_players() -> Array:
+	return players.filter(func(player): return player.squad_number < 11)
+	
 func get_team_size():
 	return players.size()
 

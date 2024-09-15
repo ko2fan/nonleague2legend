@@ -8,11 +8,13 @@ extends Node2D
 @onready var away_score_label = $UI/HBoxContainer/AwayTeamScore
 @onready var commentary = $UI/Commentary/VBoxContainer
 
+@onready var home_stats = %MatchStats/HomeStats
+@onready var away_stats = %MatchStats/AwayStats
 @onready var match_stats_attendance = %MatchStats/Attendance
-@onready var match_stats_shotson = %MatchStats/ShotsOnTarget
-@onready var match_stats_shotsoff = %MatchStats/ShotsOffTarget
-@onready var match_stats_corners = %MatchStats/Corners
-@onready var match_stats_possession = %MatchStats/Possession
+@onready var match_stats_home_shotson = %MatchStats/HomeShotsOnTarget
+@onready var match_stats_away_shotson = %MatchStats/AwayShotsOnTarget
+@onready var match_stats_home_corners = %MatchStats/HomeCorners
+@onready var match_stats_away_corners = %MatchStats/AwayCorners
 
 @onready var minute_label = $UI/Minute
 @onready var continue_button = $UI/ContinueButton
@@ -36,6 +38,14 @@ func _ready():
 	home_score_label.text = str(0)
 	away_team_label.text = away_team.team_name
 	away_score_label.text = str(0)
+	
+	home_stats.text = home_team.team_name
+	away_stats.text = away_team.team_name
+	
+	match_stats_home_shotson.text = "Shots On Target: 0"
+	match_stats_away_shotson.text = "Shots On Target: 0"
+	match_stats_home_corners.text = "Corners: 0"
+	match_stats_away_corners.text = "Corners: 0"
 	
 	minute_label.text = str(0)
 	continue_button.hide()
@@ -63,7 +73,8 @@ func _on_match_ended():
 
 func _on_match_event(match_event_type : MatchEngine.MatchEventType, match_event):
 	var match_event_label = Label.new()
-	var team_name = GameManager.get_team(match_event.team_id).team_name
+	var team : Team = GameManager.get_team(match_event.team_id)
+	var team_name = team.team_name
 	match match_event_type:
 		MatchEngine.MatchEventType.GOAL:
 			match_event_label.text = "GOAL!!! for " + team_name
@@ -78,6 +89,22 @@ func _on_match_event(match_event_type : MatchEngine.MatchEventType, match_event)
 		MatchEngine.MatchEventType.RED_CARD:
 			match_event_label.text = GameManager.get_player_by_id(match_event.player_id).player_name + \
 				" has been sent off!"
+		MatchEngine.MatchEventType.SHOT_ON_TARGET:
+			match_event_label.text = team_name + " had a shot on target"
+			if match_event.team_id == home_team.team_id:
+				match_stats_home_shotson.text = "Shots On Target: " + \
+					str(match_engine.current_home_shots_on_target)
+			else:
+				match_stats_away_shotson.text = "Shots On Target: " + \
+					str(match_engine.current_away_shots_on_target)
+		MatchEngine.MatchEventType.CORNER:
+			match_event_label.text = team_name + " won a corner"
+			if match_event.team_id == home_team.team_id:
+				match_stats_home_corners.text = "Corners: " + \
+					str(match_engine.current_home_corners)
+			else:
+				match_stats_away_corners.text = "Corners: " + \
+					str(match_engine.current_away_corners)
 	commentary.add_child(match_event_label)
 	
 func _on_possession_changed(team_possession):

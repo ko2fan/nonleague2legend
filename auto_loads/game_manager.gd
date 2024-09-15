@@ -340,14 +340,6 @@ func play_match(home_team : Team, away_team : Team):
 	var away_goals = 0
 	var events = []
 	var stats = match_stat_prefab.instantiate()
-	var teams_playing = [home_team, away_team]
-	
-	var ball_position = 0
-	var current_team_possession = 0
-	var goal_scored = false
-	var home_possession_mins = 0
-	var away_possession_mins = 0
-	
 	var division = divisions[home_team.division]
 	
 	# in 1990 lowest attendance was 1,139
@@ -355,67 +347,101 @@ func play_match(home_team : Team, away_team : Team):
 	# as per: https://european-football-statistics.co.uk/attn/archive/eng/aveeng1990.htm
 	stats.attendance = randi_range(division.attendance_min, division.attendance_max)
 	
-	for minute in 90:
-		goal_scored = false
-		if minute == 45:
-			events.append(create_half_time_event())
-			continue
+	var home_bookings = assign_bookings(home_team)
+	var away_bookings = assign_bookings(away_team)
+	
+	var yellows = home_bookings["yellow_cards"] + away_bookings["yellow_cards"]
+	var reds = home_bookings["red_cards"] + away_bookings["red_cards"]
+	
+	for yellow in yellows:
+		var player = yellow["player"]
+		var minute = yellow["minute"]
+		player.yellow_cards += 1
+		var event = create_booking_event(player.team.team_id, player.player_id, minute)
+		events.append(event)
 		
-		var random_chance = randi_range(1, 6)
-		random_chance += randi_range(1, 6)
-		var more_chance = randi_range(1, 6)
-		more_chance += randi_range(1, 6)
+	for red in reds:
+		var player = red["player"]
+		var minute = red["minute"]
+		player.suspended = 1
+		var event = create_sendingoff_event(player.team.team_id, player.player_id, minute)
+		events.append(event)
+	
+	create_half_time_event()
+	
+	# home team
+	var home_skill = home_team.get_picked_players().map(func(player): return player.player_skill).reduce(func(acc, sum): return acc + sum)
+	var away_skill = home_team.get_picked_players().map(func(player): return player.player_skill).reduce(func(acc, sum): return acc + sum)
+	
+	var home_stats = assign_stats_events(home_team, home_skill)
+	var away_stats = assign_stats_events(away_team, away_skill)
+	
+	var home_shots :int = home_stats["shots"]
+	var home_shots_on :Array = home_stats["shots_on_target"]
+	var home_corners :Array = home_stats["corners"]
+	stats.home_shots_off_target = home_shots - home_shots_on.size()
+	stats.home_shots_on_target = home_shots_on.size()
+	
+	var away_shots :int = away_stats["shots"]
+	var away_shots_on :Array = away_stats["shots_on_target"]
+	var away_corners :Array = away_stats["corners"]
+	stats.away_shots_off_target = away_shots - away_shots_on.size()
+	stats.away_shots_on_target = away_shots_on.size()
+	
+	for shots_on in home_shots_on + away_shots_on:
+		var player = shots_on["player"]
+		var event = create_shotontarget_event(player.team.team_id, player.player_id, shots_on["minute"])
+		events.append(event)
 		
-		if random_chance == 2 and more_chance == 2:
-			var team_effected = teams_playing.pick_random()
-			var player = team_effected.get_players().pick_random()
-			player.suspended = 1
-			var player_id = player.player_id
-			var event = create_sendingoff_event(player_id, minute)
-			events.append(event)
-		if random_chance < 5 and more_chance < 5:
-			var team_effected = teams_playing.pick_random()
-			var player = team_effected.get_players().pick_random()
-			player.yellow_cards += 1
-			var player_id = player.player_id
-			var event = create_booking_event(player_id, minute)
-			events.append(event)
-	
-		if current_team_possession == 0:
-			ball_position += 1
-			home_possession_mins += 1
-		else:
-			ball_position -= 1
-			away_possession_mins += 1
-		if ball_position < -8 or ball_position > 8:
-			goal_scored = true
-	
-		if goal_scored:
-			var team_scored = teams_playing[current_team_possession]
-			var player_scored = team_scored.get_players().filter(func(player):
-				return player.player_position != PlayingPosition.GK).pick_random()
+	for corners in home_corners + away_corners:
+		var player = corners["player"]
+		var event = create_corner_event(player.team.team_id, player.player_id, corners["minute"])
+		events.append(event)
+		
+	var skill_difference = abs(home_skill - away_skill)
+
+	if skill_difference == 0:
+		home_goals = randi_range(0, min(3, stats.home_shots_on_target))  # Equal match
+		away_goals = randi_range(0, min(3, stats.away_shots_on_target))
+	elif home_skill > away_skill:
+		home_goals = min(5, randi_range(1, min(5, stats.home_shots_on_target)) + skill_difference / 10)
+		away_goals = randi_range(0, min(home_goals + 1, stats.away_shots_on_target))
+	else:
+		away_goals = min(5, randi_range(1, min(5, stats.away_shots_on_target)) + skill_difference / 10)
+		home_goals = randi_range(0, min(away_goals + 1, stats.home_shots_on_target))
+
+	# Step 6: Randomly assign who scored the goals and at what minute
+	for goals in home_goals:
+		var shots_on = home_shots_on.duplicate()
+		var player_scored = home_team.get_picked_players().filter(
+			func(player):
+				return player.player_position != PlayingPosition.GK
+		).pick_random()
+		
+		var random_shot = shots_on.pick_random()
+		var minute = random_shot["minute"]
+		shots_on.erase(random_shot)
+		
+		var event = create_goal_event(home_team.team_id, player_scored.player_id, minute)
+		events.append(event)
+		
+	for goals in away_goals:
+		var shots_on = away_shots_on.duplicate()
+		var player_scored = away_team.get_picked_players().filter(
+			func(player):
+				return player.player_position != PlayingPosition.GK
+		).pick_random()
+		
+		var random_shot = shots_on.pick_random()
+		var minute = random_shot["minute"]
+		shots_on.erase(random_shot)
+		
+		var event = create_goal_event(away_team.team_id, player_scored.player_id, minute)
+		events.append(event)
 			
-			var event = create_goal_event(home_team.team_id,
-				away_team.team_id,
-				current_team_possession,
-				player_scored.player_id,
-				minute)
-			
-			if current_team_possession == 0:
-				home_goals += 1
-			else:
-				away_goals += 1
-				
-			ball_position = 0
-			current_team_possession = 1 if current_team_possession == 0 else 0
-			events.append(event)
-		elif random_chance > 9:
-			current_team_possession = 1 if current_team_possession == 0 else 0
 	
-	stats.home_possession_percent = home_possession_mins / 90
-	stats.away_possession_percent = away_possession_mins / 90
-	
-	return { "home_team": get_division_team_id(home_team.division, home_team.team_id),
+	return { 
+		"home_team": get_division_team_id(home_team.division, home_team.team_id),
 		"away_team": get_division_team_id(away_team.division, away_team.team_id),
 		"home_team_goals": home_goals,
 		"away_team_goals": away_goals,
@@ -423,32 +449,93 @@ func play_match(home_team : Team, away_team : Team):
 		"match_stats": stats,
 		}
 
+
+func assign_stats_events(team: Team, team_skill: int) -> Dictionary:
+	var stats = {
+		"shots": 0,
+		"shots_on_target": [],
+		"corners": []
+	}
+	# total skill
+	# Determine shots based on skill and randomness
+	var shots = randi_range(5, 15) + team_skill / 10
+	stats["shots"] = shots
+	# Convert a portion of shots to shots on target
+	var shots_on_target = randi_range(1, shots / 2)
+	for i in range(shots_on_target):
+		var minute = randi_range(1, 90)
+		var player = team.get_picked_players().pick_random()
+		stats["shots_on_target"].append({"player": player, "minute": minute})
+	# Simulate corners based on shots taken
+	var corners = randi_range(1, shots / 3)
+	for i in range(corners):
+		var minute = randi_range(1, 90)
+		var player = team.get_picked_players().pick_random()
+		stats["corners"].append({"player": player, "minute": minute})
+	return stats
+
+func assign_bookings(team : Team) -> Dictionary:
+	var yellow_cards = []
+	var red_cards = []
+	
+	for player in team.get_picked_players():
+		var random_chance = randi_range(1, 20)
+		if random_chance < 1:
+			red_cards.append({"player": player, "minute": randi_range(1, 90)})
+		elif random_chance < 4:
+			yellow_cards.append({"player": player, "minute": randi_range(1, 90)})
+	for event in yellow_cards:
+		var random_chance = randi_range(1, 20)
+		if random_chance < 3:
+			red_cards.append({"player": event["player"], "minute": randi_range(event["minute"], 90)})
+			yellow_cards.erase(event)
+			
+	return {"yellow_cards": yellow_cards, "red_cards": red_cards }
+
 func create_half_time_event():
 	var match_event = match_event_prefab.instantiate()
 	match_event.minute = 45
 	match_event.event_type = MatchEngine.MatchEventType.HALF_TIME
 	return match_event
 	
-func create_goal_event(home_team_id, away_team_id, team_scored, player_scored, minute_scored):
+func create_goal_event(team_id, player_scored, minute_scored):
 	var match_event = match_event_prefab.instantiate()
-	match_event.team_id = home_team_id if team_scored == 0 else away_team_id
+	match_event.team_id = team_id
 	match_event.player_id = player_scored
 	match_event.minute = minute_scored
 	match_event.event_type = MatchEngine.MatchEventType.GOAL
 	return match_event
 	
-func create_booking_event(player_booked, minute_booked):
+func create_booking_event(team_id, player_booked, minute_booked):
 	var match_event = match_event_prefab.instantiate()
+	match_event.team_id = team_id
 	match_event.player_id = player_booked
 	match_event.minute = minute_booked
 	match_event.event_type = MatchEngine.MatchEventType.YELLOW_CARD
 	return match_event
 	
-func create_sendingoff_event(player_sentoff, minute_sentoff):
+func create_sendingoff_event(team_id, player_sentoff, minute_sentoff):
 	var match_event = match_event_prefab.instantiate()
+	match_event.team_id = team_id
 	match_event.player_id = player_sentoff
 	match_event.minute = minute_sentoff
 	match_event.event_type = MatchEngine.MatchEventType.RED_CARD
+	return match_event
+	
+func create_shotontarget_event(team_id, player_id, minute):
+	var match_event = match_event_prefab.instantiate()
+	match_event.team_id = team_id
+	match_event.player_id = player_id
+	match_event.minute = minute
+	match_event.event_type = MatchEngine.MatchEventType.SHOT_ON_TARGET
+	return match_event
+	
+func create_corner_event(team_id, player_id, minute):
+	var match_event = match_event_prefab.instantiate()
+	match_event.team_id = team_id
+	match_event.player_id = player_id
+	match_event.minute = minute
+	match_event.event_type = MatchEngine.MatchEventType.CORNER
 	return match_event
 
 func get_player_match(week):

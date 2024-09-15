@@ -8,16 +8,13 @@
 [ext_resource type="Script" path="res://Scripts/commentary.gd" id="3_x365g"]
 [ext_resource type="Texture2D" uid="uid://l2sji30gjgeb" path="res://Sprites/indicator.png" id="4_tgytb"]
 [ext_resource type="Theme" uid="uid://dwl0ijkwl54k" path="res://Themes/match_theme.tres" id="4_w05nw"]
+[ext_resource type="LabelSettings" uid="uid://0qqbgljvltvc" path="res://Themes/match_label.tres" id="6_s6y5y"]
 [ext_resource type="LabelSettings" uid="uid://bs1lbthelba53" path="res://Themes/match_settings.tres" id="6_umun2"]
 [ext_resource type="PackedScene" uid="uid://s2mmw2in38sj" path="res://Scenes/match_engine.tscn" id="8_vqxnr"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_5a0nn"]
 font = ExtResource("3_b4obx")
 font_size = 24
-
-[sub_resource type="LabelSettings" id="LabelSettings_yob8t"]
-font = ExtResource("3_b4obx")
-font_size = 19
 
 [node name="Match" type="Node2D"]
 script = ExtResource("1_xn6wp")
@@ -157,32 +154,44 @@ offset_bottom = 238.0
 [node name="Title" type="Label" parent="UI/MatchStats"]
 layout_mode = 2
 text = "Match Stats:"
-label_settings = SubResource("LabelSettings_yob8t")
+label_settings = ExtResource("6_s6y5y")
 
 [node name="Attendance" type="Label" parent="UI/MatchStats"]
 layout_mode = 2
 text = "Attendance: 0"
-label_settings = SubResource("LabelSettings_yob8t")
+label_settings = ExtResource("6_s6y5y")
 
-[node name="ShotsOnTarget" type="Label" parent="UI/MatchStats"]
+[node name="HomeStats" type="Label" parent="UI/MatchStats"]
 layout_mode = 2
-text = "Shots On Target: 0"
-label_settings = SubResource("LabelSettings_yob8t")
+text = "Bristol C"
+label_settings = ExtResource("6_s6y5y")
+horizontal_alignment = 1
 
-[node name="ShotsOffTarget" type="Label" parent="UI/MatchStats"]
+[node name="HomeShotsOnTarget" type="Label" parent="UI/MatchStats"]
 layout_mode = 2
-text = "Shots Off Target: 0"
-label_settings = SubResource("LabelSettings_yob8t")
+text = "Shots On Target: 4"
+label_settings = ExtResource("6_s6y5y")
 
-[node name="Corners" type="Label" parent="UI/MatchStats"]
+[node name="HomeCorners" type="Label" parent="UI/MatchStats"]
 layout_mode = 2
-text = "Corners: 0"
-label_settings = SubResource("LabelSettings_yob8t")
+text = "Corners: 2"
+label_settings = ExtResource("6_s6y5y")
 
-[node name="Possession" type="Label" parent="UI/MatchStats"]
+[node name="AwayStats" type="Label" parent="UI/MatchStats"]
 layout_mode = 2
-text = "Possession: 60%"
-label_settings = SubResource("LabelSettings_yob8t")
+text = "Liverpool"
+label_settings = ExtResource("6_s6y5y")
+horizontal_alignment = 1
+
+[node name="AwayShotsOnTarget" type="Label" parent="UI/MatchStats"]
+layout_mode = 2
+text = "Shots On Target: 9"
+label_settings = ExtResource("6_s6y5y")
+
+[node name="AwayCorners" type="Label" parent="UI/MatchStats"]
+layout_mode = 2
+text = "Corners: 7"
+label_settings = ExtResource("6_s6y5y")
 
 [node name="Pitch" type="Sprite2D" parent="."]
 position = Vector2(640, 280)

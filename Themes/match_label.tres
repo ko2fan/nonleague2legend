@@ -1,0 +1,7 @@
+[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://0qqbgljvltvc"]
+
+[ext_resource type="FontFile" uid="uid://dxgro1ckyu2r8" path="res://fonts/quadratum-unum-font/QuadratumUnum-LW0Z.ttf" id="1_tjil8"]
+
+[resource]
+font = ExtResource("1_tjil8")
+font_size = 19
