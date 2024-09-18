@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://c4fp0mlw5gq06"]
+[gd_scene load_steps=7 format=3 uid="uid://c4fp0mlw5gq06"]
 
 [ext_resource type="Theme" uid="uid://b3mxg4bwyrbo8" path="res://Themes/squad_view_theme.tres" id="1_0iijg"]
 [ext_resource type="Script" path="res://Scripts/squad_view.gd" id="1_bfqas"]
 [ext_resource type="LabelSettings" uid="uid://ddcb7kmaryg2c" path="res://Themes/Title_settings.tres" id="2_x6835"]
 [ext_resource type="PackedScene" uid="uid://do6krovuib4ns" path="res://Scenes/player_row.tscn" id="4_rb622"]
 [ext_resource type="LabelSettings" uid="uid://d3mmd84mdix24" path="res://Themes/squad_settings.tres" id="5_kb50u"]
+[ext_resource type="LabelSettings" uid="uid://dngnydlnk8xgy" path="res://Themes/squad_stats_settings.tres" id="6_2s15o"]
 
 [node name="SquadView" type="Control"]
 layout_mode = 3
@@ -37,17 +38,17 @@ text = "Squad"
 label_settings = ExtResource("2_x6835")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Panel"]
-custom_minimum_size = Vector2(600, 500)
+custom_minimum_size = Vector2(880, 480)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -300.0
-offset_top = -251.0
-offset_right = 300.0
-offset_bottom = 249.0
+offset_left = -420.0
+offset_top = -240.0
+offset_right = 460.0
+offset_bottom = 240.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -133,6 +134,62 @@ offset_bottom = -77.0
 grow_horizontal = 2
 grow_vertical = 0
 text = "An error has occured"
+label_settings = ExtResource("5_kb50u")
+
+[node name="Stats" type="HBoxContainer" parent="Panel"]
+layout_mode = 2
+offset_left = 819.0
+offset_top = 85.0
+offset_right = 1068.0
+offset_bottom = 117.0
+
+[node name="Label" type="Label" parent="Panel/Stats"]
+layout_mode = 2
+text = "Played"
+label_settings = ExtResource("6_2s15o")
+
+[node name="Label2" type="Label" parent="Panel/Stats"]
+layout_mode = 2
+text = "Scored"
+label_settings = ExtResource("6_2s15o")
+
+[node name="Label3" type="Label" parent="Panel/Stats"]
+layout_mode = 2
+text = "Yellow Cards"
+label_settings = ExtResource("6_2s15o")
+
+[node name="Header" type="HBoxContainer" parent="Panel"]
+custom_minimum_size = Vector2(800, 0)
+layout_mode = 0
+offset_left = 226.0
+offset_top = 85.0
+offset_right = 1026.0
+offset_bottom = 117.0
+theme_override_constants/separation = 75
+
+[node name="Label" type="Label" parent="Panel/Header"]
+layout_mode = 2
+text = "#"
+label_settings = ExtResource("5_kb50u")
+
+[node name="Label2" type="Label" parent="Panel/Header"]
+layout_mode = 2
+text = "Name"
+label_settings = ExtResource("5_kb50u")
+
+[node name="Label3" type="Label" parent="Panel/Header"]
+layout_mode = 2
+text = "Position"
+label_settings = ExtResource("5_kb50u")
+
+[node name="Label4" type="Label" parent="Panel/Header"]
+layout_mode = 2
+text = "Skill"
+label_settings = ExtResource("5_kb50u")
+
+[node name="Label5" type="Label" parent="Panel/Header"]
+layout_mode = 2
+text = "Sell"
 label_settings = ExtResource("5_kb50u")
 
 [connection signal="pressed" from="Panel/BackButton" to="." method="_on_back_button_pressed"]

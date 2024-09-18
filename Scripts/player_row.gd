@@ -4,10 +4,13 @@ signal player_selected
 signal sell_player
 
 @onready var row_colour = $ColorRect
-@onready var player_button = $ColorRect/HBoxContainer/Button
-@onready var squad_label = $ColorRect/HBoxContainer/SquadNumber
-@onready var player_position = $ColorRect/HBoxContainer/PlayerPosition
-@onready var player_skill_label = $ColorRect/HBoxContainer/PlayerSkill
+@onready var player_button: Button = $ColorRect/HBoxContainer/Button
+@onready var squad_label: Label = $ColorRect/HBoxContainer/SquadNumber
+@onready var player_position: Label = $ColorRect/HBoxContainer/PlayerPosition
+@onready var player_skill_label: Label = $ColorRect/HBoxContainer/PlayerSkill
+@onready var played: Label = $ColorRect/HBoxContainer/Played
+@onready var scored: Label = $ColorRect/HBoxContainer/Scored
+@onready var yellows: Label = $ColorRect/HBoxContainer/Yellows
 
 var squad_number
 
@@ -44,6 +47,11 @@ func set_player(player_details : Player, formation):
 			change_colour(1, 4, 3, 3)
 		GameManager.Formation.FORMATION_5_3_2:
 			change_colour(1, 5, 3, 2)
+	played.text = str(player_details.matches_played)
+	scored.text = str(player_details.goals_scored)
+	yellows.text = str(player_details.yellow_cards)
+	if player_details.suspended:
+		row_colour.color = Color(1.0, 0, 1.0)
 	
 func change_colour(gk, def, mid, att):
 	if squad_number < gk:

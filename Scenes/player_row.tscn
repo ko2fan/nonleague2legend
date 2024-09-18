@@ -29,6 +29,7 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = 210.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -62,6 +63,27 @@ label_settings = ExtResource("2_8qiok")
 custom_minimum_size = Vector2(67, 0)
 layout_mode = 2
 text = "SELL"
+
+[node name="Played" type="Label" parent="ColorRect/HBoxContainer"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+text = "30"
+label_settings = ExtResource("2_8qiok")
+horizontal_alignment = 2
+
+[node name="Scored" type="Label" parent="ColorRect/HBoxContainer"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+text = "3"
+label_settings = ExtResource("2_8qiok")
+horizontal_alignment = 2
+
+[node name="Yellows" type="Label" parent="ColorRect/HBoxContainer"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+text = "1"
+label_settings = ExtResource("2_8qiok")
+horizontal_alignment = 2
 
 [connection signal="pressed" from="ColorRect/HBoxContainer/Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="ColorRect/HBoxContainer/SellButton" to="." method="_on_sell_button_pressed"]
