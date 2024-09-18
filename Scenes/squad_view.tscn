@@ -53,55 +53,72 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="PlayerContainer" type="VBoxContainer" parent="Panel/ScrollContainer"]
+custom_minimum_size = Vector2(850, 0)
 layout_mode = 2
 theme = ExtResource("1_0iijg")
 
 [node name="PlayerRow" parent="Panel/ScrollContainer/PlayerContainer" instance=ExtResource("4_rb622")]
+custom_minimum_size = Vector2(850, 45)
 layout_mode = 2
 
 [node name="PlayerRow2" parent="Panel/ScrollContainer/PlayerContainer" instance=ExtResource("4_rb622")]
+custom_minimum_size = Vector2(850, 45)
 layout_mode = 2
 
 [node name="PlayerRow3" parent="Panel/ScrollContainer/PlayerContainer" instance=ExtResource("4_rb622")]
+custom_minimum_size = Vector2(850, 45)
 layout_mode = 2
 
 [node name="PlayerRow4" parent="Panel/ScrollContainer/PlayerContainer" instance=ExtResource("4_rb622")]
+custom_minimum_size = Vector2(850, 45)
 layout_mode = 2
 
 [node name="PlayerRow5" parent="Panel/ScrollContainer/PlayerContainer" instance=ExtResource("4_rb622")]
+custom_minimum_size = Vector2(850, 45)
 layout_mode = 2
 
 [node name="PlayerRow6" parent="Panel/ScrollContainer/PlayerContainer" instance=ExtResource("4_rb622")]
+custom_minimum_size = Vector2(850, 45)
 layout_mode = 2
 
 [node name="PlayerRow7" parent="Panel/ScrollContainer/PlayerContainer" instance=ExtResource("4_rb622")]
+custom_minimum_size = Vector2(850, 45)
 layout_mode = 2
 
 [node name="PlayerRow8" parent="Panel/ScrollContainer/PlayerContainer" instance=ExtResource("4_rb622")]
+custom_minimum_size = Vector2(850, 45)
 layout_mode = 2
 
 [node name="PlayerRow9" parent="Panel/ScrollContainer/PlayerContainer" instance=ExtResource("4_rb622")]
+custom_minimum_size = Vector2(850, 45)
 layout_mode = 2
 
 [node name="PlayerRow10" parent="Panel/ScrollContainer/PlayerContainer" instance=ExtResource("4_rb622")]
+custom_minimum_size = Vector2(850, 45)
 layout_mode = 2
 
 [node name="PlayerRow11" parent="Panel/ScrollContainer/PlayerContainer" instance=ExtResource("4_rb622")]
+custom_minimum_size = Vector2(850, 45)
 layout_mode = 2
 
 [node name="PlayerRow12" parent="Panel/ScrollContainer/PlayerContainer" instance=ExtResource("4_rb622")]
+custom_minimum_size = Vector2(850, 45)
 layout_mode = 2
 
 [node name="PlayerRow13" parent="Panel/ScrollContainer/PlayerContainer" instance=ExtResource("4_rb622")]
+custom_minimum_size = Vector2(850, 45)
 layout_mode = 2
 
 [node name="PlayerRow14" parent="Panel/ScrollContainer/PlayerContainer" instance=ExtResource("4_rb622")]
+custom_minimum_size = Vector2(850, 45)
 layout_mode = 2
 
 [node name="PlayerRow15" parent="Panel/ScrollContainer/PlayerContainer" instance=ExtResource("4_rb622")]
+custom_minimum_size = Vector2(850, 45)
 layout_mode = 2
 
 [node name="PlayerRow16" parent="Panel/ScrollContainer/PlayerContainer" instance=ExtResource("4_rb622")]
+custom_minimum_size = Vector2(850, 45)
 layout_mode = 2
 
 [node name="BackButton" type="Button" parent="Panel"]
