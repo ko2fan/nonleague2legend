@@ -417,6 +417,7 @@ func play_match(home_team : Team, away_team : Team):
 			func(player):
 				return player.player_position != PlayingPosition.GK
 		).pick_random()
+		player_scored.goals_scored += 1
 		
 		var random_shot = shots_on.pick_random()
 		var minute = random_shot["minute"]
@@ -431,6 +432,7 @@ func play_match(home_team : Team, away_team : Team):
 			func(player):
 				return player.player_position != PlayingPosition.GK
 		).pick_random()
+		player_scored.goals_scored += 1
 		
 		var random_shot = shots_on.pick_random()
 		var minute = random_shot["minute"]
@@ -438,7 +440,9 @@ func play_match(home_team : Team, away_team : Team):
 		
 		var event = create_goal_event(away_team.team_id, player_scored.player_id, minute)
 		events.append(event)
-			
+	
+	for player in home_team.get_picked_players() + away_team.get_picked_players():
+		player.matches_played += 1
 	
 	return { 
 		"home_team": get_division_team_id(home_team.division, home_team.team_id),
@@ -579,7 +583,6 @@ func finish_week():
 	var wages = FinanceEntry.new()
 	wages.entry_name = "Wages"
 	wages.entry_amount = total_skill * 500
-	print(str(total_skill))
 	
 	player_team.finances.expense.append([wages])
 	player_team.finances.current_money -= wages.entry_amount
