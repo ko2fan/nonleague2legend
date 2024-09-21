@@ -571,6 +571,11 @@ func get_results():
 func finish_week():
 	var last_match = get_player_match(current_week)
 	current_week += 1
+	
+	if (current_week >= divisions[teams[human_index].division].fixtures.size()):
+		finish_season()
+		return
+
 	# Add gate receipts if home
 	var player_team : Team = get_player_team()
 	var fixture = get_fixture(player_team.division, player_team.team_id)
