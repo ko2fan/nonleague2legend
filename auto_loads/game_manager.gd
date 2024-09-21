@@ -589,12 +589,12 @@ func finish_week():
 	gate_receipts.entry_amount = 0
 	if was_home:
 		var attendance = last_match["match_stats"].attendance
-		gate_receipts.entry_amount = attendance * 5
+		gate_receipts.entry_amount = attendance * randf_range(4.5, 5.6)
 	player_team.finances.income.append([gate_receipts])
 	player_team.finances.current_money += gate_receipts.entry_amount
 	
 	# Deduct wages
-	var team_players = player_team.get_players()
+	var team_players = player_team.get_picked_players()
 	var total_skill = 0
 	for player : Player in team_players:
 		total_skill += player.player_skill
