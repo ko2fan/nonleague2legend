@@ -79,13 +79,7 @@ func create_teams(team_data):
 			team.team_id = next_team_slot
 			team.team_name = team_name["team_name"]
 			team.division = div.division_id
-			var team_stats = TeamStats.new()
-			team_stats.played = 0
-			team_stats.wins = 0
-			team_stats.draws = 0
-			team_stats.goals_conceded = 0
-			team_stats.goals_scored = 0
-			team.season_stats.append(team_stats)
+			create_new_season_stats(team)
 			team.formation = Formation.values().pick_random()
 			team.finances = TeamFinances.new()
 			team.finances.current_money = randi_range(15, 90) * 10000
@@ -94,7 +88,16 @@ func create_teams(team_data):
 			teams.append(team)
 			next_team_slot += 1
 			div.teams.append(team.team_id)
-		
+
+func create_new_season_stats(team: Team):
+	var team_stats = TeamStats.new()
+	team_stats.played = 0
+	team_stats.wins = 0
+	team_stats.draws = 0
+	team_stats.goals_conceded = 0
+	team_stats.goals_scored = 0
+	team.season_stats.append(team_stats)
+
 func create_players(player_data):
 	var num_gks = 0
 	var num_defs = 0
@@ -601,13 +604,20 @@ func finish_week():
 	
 	player_team.finances.expense.append([wages])
 	player_team.finances.current_money -= wages.entry_amount
-	
-	if (current_week > divisions[teams[human_index].division].fixtures.size()):
-		finish_season()
 		
 func finish_season():
 	current_season += 1
 	current_week = 0
+	create_fixtures()
+	for division: Division in divisions:
+		for team in division.teams:
+			create_new_season_stats(team)
+	
+	var player_team : Team = get_player_team()
+	for player : Player in player_team.get_players():
+		player.yellow_cards = 0
+		player.goals_scored = 0
+		player.matches_played = 0
 	
 func get_formation_name(formation):
 	match formation:
