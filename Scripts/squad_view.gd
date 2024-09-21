@@ -68,6 +68,10 @@ func check_position(gks: int, defs: int, mids: int, atts: int):
 				num_str += 1
 			GameManager.PlayingPosition.ATT:
 				num_str += 1
+		if player.suspended >= 1:
+			error_label.text = "Suspended player picked"
+			error_label.show()
+			return
 	if num_gk != gks:
 		error_label.text = "Wrong number of goalkeepers"
 		error_label.show()
@@ -101,8 +105,9 @@ func _on_player_selected(player_index):
 		draw_players()
 
 func _on_sell_player(player_index):
-	if human_team.players.size() < 12:
-		error_label.text = "Not enough players"
+	var num_players = human_team.players.filter(func(player): return player.suspended == 0).size()
+	if num_players < 12:
+		error_label.text = "Not enough eligible players"
 		error_label.show()
 		return
 	var sell_price = (human_team.get_player(player_index).player_skill - 1) * 100000

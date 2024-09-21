@@ -342,6 +342,11 @@ func play_match(home_team : Team, away_team : Team):
 	var stats = match_stat_prefab.instantiate()
 	var division = divisions[home_team.division]
 	
+	for player : Player in home_team.get_players().filter(func(player): return player.suspended >= 1):
+		player.suspended -= 1
+	for player : Player in away_team.get_players().filter(func(player): return player.suspended >= 1):
+		player.suspended -= 1
+	
 	# in 1990 lowest attendance was 1,139
 	# highest 47,245
 	# as per: https://european-football-statistics.co.uk/attn/archive/eng/aveeng1990.htm
@@ -357,12 +362,16 @@ func play_match(home_team : Team, away_team : Team):
 		var player = yellow["player"]
 		var minute = yellow["minute"]
 		player.yellow_cards += 1
+		if player.yellow_cards == 5:
+			player.suspended = 1
+		if player.yellow_cards == 10:
+			player.suspended = 2
 		var event = create_booking_event(player.team.team_id, player.player_id, minute)
 		events.append(event)
 		
 	for red in reds:
-		var player = red["player"]
-		var minute = red["minute"]
+		var player: Player = red["player"]
+		var minute: int = red["minute"]
 		player.suspended = 1
 		var event = create_sendingoff_event(player.team.team_id, player.player_id, minute)
 		events.append(event)
@@ -491,8 +500,9 @@ func assign_bookings(team : Team) -> Dictionary:
 	for event in yellow_cards:
 		var random_chance = randi_range(1, 20)
 		if random_chance < 3:
-			red_cards.append({"player": event["player"], "minute": randi_range(event["minute"], 90)})
-			yellow_cards.erase(event)
+			if event["minute"] >= 89:
+				event["minute"] = 88;
+			red_cards.append({"player": event["player"], "minute": randi_range(event["minute"] + 1, 90)})
 			
 	return {"yellow_cards": yellow_cards, "red_cards": red_cards }
 

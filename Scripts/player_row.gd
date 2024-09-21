@@ -50,7 +50,7 @@ func set_player(player_details : Player, formation):
 	played.text = str(player_details.matches_played)
 	scored.text = str(player_details.goals_scored)
 	yellows.text = str(player_details.yellow_cards)
-	if player_details.suspended:
+	if player_details.suspended >= 1:
 		row_colour.color = Color.WEB_PURPLE
 	
 func change_colour(gk, def, mid, att):
