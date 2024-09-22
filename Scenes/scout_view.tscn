@@ -75,7 +75,7 @@ text = "Return"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Panel"]
 visible = false
-custom_minimum_size = Vector2(550, 400)
+custom_minimum_size = Vector2(700, 400)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5

@@ -3,6 +3,7 @@ extends HBoxContainer
 @onready var player_name = $PlayerName
 @onready var player_position = $Position
 @onready var player_cost = $Cost
+@onready var skill: Label = $Skill
 
 signal player_purchased
 
@@ -33,6 +34,7 @@ func set_player_row(player : Player):
 			player_position.tooltip_text = "Striker"
 	player_cost.text = str(player.player_skill * 100) + "K"
 	price = player.player_skill * 100000
+	skill.text = str(player.player_skill)
 
 func _on_purchase_button_pressed():
 	emit_signal("player_purchased", player_id, price)

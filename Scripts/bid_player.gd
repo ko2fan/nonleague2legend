@@ -40,7 +40,7 @@ func _on_submit_bid_pressed():
 	# Choose 3 teams that want to buy the player
 	for i in range(3):
 		team_offers.append(GameManager.teams.pick_random())
-		offer_amounts.append(current_offer + randi_range(-20, 20))
+		offer_amounts.append((bid.price / 1000) + randi_range(-20, 20))
 
 	# create the offers
 	for i in team_offers.size():
@@ -55,8 +55,16 @@ func _on_submit_bid_pressed():
 	
 	submit_button.disabled = true
 	
-	accepted_text.text = GameManager.buy_player(bid.player, current_offer * 1000)
-	accepted_text.show()
+	var highest_offer = 0
+	for offer in offer_amounts:
+		if offer > highest_offer:
+			highest_offer = offer
+	if current_offer > highest_offer:
+		accepted_text.text = GameManager.buy_player(bid.player, current_offer * 1000)
+		accepted_text.show()
+	else:
+		accepted_text.text = "You were outbid"
+		accepted_text.show()
 
 func cleanup():
 	for child in team_bids.get_children():

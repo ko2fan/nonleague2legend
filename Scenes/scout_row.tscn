@@ -29,6 +29,12 @@ layout_mode = 2
 text = "500K"
 label_settings = ExtResource("2_eew58")
 
+[node name="Skill" type="Label" parent="."]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "7"
+label_settings = ExtResource("2_eew58")
+
 [node name="PurchaseButton" type="Button" parent="."]
 custom_minimum_size = Vector2(75, 0)
 layout_mode = 2

@@ -42,6 +42,7 @@ func show_players(players):
 
 func purchase_player(player_id, price):
 	# go to bid on player
+	cleanup()
 	GameManager.bid_on_player(GameManager.get_player_team(), player_id, price)
 	
 	
