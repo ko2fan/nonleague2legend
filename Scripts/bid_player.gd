@@ -37,9 +37,10 @@ func _on_offer_box_text_changed(new_text : String):
 func _on_submit_bid_pressed():
 	cleanup()
 	
+	var teams = GameManager.get_teams()
 	# Choose 3 teams that want to buy the player
 	for i in range(3):
-		team_offers.append(GameManager.teams.pick_random())
+		team_offers.append(teams.pick_random())
 		offer_amounts.append((bid.price / 1000) + randi_range(-20, 20))
 
 	# create the offers

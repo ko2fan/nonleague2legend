@@ -50,7 +50,7 @@ func _ready():
 	minute_label.text = str(0)
 	continue_button.hide()
 	
-	var the_match = GameManager.get_player_match(GameManager.current_week)
+	var the_match = GameManager.get_player_match(GameManager.get_week())
 	var match_events = the_match["match_events"]
 	var match_stats = the_match["match_stats"]
 	match_engine.set_match(home_team.team_id, away_team.team_id, match_events)

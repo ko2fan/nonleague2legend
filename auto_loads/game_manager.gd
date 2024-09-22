@@ -1,12 +1,7 @@
 extends Node
 
-var divisions = []
-var teams = []
-var players = []
+var game_data = GameData.new()
 
-var current_season = 0
-var current_week = 0
-var human_index
 var next_player_slot = 0
 var loaded_game = false
 var game_started = false
@@ -72,7 +67,7 @@ func create_teams(team_data):
 		div.division_id = next_division_slot
 		div.attendance_min = division["attendance_min"]
 		div.attendance_max = division["attendance_max"]
-		divisions.append(div)
+		game_data.divisions.append(div)
 		next_division_slot += 1
 		for team_name in division["teams"]:
 			var team = Team.new()
@@ -86,7 +81,7 @@ func create_teams(team_data):
 			team.finances.income.append([])
 			team.finances.expense.append([])
 			team.avg_price = randf_range(division["price_min"], division["price_max"])
-			teams.append(team)
+			game_data.teams.append(team)
 			next_team_slot += 1
 			div.teams.append(team.team_id)
 
@@ -116,11 +111,12 @@ func create_players(player_data):
 			num_mids += 1
 		elif player.player_position == 8 or player.player_position == 12:
 			num_atts += 1
-		players.append(player)
-		if num_gks >= 3 * teams.size() + 10 and \
-			num_defs >= 7 * teams.size() + 60 and \
-			num_mids >= 6 * teams.size() + 50 and \
-			num_atts >= 4 * teams.size() + 30:
+		game_data.players.append(player)
+		var size: int = game_data.teams.size()
+		if num_gks >= 3 * size + 10 and \
+			num_defs >= 7 * size + 60 and \
+			num_mids >= 6 * size + 50 and \
+			num_atts >= 4 * size + 30:
 				filled = true
 		next_player_slot += 1
 	print("Filled " + str(next_player_slot) + " slots in total")
@@ -136,8 +132,14 @@ func generate_player(player_name):
 	player.player_skill = randi_range(1, 9)
 	return player
 	
+func get_week():
+	return game_data.current_week
+	
+func get_season():
+	return game_data.current_season
+	
 func assign_players_to_teams():
-	var unassigned_players = players.duplicate()
+	var unassigned_players = game_data.players.duplicate()
 	var keepers = unassigned_players.filter(func(player): return player.player_position == PlayingPosition.GK)
 	
 	var min_defenders = 0
@@ -147,7 +149,7 @@ func assign_players_to_teams():
 	var min_attackers = 0
 	var max_attackers = 0
 	
-	for team in teams:
+	for team in game_data.teams:
 		match team.formation:
 			Formation.FORMATION_4_4_2:
 				min_defenders = 4
@@ -261,71 +263,74 @@ func add_player_to_team(player, team):
 func create_profile():
 	new_game()
 
+func get_division(division_id: int):
+	return game_data.divisions[division_id]
+
 func get_teams():
-	return teams
+	return game_data.teams
 
 func set_player_index(team_name):
-	for index in teams.size():
-		if teams[index].team_name == team_name:
-			human_index = index
+	for index in game_data.teams.size():
+		if game_data.teams[index].team_name == team_name:
+			game_data.human_index = index
 			break
 
 func get_last_division():
-	return divisions.back()
+	return game_data.divisions.back()
 
 func move_team_to_division(team, division_index):
 	var old_division_index = team.division
 	team.division = division_index
-	var division = divisions[division_index]
+	var division = game_data.divisions[division_index]
 	division.teams.append(team.team_id)
-	var division_old = divisions[old_division_index]
+	var division_old = game_data.divisions[old_division_index]
 	division_old.teams.erase(team.team_id)
 
 func get_player_team() -> Team:
-	return teams[human_index]
+	return game_data.teams[game_data.human_index]
 	
 func get_team(team_id) -> Team:
-	for team in teams:
+	for team in game_data.teams:
 		if team.team_id == team_id:
 			return team
 	return null
 	
 func create_fixtures():
-	for division in divisions:
+	for division in game_data.divisions:
 		division.create_season_fixtures()
 		
 func get_fixture(division_id, team_id):
-	var division = divisions[division_id]
-	var fixture = division.get_fixture(current_week, team_id)
+	var division = game_data.divisions[division_id]
+	var fixture = division.get_fixture(game_data.current_week, team_id)
 	
 	if (fixture["home_team"] == 0 or fixture["away_team"] == 0):
 		print("Error, fixture not found")
 	return fixture
 
 func get_team_in_division(division_id : int, team_id : int):
-	var division = divisions[division_id]
+	var division = game_data.divisions[division_id]
 	if team_id < division.teams.size():
-		return teams[division.teams[team_id]]
+		return game_data.teams[division.teams[team_id]]
 	print("Invalid team id")
 	return null
 
 func get_division_team_id(division_id, team_id):
-	var division = divisions[division_id]
-	var finding_team = teams[team_id]
+	var division = game_data.divisions[division_id]
+	var finding_team = game_data.teams[team_id]
 	var index = 0
 	for team in division.teams:
-		if finding_team.team_id == teams[team].team_id:
+		if finding_team.team_id == game_data.teams[team].team_id:
 			return index
 		index += 1
 	return 0
 	
 func get_player_by_id(player_id):
-	return players.filter(func(player): return player.player_id == player_id).front()
+	return game_data.players.filter(func(player): return player.player_id == player_id).front()
 	
 func play_matches():
-	for division in divisions:
+	for division in game_data.divisions:
 		var weekly_results = []
-		for fixture in division.fixtures[current_week]:
+		for fixture in division.fixtures[game_data.current_week]:
 			var home_team_id = fixture["home_team"]
 			var away_team_id = fixture["away_team"]
 			
@@ -344,7 +349,7 @@ func play_match(home_team : Team, away_team : Team):
 	var away_goals = 0
 	var events = []
 	var stats = match_stat_prefab.instantiate()
-	var division = divisions[home_team.division]
+	var division = game_data.divisions[home_team.division]
 	
 	for player : Player in home_team.get_players().filter(func(player): return player.suspended >= 1):
 		player.suspended -= 1
@@ -559,7 +564,7 @@ func create_corner_event(team_id, player_id, minute):
 func get_player_match(week):
 	var division_id = get_player_team().division
 	var team_id = get_division_team_id(division_id, get_player_team().team_id)
-	var division = divisions[division_id]
+	var division = game_data.divisions[division_id]
 	var results = division.results[week]
 	var player_result = results.filter(
 		func(result): 
@@ -568,15 +573,15 @@ func get_player_match(week):
 
 func get_results():
 	var results = []
-	for division in divisions:
-		results.append(division.results[current_week])
+	for division in game_data.divisions:
+		results.append(division.results[game_data.current_week])
 	return results
 
 func finish_week():
-	var last_match = get_player_match(current_week)
-	current_week += 1
+	var last_match = get_player_match(game_data.current_week)
+	game_data.current_week += 1
 	
-	if (current_week >= divisions[teams[human_index].division].fixtures.size()):
+	if (game_data.current_week >= game_data.divisions[game_data.teams[game_data.human_index].division].fixtures.size()):
 		finish_season()
 		return
 
@@ -604,10 +609,10 @@ func finish_week():
 	player_team.finances.current_money -= wages.entry_amount
 		
 func finish_season():
-	current_season += 1
-	current_week = 0
+	game_data.current_season += 1
+	game_data.current_week = 0
 	create_fixtures()
-	for division: Division in divisions:
+	for division: Division in game_data.divisions:
 		for team in division.teams:
 			create_new_season_stats(team)
 	
@@ -636,7 +641,7 @@ func get_players_by_position(position):
 			matching_position = 4
 		4:
 			matching_position = 8
-	return players.filter(func(player): 
+	return game_data.players.filter(func(player): 
 		return (player.player_position & matching_position) == matching_position)
 	
 func bid_on_player(team, player, price):
@@ -662,7 +667,7 @@ func buy_player(player_id, price):
 
 func _notification(what):
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
-		for team in teams:
+		for team in game_data.teams:
 			for team_stats in team.season_stats:
 				team_stats.queue_free()
 			for week in team.finances.income:
@@ -673,11 +678,11 @@ func _notification(what):
 					expense.queue_free()
 			team.finances.queue_free()
 			team.queue_free()
-		for player in players:
+		for player in game_data.players:
 				player.queue_free()
 #		for season in seasons:
 #			season.queue_free()
-		for division in divisions:
+		for division in game_data.divisions:
 			for weekly_result in division.results:
 				for match_result in weekly_result:
 					for event in match_result["match_events"]:
@@ -689,105 +694,17 @@ func _notification(what):
 		get_tree().quit()
 
 func save_game():
-	var save_file = FileAccess.open("user://savefile.nl", FileAccess.WRITE)
-	var version = 0x12
-	save_file.store_32(version)
-	# GLOBALS
-	save_file.store_32(human_index)
-	save_file.store_32(current_season)
-	save_file.store_32(current_week)
-	# DIVISIONS
-	save_file.store_32(divisions.size())
-	for division in divisions:
-		save_file.store_32(division.division_id)
-		save_file.store_32(division.teams.size())
-		for team_id in division.teams:
-			save_file.store_32(team_id)
-		save_file.store_32(division.fixtures.size())
-		for weekly_fixtures in division.fixtures:
-			save_file.store_32(weekly_fixtures.size())
-			for fixture in weekly_fixtures:
-				save_file.store_32(fixture["home_team"])
-				save_file.store_32(fixture["away_team"])
-		save_file.store_32(division.results.size())
-		for weekly_results in division.results:
-			save_file.store_32(weekly_results.size())
-			for result in weekly_results:
-				save_file.store_32(result["home_team"])
-				save_file.store_8(result["home_team_goals"])
-				save_file.store_32(result["away_team"])
-				save_file.store_8(result["away_team_goals"])
-				# match stats
-				save_file.store_32(result["match_stats"].attendance)
-				save_file.store_8(result["match_stats"].home_shots_on_target)
-				save_file.store_8(result["match_stats"].home_shots_off_target)
-				save_file.store_8(result["match_stats"].home_possession_percent)
-				save_file.store_8(result["match_stats"].home_corners)
-				save_file.store_8(result["match_stats"].away_shots_on_target)
-				save_file.store_8(result["match_stats"].away_shots_off_target)
-				save_file.store_8(result["match_stats"].away_possession_percent)
-				save_file.store_8(result["match_stats"].away_corners)
-				# match events
-				save_file.store_8(result["match_events"].size())
-				for event in result["match_events"]:
-					save_file.store_32(event.team_id)
-					save_file.store_32(event.player_id)
-					save_file.store_8(event.minute)
-					save_file.store_32(event.event_type)
-	# TEAMS
-	save_file.store_32(teams.size())
-	for team in teams:
-		save_file.store_32(team.team_id)
-		save_file.store_pascal_string(team.team_name)
-		save_file.store_8(team.division)
-		save_file.store_32(team.season_stats.size())
-		for team_stats in team.season_stats:
-			save_file.store_8(team_stats.played)
-			save_file.store_8(team_stats.wins)
-			save_file.store_8(team_stats.draws)
-			save_file.store_8(team_stats.goals_scored)
-			save_file.store_8(team_stats.goals_conceded)
-		save_file.store_8(team.formation)
-		save_file.store_32(team.finances.current_money)
-		save_file.store_8(team.finances.income.size())
-		for week in team.finances.income:
-			save_file.store_8(week.size())
-			for income in week:
-				save_file.store_pascal_string(income.entry_name)
-				save_file.store_32(income.entry_amount)
-		save_file.store_8(team.finances.expense.size())
-		for week in team.finances.expense:
-			save_file.store_8(week.size())
-			for expense in week:
-				save_file.store_pascal_string(expense.entry_name)
-				save_file.store_32(expense.entry_amount)
-		save_file.store_8(team.avg_price)
-	# PLAYERS
-	save_file.store_32(players.size())
-	for player in players:
-		save_file.store_32(player.player_id)
-		save_file.store_pascal_string(player.player_name)
-		save_file.store_8(player.squad_number)
-		save_file.store_8(player.player_position)
-		save_file.store_8(player.player_skill)
-		save_file.store_16(player.matches_played)
-		save_file.store_16(player.goals_scored)
-		save_file.store_8(player.yellow_cards)
-		save_file.store_8(player.suspended)
-		if player.team != null:
-			save_file.store_32(player.team.team_id)
-		else:
-			save_file.store_32(4294967295)
-	save_file.close()
+	var file_access = GameFileAccess.new()
+	file_access.save_file("user://savefile.nl", game_data)
 	
 func load_game():
 	var load_file = FileAccess.open("user://savefile.nl", FileAccess.READ)
 	var version = load_file.get_32()
 	match version:
 		0x9:
-			human_index = load_file.get_32()
-			current_season = load_file.get_32()
-			current_week = load_file.get_32()
+			game_data.human_index = load_file.get_32()
+			game_data.current_season = load_file.get_32()
+			game_data.current_week = load_file.get_32()
 			var num_divisions = load_file.get_32()
 			for i in num_divisions:
 				var division = Division.new()
@@ -832,7 +749,7 @@ func load_game():
 									"match_stats": stats }
 						weekly_results.append(result)
 					division.results.append(weekly_results)
-				divisions.append(division)
+				game_data.divisions.append(division)
 			var num_teams = load_file.get_32()
 			for i in num_teams:
 				var team = Team.new()
@@ -872,7 +789,7 @@ func load_game():
 						week_expense.append(entry)
 					team.finances.expense.append(week_expense)
 				team.avg_price = 10
-				teams.append(team)
+				game_data.teams.append(team)
 			var num_players = load_file.get_32()
 			for i in num_players:
 				var player = Player.new()
@@ -887,14 +804,14 @@ func load_game():
 				player.suspended = 0
 				var team_id = load_file.get_32()
 				if team_id != 4294967295:
-					var player_team = teams.filter(func(team): return team.team_id == team_id).front()
+					var player_team = game_data.teams.filter(func(team): return team.team_id == team_id).front()
 					player_team.players.append(player)
 					player.team = player_team
-				players.append(player)
+				game_data.players.append(player)
 		0x10:
-			human_index = load_file.get_32()
-			current_season = load_file.get_32()
-			current_week = load_file.get_32()
+			game_data.human_index = load_file.get_32()
+			game_data.current_season = load_file.get_32()
+			game_data.current_week = load_file.get_32()
 			var num_divisions = load_file.get_32()
 			for i in num_divisions:
 				var division = Division.new()
@@ -939,7 +856,7 @@ func load_game():
 									"match_stats": stats }
 						weekly_results.append(result)
 					division.results.append(weekly_results)
-				divisions.append(division)
+				game_data.divisions.append(division)
 			var num_teams = load_file.get_32()
 			for i in num_teams:
 				var team = Team.new()
@@ -979,7 +896,7 @@ func load_game():
 						week_expense.append(entry)
 					team.finances.expense.append(week_expense)
 				team.avg_price = 10
-				teams.append(team)
+				game_data.teams.append(team)
 			var num_players = load_file.get_32()
 			for i in num_players:
 				var player = Player.new()
@@ -994,14 +911,14 @@ func load_game():
 				player.suspended = load_file.get_8()
 				var team_id = load_file.get_32()
 				if team_id != 4294967295:
-					var player_team = teams.filter(func(team): return team.team_id == team_id).front()
+					var player_team = game_data.teams.filter(func(team): return team.team_id == team_id).front()
 					player_team.players.append(player)
 					player.team = player_team
-				players.append(player)
+				game_data.players.append(player)
 		0x11:
-			human_index = load_file.get_32()
-			current_season = load_file.get_32()
-			current_week = load_file.get_32()
+			game_data.human_index = load_file.get_32()
+			game_data.current_season = load_file.get_32()
+			game_data.current_week = load_file.get_32()
 			var num_divisions = load_file.get_32()
 			for i in num_divisions:
 				var division = Division.new()
@@ -1057,7 +974,7 @@ func load_game():
 									"match_stats": stats }
 						weekly_results.append(result)
 					division.results.append(weekly_results)
-				divisions.append(division)
+				game_data.divisions.append(division)
 			var num_teams = load_file.get_32()
 			for i in num_teams:
 				var team = Team.new()
@@ -1097,7 +1014,7 @@ func load_game():
 						week_expense.append(entry)
 					team.finances.expense.append(week_expense)
 				team.avg_price = 10
-				teams.append(team)
+				game_data.teams.append(team)
 			var num_players = load_file.get_32()
 			for i in num_players:
 				var player = Player.new()
@@ -1112,14 +1029,14 @@ func load_game():
 				player.suspended = load_file.get_8()
 				var team_id = load_file.get_32()
 				if team_id != 4294967295:
-					var player_team = teams.filter(func(team): return team.team_id == team_id).front()
+					var player_team = game_data.teams.filter(func(team): return team.team_id == team_id).front()
 					player_team.players.append(player)
 					player.team = player_team
-				players.append(player)
+				game_data.players.append(player)
 		0x12:
-			human_index = load_file.get_32()
-			current_season = load_file.get_32()
-			current_week = load_file.get_32()
+			game_data.human_index = load_file.get_32()
+			game_data.current_season = load_file.get_32()
+			game_data.current_week = load_file.get_32()
 			var num_divisions = load_file.get_32()
 			for i in num_divisions:
 				var division = Division.new()
@@ -1175,7 +1092,7 @@ func load_game():
 									"match_stats": stats }
 						weekly_results.append(result)
 					division.results.append(weekly_results)
-				divisions.append(division)
+				game_data.divisions.append(division)
 			var num_teams = load_file.get_32()
 			for i in num_teams:
 				var team = Team.new()
@@ -1215,7 +1132,7 @@ func load_game():
 						week_expense.append(entry)
 					team.finances.expense.append(week_expense)
 				team.avg_price = load_file.get_8()
-				teams.append(team)
+				game_data.teams.append(team)
 			var num_players = load_file.get_32()
 			for i in num_players:
 				var player = Player.new()
@@ -1230,9 +1147,9 @@ func load_game():
 				player.suspended = load_file.get_8()
 				var team_id = load_file.get_32()
 				if team_id != 4294967295:
-					var player_team = teams.filter(func(team): return team.team_id == team_id).front()
+					var player_team = game_data.teams.filter(func(team): return team.team_id == team_id).front()
 					player_team.players.append(player)
 					player.team = player_team
-				players.append(player)
+				game_data.players.append(player)
 	load_file.close()
 	loaded_game = true

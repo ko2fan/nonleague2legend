@@ -14,7 +14,7 @@ extends Control
 func _ready():
 	var player_team := GameManager.get_player_team()
 	title_label.text = player_team.team_name
-	week_button.text = "Week " + str(GameManager.current_week + 1)
+	week_button.text = "Week " + str(GameManager.get_week() + 1)
 	var fixture = GameManager.get_fixture(player_team.division, player_team.team_id)
 	var next_match := "TEAM_ID"
 	if fixture["home_team"] == player_team.team_id:

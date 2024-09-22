@@ -25,18 +25,19 @@ func create_season_fixtures():
 		fixtures.append(weekly_fixtures)
 		
 func get_league_table(season : int):
+	var static_teams = GameManager.get_teams()
 	var league = teams.duplicate()
 	league.sort_custom(
 		func(team_a, team_b):
-			var pts_a = GameManager.teams[team_a].season_stats[season].wins * 3
-			pts_a += GameManager.teams[team_a].season_stats[season].draws
-			var pts_b = GameManager.teams[team_b].season_stats[season].wins * 3
-			pts_b += GameManager.teams[team_b].season_stats[season].draws
+			var pts_a = static_teams[team_a].season_stats[season].wins * 3
+			pts_a += static_teams[team_a].season_stats[season].draws
+			var pts_b = static_teams[team_b].season_stats[season].wins * 3
+			pts_b += static_teams[team_b].season_stats[season].draws
 			if pts_a == pts_b:
-				var gs_a = GameManager.teams[team_a].season_stats[season].goals_scored
-				var gc_a = GameManager.teams[team_a].season_stats[season].goals_conceded
-				var gs_b = GameManager.teams[team_b].season_stats[season].goals_scored
-				var gc_b = GameManager.teams[team_b].season_stats[season].goals_conceded
+				var gs_a = static_teams[team_a].season_stats[season].goals_scored
+				var gc_a = static_teams[team_a].season_stats[season].goals_conceded
+				var gs_b = static_teams[team_b].season_stats[season].goals_scored
+				var gc_b =static_teams[team_b].season_stats[season].goals_conceded
 				var gd_a = gs_a - gc_a
 				var gd_b = gs_b - gc_b
 				if gd_a == gd_b:

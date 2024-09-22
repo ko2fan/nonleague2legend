@@ -19,7 +19,8 @@ func _team_picked(index):
 	print("Player chose " + team_container.get_child(index).text)
 	GameManager.set_player_index(team_container.get_child(index).text)
 	var division_id = GameManager.get_player_team().division
-	var team_swap = GameManager.teams[GameManager.get_last_division().teams.back()]
+	var teams = GameManager.get_teams()
+	var team_swap = teams[GameManager.get_last_division().teams.back()]
 	GameManager.move_team_to_division(team_swap, division_id)
 	GameManager.move_team_to_division(GameManager.get_player_team(), 3)
 	var child = get_tree().root.get_node("Management")

@@ -8,14 +8,15 @@ extends Control
 
 func _ready():
 	cleanup()
+	var week: int = GameManager.get_week()
 	var team_finances = GameManager.get_player_team().get_finances()
 	if team_finances != null:
-		for income in team_finances.get_income(GameManager.current_week):
+		for income in team_finances.get_income(week):
 			var income_label = Label.new()
 			income_label.label_settings = load("res://Themes/finance_settings.tres")
 			income_label.text = income.entry_name + ": £" + Utils.CommaNumber(income.entry_amount)
 			income_table.add_child(income_label)
-		for expense in team_finances.get_expense(GameManager.current_week):
+		for expense in team_finances.get_expense(week):
 			var expense_label = Label.new()
 			expense_label.label_settings = load("res://Themes/finance_settings.tres")
 			expense_label.text = expense.entry_name + ": £" + Utils.CommaNumber(expense.entry_amount)

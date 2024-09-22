@@ -8,14 +8,14 @@ extends Control
 
 func _ready():
 	cleanup()
-	var season = GameManager.current_season
+	var season = GameManager.get_season()
 	var division_id = GameManager.get_player_team().division
-	var division = GameManager.divisions[division_id]
+	var division = GameManager.get_division(division_id)
 	var table = division.get_league_table(season)
 	var league_position = 1
 	for team_id in table:
 		var row = league_row_prefab.instantiate()
-		var team = GameManager.teams[team_id]
+		var team = GameManager.get_team(team_id)
 		var stats = team.season_stats[season] as TeamStats
 		var league_entry = LeagueEntry.new()
 		league_entry.position = league_position
