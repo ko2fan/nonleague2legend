@@ -12,6 +12,8 @@ var season_stats = []
 var formation = GameManager.Formation.FORMATION_4_4_2
 var finances
 
+var avg_price = 0
+
 func get_players() -> Array:
 	return players
 	

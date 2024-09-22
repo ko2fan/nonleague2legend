@@ -36,7 +36,9 @@
 				},
 			],
 			"attendance_min": 5000,
-			"attendance_max": 47245
+			"attendance_max": 47245,
+			"price_min": 25,
+			"price_max": 35,
 		},
 		{
 			"name": "Division 2",
@@ -73,7 +75,9 @@
 				},
 			],
 			"attendance_min": 4000,
-			"attendance_max": 40494
+			"attendance_max": 40494,
+			"price_min": 20,
+			"price_max": 30,
 		},
 		{
 			"name": "Division 3",
@@ -110,7 +114,9 @@
 				},
 			],
 			"attendance_min": 2000,
-			"attendance_max": 19480
+			"attendance_max": 19480,
+			"price_min": 15,
+			"price_max": 25,
 		},
 		{
 			"name": "Division 4",
@@ -147,7 +153,9 @@
 				},
 			],
 			"attendance_min": 1500,
-			"attendance_max": 12277
+			"attendance_max": 12277,
+			"price_min": 10,
+			"price_max": 20,
 		}
 	],
 	"surnames": [
