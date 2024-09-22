@@ -63,6 +63,12 @@ func _ready():
 	
 	cleanup()
 
+func _process(delta: float) -> void:
+	if Input.is_action_pressed("ui_select"):
+		match_engine.match_speed = 0.25
+	else:
+		match_engine.match_speed = 0.5
+		
 func _on_minute_tick(minute):
 	minute_label.text = str(minute)
 
