@@ -60,8 +60,6 @@ func _ready():
 	match_engine.match_event.connect(_on_match_event)
 	match_engine.minute_tick.connect(_on_minute_tick)
 	match_engine.match_ended.connect(_on_match_ended)
-	match_engine.possession_changed.connect(_on_possession_changed)
-	match_engine.ball_position_changed.connect(_on_ball_position_changed)
 	
 	cleanup()
 
@@ -80,15 +78,18 @@ func _on_match_event(match_event_type : MatchEngine.MatchEventType, match_event)
 			match_event_label.text = "GOAL!!! for " + team_name
 			home_score_label.text = str(match_engine.current_home_goals)
 			away_score_label.text = str(match_engine.current_away_goals)
+			match_event_label.add_theme_color_override("font_color", Color.DARK_ORANGE)
 		MatchEngine.MatchEventType.HALF_TIME:
 			match_event_label.text = "Half Time, the score is " + \
 				str(match_engine.current_home_goals) + " - " + str(match_engine.current_away_goals)
 		MatchEngine.MatchEventType.YELLOW_CARD:
 			match_event_label.text = GameManager.get_player_by_id(match_event.player_id).player_name + \
 				" has been booked"
+			match_event_label.add_theme_color_override("font_color", Color.YELLOW)
 		MatchEngine.MatchEventType.RED_CARD:
 			match_event_label.text = GameManager.get_player_by_id(match_event.player_id).player_name + \
 				" has been sent off!"
+			match_event_label.add_theme_color_override("font_color", Color.RED)
 		MatchEngine.MatchEventType.SHOT_ON_TARGET:
 			match_event_label.text = team_name + " had a shot on target"
 			if match_event.team_id == home_team.team_id:
@@ -106,22 +107,6 @@ func _on_match_event(match_event_type : MatchEngine.MatchEventType, match_event)
 				match_stats_away_corners.text = "Corners: " + \
 					str(match_engine.current_away_corners)
 	commentary.add_child(match_event_label)
-	
-func _on_possession_changed(team_possession):
-	var possession_label = Label.new()
-	if team_possession == 0:
-		#home team
-		ball_indicator.offset = Vector2(-128, 0)
-		possession_label.text = home_team.team_name + " got possession"
-	else:
-		#away team
-		ball_indicator.offset = Vector2(128, 0)
-		possession_label.text = away_team.team_name + " got possession"
-	commentary.add_child(possession_label)
-	
-func _on_ball_position_changed(ball_position):
-	ball_sprite.position = Vector2(ball_position * (26), 0)
-	#print("Ball moved to " + str(ball_position))
 
 func _on_continue_button_pressed():
 	cleanup()

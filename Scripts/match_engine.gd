@@ -21,10 +21,6 @@ var away_team_id
 
 var match_events = []
 
-var current_team_possession
-
-var ball_position
-
 var playing = true
 var timer = 0
 var match_speed = 0.5
@@ -42,8 +38,6 @@ func _ready():
 	current_away_shots_on_target = 0
 	current_home_corners = 0
 	current_away_corners = 0
-	current_team_possession = 0
-	ball_position = 0
 	match_events.clear()
 	
 func _process(delta):
