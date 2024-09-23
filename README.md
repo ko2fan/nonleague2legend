@@ -11,11 +11,10 @@ This game is currently WIP, please be patient as development happens. It will ta
 ## Features
 - [X] Pick a team to manage from 40 different teams
 - [X] Pick your squad from 16 players
-- [ ] Build up your stadium
 - [X] Send scouts to find players
 - [X] Buy and Sell players
-- [ ] Watch matches in real time
-- [ ] Manage your finances
+- [X] Watch matches in real time
+- [X] Manage your finances
 
 ### Start a new game or load an existing one
 ![Start a new game, or load an existing one](screenshots/nonleague01.PNG)
