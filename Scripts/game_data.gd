@@ -15,7 +15,13 @@ var players = []
 var initials = [ "A", "B", "C", "D", "D", "E",
 	"F", "G", "G", "H", "I", "J", "K", "L", "M",
 	"N", "O", "P", "R", "S", "S", "T", "T", "V", "W" ]
+var surnames = []
 
+func load_data() -> Array:
+	var database : JSON = preload("res://data/database.json")
+	var team_data = database.data["divisions"]
+	surnames = database.data["surnames"]
+	return team_data
 
 func create_team(team_name: String, division_id: int, formation: GameManager.Formation, price: float) -> Team:
 	var team = Team.new()
@@ -44,10 +50,10 @@ func create_new_season_stats(team: Team):
 	team_stats.goals_scored = 0
 	team.season_stats.append(team_stats)
 
-func create_player(surnames: Array, position: GameManager.PlayingPosition) -> Player:
+func create_player(position: GameManager.PlayingPosition) -> Player:
 	var player = Player.new()
 	player.player_id = next_player_slot
-	player.player_name = generate_name(initials, surnames)
+	player.player_name = generate_name(surnames)
 	player.player_position = position
 	player.player_skill = randi_range(1, 9)
 	
@@ -56,5 +62,5 @@ func create_player(surnames: Array, position: GameManager.PlayingPosition) -> Pl
 	
 	return player
 
-func generate_name(initials, surnames):
+func generate_name(surnames):
 	return initials.pick_random() + ". " + surnames.pick_random()

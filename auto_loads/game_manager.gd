@@ -44,14 +44,11 @@ func _init():
 	randomize()
 	
 func new_game():
-	var database : JSON = preload("res://data/database.json")
-
 	game_data = GameData.new()
-	var team_data = database.data["divisions"]
-	var surnames = database.data["surnames"]
+	var team_data = game_data.load_data()
 	
 	create_teams(team_data)
-	create_players(surnames)
+	create_players()
 	assign_players_to_teams()
 	create_fixtures()
 	
@@ -73,14 +70,14 @@ func create_teams(team_data):
 			)
 			div.teams.append(team.team_id)
 
-func create_players(surnames):
+func create_players():
 	var num_gks = 0
 	var num_defs = 0
 	var num_mids = 0
 	var num_atts = 0
 	var filled = false
 	while not filled:
-		var player = game_data.create_player(surnames, common_positions.pick_random())
+		var player = game_data.create_player(common_positions.pick_random())
 		match player.player_position:
 			1:
 				num_gks += 1
