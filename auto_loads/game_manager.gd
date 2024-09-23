@@ -2,10 +2,8 @@ extends Node
 
 var game_data
 
-var next_player_slot = 0
 var loaded_game = false
 var game_started = false
-var next_team_slot = 0
 var max_team_size = 20
 
 @onready var bid_player = preload("res://Scenes/bid_player.tscn")
@@ -14,10 +12,6 @@ var max_team_size = 20
 
 var old_scene
 var queued_bids = []
-
-var initials = [ "A", "B", "C", "D", "D", "E",
-	"F", "G", "G", "H", "I", "J", "K", "L", "M",
-	"N", "O", "P", "R", "S", "S", "T", "T", "V", "W" ]
 	
 var positional_colour = {
 	"GK" = Color.LAWN_GREEN,
@@ -54,10 +48,10 @@ func new_game():
 
 	game_data = GameData.new()
 	var team_data = database.data["divisions"]
-	var player_data = database.data["surnames"]
+	var surnames = database.data["surnames"]
 	
 	create_teams(team_data)
-	create_players(player_data)
+	create_players(surnames)
 	assign_players_to_teams()
 	create_fixtures()
 	
@@ -71,67 +65,39 @@ func create_teams(team_data):
 		game_data.divisions.append(div)
 		next_division_slot += 1
 		for team_name in division["teams"]:
-			var team = Team.new()
-			team.team_id = next_team_slot
-			team.team_name = team_name["team_name"]
-			team.division = div.division_id
-			create_new_season_stats(team)
-			team.formation = Formation.values().pick_random()
-			team.finances = TeamFinances.new()
-			team.finances.current_money = randi_range(15, 90) * 10000
-			team.finances.income.append([])
-			team.finances.expense.append([])
-			team.avg_price = randf_range(division["price_min"], division["price_max"])
-			game_data.teams.append(team)
-			next_team_slot += 1
+			var team = game_data.create_team(
+				team_name["team_name"],
+				div.division_id,
+				Formation.values().pick_random(),
+				randf_range(division["price_min"], division["price_max"])
+			)
 			div.teams.append(team.team_id)
 
-func create_new_season_stats(team: Team):
-	var team_stats = TeamStats.new()
-	team_stats.played = 0
-	team_stats.wins = 0
-	team_stats.draws = 0
-	team_stats.goals_conceded = 0
-	team_stats.goals_scored = 0
-	team.season_stats.append(team_stats)
-
-func create_players(player_data):
+func create_players(surnames):
 	var num_gks = 0
 	var num_defs = 0
 	var num_mids = 0
 	var num_atts = 0
 	var filled = false
 	while not filled:
-		var name_generator = generate_name(player_data)
-		var player = generate_player(name_generator)
-		if player.player_position == 1:
-			num_gks += 1
-		elif player.player_position == 2 or player.player_position == 6:
-			num_defs += 1
-		elif player.player_position == 4 or player.player_position == 6 or player.player_position == 12:
-			num_mids += 1
-		elif player.player_position == 8 or player.player_position == 12:
-			num_atts += 1
-		game_data.players.append(player)
+		var player = game_data.create_player(surnames, common_positions.pick_random())
+		match player.player_position:
+			1:
+				num_gks += 1
+			2,6:
+				num_defs += 1
+			4,6,12:
+				num_mids += 1
+			8,12:
+				num_atts += 1
 		var size: int = game_data.teams.size()
 		if num_gks >= 3 * size + 10 and \
 			num_defs >= 7 * size + 60 and \
 			num_mids >= 6 * size + 50 and \
 			num_atts >= 4 * size + 30:
 				filled = true
-		next_player_slot += 1
-	print("Filled " + str(next_player_slot) + " slots in total")
 		
-func generate_name(surname_list):
-	return initials.pick_random() + ". " + surname_list.pick_random()
-	
-func generate_player(player_name):
-	var player = Player.new()
-	player.player_id = next_player_slot
-	player.player_name = player_name
-	player.player_position = common_positions.pick_random()
-	player.player_skill = randi_range(1, 9)
-	return player
+
 	
 func get_week():
 	return game_data.current_week
@@ -615,7 +581,7 @@ func finish_season():
 	create_fixtures()
 	for division: Division in game_data.divisions:
 		for team in division.teams:
-			create_new_season_stats(team)
+			game_data.create_new_season_stats(team)
 	
 	var player_team : Team = get_player_team()
 	for player : Player in player_team.get_players():
