@@ -638,6 +638,10 @@ func bid_on_player(team, player, price):
 	old_scene = get_tree().current_scene
 	get_tree().root.add_child(bid_player.instantiate())
 
+func set_player_unavailable(player_id: int):
+	var player = get_player_by_id(player_id)
+	player.available = false
+
 func buy_player(player_id, price):
 	# TODO: move money from one team to another
 	var human_team = get_player_team()

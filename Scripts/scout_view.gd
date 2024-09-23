@@ -24,7 +24,10 @@ func _on_return_button_pressed():
 func _on_scout_button_pressed():
 	scrolled_container.show()
 	var players = GameManager.get_players_by_position(scout_position)
-	players = players.filter(func(player): return player.team != GameManager.get_player_team())
+	players = players.filter(func(player):
+		return player.team != GameManager.get_player_team() and \
+			player.available == true
+	)
 	show_players(players.slice(0, 10))
 
 func _on_scout_position_item_selected(index):

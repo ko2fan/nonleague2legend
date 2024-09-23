@@ -64,6 +64,7 @@ func _on_submit_bid_pressed():
 		accepted_text.text = GameManager.buy_player(bid.player, current_offer * 1000)
 		accepted_text.show()
 	else:
+		GameManager.set_player_unavailable(bid.player)
 		accepted_text.text = "You were outbid"
 		accepted_text.show()
 

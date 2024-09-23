@@ -11,3 +11,4 @@ var matches_played := 0
 var goals_scored := 0
 var yellow_cards := 0
 var suspended := 0
+var available := true
