@@ -576,12 +576,30 @@ func finish_week():
 	player_team.finances.current_money -= wages.entry_amount
 		
 func finish_season():
+	for division: Division in game_data.divisions:
+		var table: Array = division.get_league_table(game_data.current_season)
+		var promoted = []
+		var relegated = []
+		# get 2 promoted teams and relegated teams
+		if division.division_id == 0:
+			# no promotion in the top division
+			relegated = table.slice(-2)
+		elif division.division_id == game_data.divisions.size() - 1:
+			promoted = table.slice(0, 2)
+		else:
+			promoted = table.slice(0, 2)
+			relegated = table.slice(-2)
+		for team in promoted:
+			move_team_to_division(get_team(team), division.division_id - 1)
+		for team in relegated:
+			move_team_to_division(get_team(team), division.division_id + 1)
+	
+	for team: Team in game_data.teams:
+		game_data.create_new_season_stats(team)
+	
 	game_data.current_season += 1
 	game_data.current_week = 0
 	create_fixtures()
-	for division: Division in game_data.divisions:
-		for team in division.teams:
-			game_data.create_new_season_stats(team)
 	
 	var player_team : Team = get_player_team()
 	for player : Player in player_team.get_players():
