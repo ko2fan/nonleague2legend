@@ -2,7 +2,7 @@ extends Node
 
 class_name GameFileAccess
 
-func save_file(filename: String, game_data: GameData):
+func save_game_file(filename: String, game_data: GameData):
 	var save_file = FileAccess.open(filename, FileAccess.WRITE)
 	var version = 0x12
 	save_file.store_32(version)
@@ -94,9 +94,9 @@ func save_file(filename: String, game_data: GameData):
 			save_file.store_32(4294967295)
 	save_file.close()
 
-func load_file(filename: String) -> GameData:
+func load_game_file(filename: String) -> GameData:
 	var game_data = GameData.new()
-	var load_file = FileAccess.open("user://savefile.nl", FileAccess.READ)
+	var load_file = FileAccess.open(filename, FileAccess.READ)
 	var version = load_file.get_32()
 	match version:
 		0x12:

@@ -31,6 +31,11 @@ func _ready():
 	var player_team = GameManager.get_player_team()
 	var fixture = GameManager.get_fixture(player_team.division, player_team.team_id)
 	
+	if fixture == null:
+		cleanup()
+		get_tree().call_deferred("change_scene_to_packed", results_view)
+		return
+	
 	home_team = GameManager.get_team(fixture["home_team"])
 	away_team = GameManager.get_team(fixture["away_team"])
 	
@@ -63,7 +68,7 @@ func _ready():
 	
 	cleanup()
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if Input.is_action_pressed("ui_select"):
 		match_engine.match_speed = 0.25
 	else:

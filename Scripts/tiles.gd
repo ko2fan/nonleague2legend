@@ -16,12 +16,15 @@ func _ready():
 	title_label.text = player_team.team_name
 	week_button.text = "Week " + str(GameManager.get_week() + 1)
 	var fixture = GameManager.get_fixture(player_team.division, player_team.team_id)
-	var next_match := "TEAM_ID"
-	if fixture["home_team"] == player_team.team_id:
-		next_match = GameManager.get_team(fixture["away_team"]).team_name
+	if fixture != null:
+		var next_match := "TEAM_ID"
+		if fixture["home_team"] == player_team.team_id:
+			next_match = GameManager.get_team(fixture["away_team"]).team_name
+		else:
+			next_match = GameManager.get_team(fixture["home_team"]).team_name 
+		next_match_label.text = "Next match vs " + next_match 
 	else:
-		next_match = GameManager.get_team(fixture["home_team"]).team_name 
-	next_match_label.text = "Next match vs " + next_match 
+		next_match_label.text = "No match this week" 
 
 func _on_view_squad_button_pressed():
 	var child = get_tree().root.get_node("Management")

@@ -9,16 +9,22 @@ var attendance_max := 0
 
 var fixtures = []
 var results = []
-var teams = []
+var teams = [] # Array of team_id
+
+func remove_team(team_id: int):
+	teams.erase(team_id)
+	
+func add_team(team_id: int):
+	teams.append(team_id)
 
 func create_season_fixtures():
 	var N = teams.size()
-	for i in range(0, N - 1):
+	for i in range(0, N):
 		var weekly_fixtures = []
 		for x in range(0, N / 2):
 			weekly_fixtures.append({ "home_team": (x + i) % N, "away_team": (N-1 - x + i) % N })
 		fixtures.append(weekly_fixtures)
-	for i in range(0, N - 1):
+	for i in range(0, N):
 		var weekly_fixtures = []
 		for x in range((N / 2) + 1, N):
 			weekly_fixtures.append({ "home_team": (x + i) % N, "away_team": (N-1 - x + i) % N })

@@ -249,9 +249,9 @@ func move_team_to_division(team, division_index):
 	var old_division_index = team.division
 	team.division = division_index
 	var division = game_data.divisions[division_index]
-	division.teams.append(team.team_id)
+	division.add_team(team.team_id)
 	var division_old = game_data.divisions[old_division_index]
-	division_old.teams.erase(team.team_id)
+	division_old.remove_team(team.team_id)
 
 func get_player_team() -> Team:
 	return game_data.teams[game_data.human_index]
@@ -272,6 +272,7 @@ func get_fixture(division_id, team_id):
 	
 	if (fixture["home_team"] == 0 or fixture["away_team"] == 0):
 		print("Error, fixture not found")
+		return null
 	return fixture
 
 func get_team_in_division(division_id : int, team_id : int):
@@ -555,7 +556,9 @@ func finish_week():
 	# Add gate receipts if home
 	var player_team : Team = get_player_team()
 	var fixture = get_fixture(player_team.division, player_team.team_id)
-	var was_home = fixture["home_team"] == player_team.team_id
+	var was_home = false
+	if fixture != null:
+		was_home = fixture["home_team"] == player_team.team_id
 	
 	var gate_receipts = FinanceEntry.new()
 	gate_receipts.entry_name = "Gate Receipts"
@@ -662,12 +665,12 @@ func _notification(what):
 
 func save_game():
 	var file_access = GameFileAccess.new()
-	file_access.save_file("user://savefile.nl", game_data)
+	file_access.save_game_file("user://savefile.nl", game_data)
 	file_access.queue_free()
 	
 func load_game():
 	var file_access = GameFileAccess.new()
-	game_data = file_access.load_file("user://savefile.nl")
+	game_data = file_access.load_game_file("user://savefile.nl")
 	loaded_game = true
 	file_access.queue_free()
 	
