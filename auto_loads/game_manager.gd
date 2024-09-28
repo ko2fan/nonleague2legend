@@ -354,7 +354,7 @@ func play_match(home_team : Team, away_team : Team):
 	
 	# home team
 	var home_skill = home_team.get_picked_players().map(func(player): return player.player_skill).reduce(func(acc, sum): return acc + sum)
-	var away_skill = home_team.get_picked_players().map(func(player): return player.player_skill).reduce(func(acc, sum): return acc + sum)
+	var away_skill = away_team.get_picked_players().map(func(player): return player.player_skill).reduce(func(acc, sum): return acc + sum)
 	
 	var home_stats = assign_stats_events(home_team, home_skill)
 	var away_stats = assign_stats_events(away_team, away_skill)
