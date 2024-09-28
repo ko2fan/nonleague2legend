@@ -382,47 +382,55 @@ func play_match(home_team : Team, away_team : Team):
 		events.append(event)
 		
 	var skill_difference = abs(home_skill - away_skill)
+	var extra_goal_max = skill_difference / 10
 
+	# choose goals based on skill difference
 	if skill_difference == 0:
 		home_goals = randi_range(0, min(3, stats.home_shots_on_target))  # Equal match
 		away_goals = randi_range(0, min(3, stats.away_shots_on_target))
 	elif home_skill > away_skill:
-		home_goals = min(5, randi_range(1, min(5, stats.home_shots_on_target)) + skill_difference / 10)
-		away_goals = randi_range(0, min(home_goals + 1, stats.away_shots_on_target))
+		home_goals = min(5, randi_range(1, min(5, stats.home_shots_on_target)) + randi_range(0, extra_goal_max))
+		away_goals = randi_range(0, min(4, home_goals + 1, stats.away_shots_on_target))
 	else:
-		away_goals = min(5, randi_range(1, min(5, stats.away_shots_on_target)) + skill_difference / 10)
+		away_goals = min(4, randi_range(1, min(4, stats.away_shots_on_target)) + randi_range(0, extra_goal_max))
 		home_goals = randi_range(0, min(away_goals + 1, stats.home_shots_on_target))
 
-	# Step 6: Randomly assign who scored the goals and at what minute
+	# assign who scored the goals and at what minute
+	var shots_on = home_shots_on.duplicate()
 	for goals in home_goals:
-		var shots_on = home_shots_on.duplicate()
-		var player_scored = home_team.get_picked_players().filter(
-			func(player):
-				return player.player_position != PlayingPosition.GK
-		).pick_random()
-		player_scored.goals_scored += 1
+		var player_scored = assign_goalscorer(home_team)
 		
-		var random_shot = shots_on.pick_random()
-		var minute = random_shot["minute"]
-		shots_on.erase(random_shot)
+		if shots_on.is_empty():
+			var minute = randi_range(1, 90)
+			var shot_event = create_shotontarget_event(player_scored.team.team_id, player_scored.player_id, minute)
+			events.append(shot_event)
+			var goal_event = create_goal_event(home_team.team_id, player_scored.player_id, minute)
+			events.append(goal_event)
+		else:
+			var random_shot = shots_on.pick_random()
+			var minute = random_shot["minute"]
+			shots_on.erase(random_shot)
+			
+			var event = create_goal_event(home_team.team_id, player_scored.player_id, minute)
+			events.append(event)
 		
-		var event = create_goal_event(home_team.team_id, player_scored.player_id, minute)
-		events.append(event)
-		
+	shots_on = away_shots_on.duplicate()
 	for goals in away_goals:
-		var shots_on = away_shots_on.duplicate()
-		var player_scored = away_team.get_picked_players().filter(
-			func(player):
-				return player.player_position != PlayingPosition.GK
-		).pick_random()
-		player_scored.goals_scored += 1
+		var player_scored = assign_goalscorer(away_team)
 		
-		var random_shot = shots_on.pick_random()
-		var minute = random_shot["minute"]
-		shots_on.erase(random_shot)
-		
-		var event = create_goal_event(away_team.team_id, player_scored.player_id, minute)
-		events.append(event)
+		if shots_on.is_empty():
+			var minute = randi_range(1, 90)
+			var shot_event = create_shotontarget_event(player_scored.team.team_id, player_scored.player_id, minute)
+			events.append(shot_event)
+			var goal_event = create_goal_event(away_team.team_id, player_scored.player_id, minute)
+			events.append(goal_event)
+		else:
+			var random_shot = shots_on.pick_random()
+			var minute = random_shot["minute"]
+			shots_on.erase(random_shot)
+			
+			var event = create_goal_event(away_team.team_id, player_scored.player_id, minute)
+			events.append(event)
 	
 	for player in home_team.get_picked_players() + away_team.get_picked_players():
 		player.matches_played += 1
@@ -446,9 +454,14 @@ func assign_stats_events(team: Team, team_skill: int) -> Dictionary:
 	# total skill
 	# Determine shots based on skill and randomness
 	var shots = randi_range(5, 15) + team_skill / 10
+	#print("Shots: " + str(shots))
 	stats["shots"] = shots
 	# Convert a portion of shots to shots on target
-	var shots_on_target = randi_range(1, shots / 2)
+	var gauss_number = randfn(shots / 2, 2.5) # mean of half shots and std_dev of 2.5
+	#print("Gauss: " + str(gauss_number))
+	var shots_on_target = int(max(1, min(gauss_number, shots)))
+	#print("Shots On Target: " + str(shots_on_target))
+	
 	for i in range(shots_on_target):
 		var minute = randi_range(1, 90)
 		var player = team.get_picked_players().pick_random()
@@ -479,6 +492,19 @@ func assign_bookings(team : Team) -> Dictionary:
 			red_cards.append({"player": event["player"], "minute": randi_range(event["minute"] + 1, 90)})
 			
 	return {"yellow_cards": yellow_cards, "red_cards": red_cards }
+
+func assign_goalscorer(team: Team) -> Player:
+	var team_players = team.get_picked_players().filter(
+		func(player):
+			return player.player_position != PlayingPosition.GK
+	)
+	# increase chances of striker scoring
+	team_players += team_players.filter(func(player): return player.player_position == PlayingPosition.ATT)
+		
+	var player_scored = team_players.pick_random()
+	player_scored.goals_scored += 1
+	
+	return player_scored
 
 func create_half_time_event():
 	var match_event = match_event_prefab.instantiate()
