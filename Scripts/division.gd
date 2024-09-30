@@ -64,9 +64,9 @@ func get_results_for_team(team_id : int) -> Array:
 	var team_results := []
 	for week in results:
 		var result = week.filter(
-			func(result):
-				return GameManager.get_team_in_division(division_id, result["home_team"]).team_id == team_id or \
-					GameManager.get_team_in_division(division_id, result["away_team"]).team_id == team_id
+			func(res):
+				return GameManager.get_team_in_division(division_id, res["home_team"]).team_id == team_id or \
+					GameManager.get_team_in_division(division_id, res["away_team"]).team_id == team_id
 		)
 		if result.is_empty() == false:
 			team_results.append(result.front())
