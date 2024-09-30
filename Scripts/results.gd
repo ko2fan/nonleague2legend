@@ -32,4 +32,3 @@ func _exit_tree():
 
 func _on_finish_week_button_pressed():
 	GameManager.finish_week()
-	get_tree().change_scene_to_packed(management_ui)

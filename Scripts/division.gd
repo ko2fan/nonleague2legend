@@ -7,9 +7,9 @@ var division_id := -1
 var attendance_min := 0
 var attendance_max := 0
 
-var fixtures = []
-var results = []
-var teams = [] # Array of team_id
+var fixtures := []
+var results := []
+var teams := [] # Array of team_id
 
 func remove_team(team_id: int):
 	teams.erase(team_id)
@@ -19,14 +19,14 @@ func add_team(team_id: int):
 
 func create_season_fixtures():
 	var N = teams.size()
+	var halfN: int = int(N/2.0)
 	for i in range(0, N):
-		var weekly_fixtures = []
-		for x in range(0, N / 2):
+		var weekly_fixtures := []
+		for x in range(0, halfN):
 			weekly_fixtures.append({ "home_team": (x + i) % N, "away_team": (N-1 - x + i) % N })
 		fixtures.append(weekly_fixtures)
-	for i in range(0, N):
-		var weekly_fixtures = []
-		for x in range((N / 2) + 1, N):
+		weekly_fixtures.clear()
+		for x in range(halfN + 1, N):
 			weekly_fixtures.append({ "home_team": (x + i) % N, "away_team": (N-1 - x + i) % N })
 		fixtures.append(weekly_fixtures)
 		
@@ -59,3 +59,15 @@ func get_fixture(week : int, team_id : int):
 		if teams[fixture["home_team"]] == team_id or teams[fixture["away_team"]] == team_id:
 			return {"home_team": teams[fixture["home_team"]], "away_team": teams[fixture["away_team"]] }
 	return {"home_team": 0, "away_team": 0 }
+
+func get_results_for_team(team_id : int) -> Array:
+	var team_results := []
+	for week in results:
+		var result = week.filter(
+			func(result):
+				return GameManager.get_team_in_division(division_id, result["home_team"]).team_id == team_id or \
+					GameManager.get_team_in_division(division_id, result["away_team"]).team_id == team_id
+		)
+		if result.is_empty() == false:
+			team_results.append(result.front())
+	return team_results

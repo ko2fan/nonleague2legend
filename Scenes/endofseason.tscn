@@ -1,0 +1,79 @@
+[gd_scene load_steps=5 format=3 uid="uid://dwtxsnputwhp0"]
+
+[ext_resource type="Script" path="res://Scripts/season_end.gd" id="1_jhntp"]
+[ext_resource type="Theme" uid="uid://mr5fhtu70yvi" path="res://Themes/results_theme.tres" id="2_0vs1g"]
+[ext_resource type="LabelSettings" uid="uid://ddcb7kmaryg2c" path="res://Themes/Title_settings.tres" id="3_fv5tl"]
+[ext_resource type="PackedScene" uid="uid://cue486lh24b7k" path="res://Scenes/league_row.tscn" id="4_ewvfv"]
+
+[node name="SeasonEnd" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_jhntp")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_0vs1g")
+
+[node name="Title" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -122.5
+offset_right = 122.5
+offset_bottom = 91.0
+grow_horizontal = 2
+text = "Season finished"
+label_settings = ExtResource("3_fv5tl")
+
+[node name="FinishWeekButton" type="Button" parent="Panel"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -82.0
+offset_top = -80.0
+offset_right = 82.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Next Season"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -450.0
+offset_top = 90.0
+offset_right = 450.0
+offset_bottom = 630.0
+grow_horizontal = 2
+
+[node name="LeagueRow" parent="Panel/VBoxContainer" instance=ExtResource("4_ewvfv")]
+layout_mode = 2
+
+[node name="TopScorer" type="Label" parent="Panel/VBoxContainer"]
+layout_mode = 2
+text = "Top Scorer: T. Goalscorer 25"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel/VBoxContainer"]
+custom_minimum_size = Vector2(720, 450)
+layout_mode = 2
+
+[node name="ResultContainer" type="VBoxContainer" parent="Panel/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+
+[connection signal="pressed" from="Panel/FinishWeekButton" to="." method="_on_finish_week_button_pressed"]

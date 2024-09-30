@@ -53,7 +53,7 @@ func create_new_season_stats(team: Team):
 func create_player(position: GameManager.PlayingPosition) -> Player:
 	var player = Player.new()
 	player.player_id = next_player_slot
-	player.player_name = generate_name(surnames)
+	player.player_name = generate_name()
 	player.player_position = position
 	player.player_skill = randi_range(1, 9)
 	
@@ -62,5 +62,5 @@ func create_player(position: GameManager.PlayingPosition) -> Player:
 	
 	return player
 
-func generate_name(surnames):
+func generate_name():
 	return initials.pick_random() + ". " + surnames.pick_random()

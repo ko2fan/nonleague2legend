@@ -9,6 +9,7 @@ var max_team_size = 20
 @onready var bid_player = preload("res://Scenes/bid_player.tscn")
 @onready var match_event_prefab = preload("res://Scenes/match_event.tscn")
 @onready var match_stat_prefab = preload("res://Scenes/match_stat.tscn")
+@onready var season_end_screen = preload("res://Scenes/endofseason.tscn")
 
 var old_scene
 var queued_bids = []
@@ -453,11 +454,11 @@ func assign_stats_events(team: Team, team_skill: int) -> Dictionary:
 	}
 	# total skill
 	# Determine shots based on skill and randomness
-	var shots = randi_range(5, 15) + team_skill / 10
+	var shots = randi_range(5, 15) + int(team_skill / 10.0)
 	#print("Shots: " + str(shots))
 	stats["shots"] = shots
 	# Convert a portion of shots to shots on target
-	var gauss_number = randfn(shots / 2, 2.5) # mean of half shots and std_dev of 2.5
+	var gauss_number = randfn(shots / 2.0, 2.5) # mean of half shots and std_dev of 2.5
 	#print("Gauss: " + str(gauss_number))
 	var shots_on_target = int(max(1, min(gauss_number, shots)))
 	#print("Shots On Target: " + str(shots_on_target))
@@ -467,7 +468,7 @@ func assign_stats_events(team: Team, team_skill: int) -> Dictionary:
 		var player = team.get_picked_players().pick_random()
 		stats["shots_on_target"].append({"player": player, "minute": minute})
 	# Simulate corners based on shots taken
-	var corners = randi_range(1, shots / 3)
+	var corners = randi_range(1, int(shots / 3.0))
 	for i in range(corners):
 		var minute = randi_range(1, 90)
 		var player = team.get_picked_players().pick_random()
@@ -573,8 +574,9 @@ func finish_week():
 	game_data.current_week += 1
 	
 	if (game_data.current_week >= game_data.divisions[game_data.teams[game_data.human_index].division].fixtures.size()):
-		finish_season()
-		return
+		game_data.current_week = 0
+		get_tree().root.add_child(season_end_screen.instantiate())
+	
 
 	# Add gate receipts if home
 	var player_team : Team = get_player_team()
