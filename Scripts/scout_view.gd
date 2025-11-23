@@ -5,8 +5,6 @@ extends Control
 @onready var error_label = $Panel/ErrorLabel
 
 @onready var scout_row = preload("res://Scenes/scout_row.tscn")
-@onready var tiles_scene = preload("res://Scenes/tiles.tscn")
-
 
 var scout_position
 
@@ -19,7 +17,7 @@ func _on_return_button_pressed():
 	cleanup()
 		
 	var child = get_tree().root.get_node("Management")
-	child.change_to_packed_scene(tiles_scene)
+	child.change_to_packed_scene("tiles_view")
 
 func _on_scout_button_pressed():
 	scrolled_container.show()

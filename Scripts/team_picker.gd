@@ -24,7 +24,7 @@ func _team_picked(index):
 	GameManager.move_team_to_division(team_swap, division_id)
 	GameManager.move_team_to_division(GameManager.get_player_team(), 3)
 	var child = get_tree().root.get_node("Management")
-	child.change_to_packed_scene(tiles_scene)
+	child.change_to_packed_scene("tiles_view")
 	
 func _exit_tree():
 	GameManager.game_started = true

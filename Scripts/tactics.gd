@@ -5,7 +5,6 @@ extends Control
 
 @onready var grid_prefab = preload("res://Scenes/grid.tscn")
 @onready var shirt_texture = preload("res://Sprites/shirt.png")
-@onready var tiles_scene = preload("res://Scenes/tiles.tscn")
 
 var human_team
 var formation = GameManager.Formation.FORMATION_4_4_2
@@ -109,7 +108,7 @@ func draw_tactic():
 
 func _on_back_button_pressed():
 	var child = get_tree().root.get_node("Management")
-	child.change_to_packed_scene(tiles_scene)
+	child.change_to_packed_scene("tiles_view")
 
 
 func _on_formation_list_item_selected(index):

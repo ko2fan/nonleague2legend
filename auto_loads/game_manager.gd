@@ -10,6 +10,13 @@ var max_team_size = 20
 @onready var match_event_prefab = preload("res://Scenes/match_event.tscn")
 @onready var match_stat_prefab = preload("res://Scenes/match_stat.tscn")
 @onready var season_end_screen = preload("res://Scenes/endofseason.tscn")
+@onready var tiles_view = preload("res://Scenes/tiles.tscn")
+@onready var team_picker_view = preload("res://Scenes/team_picker.tscn")
+@onready var squad_view = preload("res://Scenes/squad_view.tscn")
+@onready var league_view = preload("res://Scenes/league_view.tscn")
+@onready var tactics_view = preload("res://Scenes/tactics.tscn")
+@onready var scouting_view = preload("res://Scenes/scout_view.tscn")
+@onready var finances_view = preload("res://Scenes/finances.tscn")
 
 var old_scene
 var queued_bids = []
@@ -44,6 +51,23 @@ var common_positions = [ PlayingPosition.GK, PlayingPosition.DEF, PlayingPositio
 func _init():
 	randomize()
 	
+func get_scene(scene):
+	match scene:
+		"tiles_view":
+			return tiles_view
+		"team_picker_view":
+			return team_picker_view
+		"squad_view":
+			return squad_view
+		"league_view":
+			return league_view
+		"tactics_view":
+			return tactics_view
+		"scouting_view":
+			return scouting_view
+		"finances_view":
+			return finances_view
+		
 func new_game():
 	game_data = GameData.new()
 	var team_data = game_data.load_data()

@@ -4,7 +4,6 @@ extends Control
 @onready var league_table = $Panel/ScrollContainer/VBoxContainer
 
 @onready var league_row_prefab = preload("res://Scenes/league_row.tscn")
-@onready var tiles = preload("res://Scenes/tiles.tscn")
 
 func _ready():
 	cleanup()
@@ -42,4 +41,4 @@ func cleanup():
 func _on_back_button_pressed():
 	cleanup()
 	var child = get_tree().root.get_node("Management")
-	child.change_to_packed_scene(tiles)
+	child.change_to_packed_scene("tiles_view")

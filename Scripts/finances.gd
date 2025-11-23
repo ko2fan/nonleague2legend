@@ -4,8 +4,6 @@ extends Control
 @onready var expenses_table = $Panel/HBoxContainer/Expenses
 @onready var cash = $Panel/CurrentMoney
 
-@onready var tiles = preload("res://Scenes/tiles.tscn")
-
 func _ready():
 	cleanup()
 	var week: int = GameManager.get_week()
@@ -38,4 +36,4 @@ func cleanup():
 func _on_back_button_pressed():
 	cleanup()
 	var child = get_tree().root.get_node("Management")
-	child.change_to_packed_scene(tiles)
+	child.change_to_packed_scene("tiles_view")
