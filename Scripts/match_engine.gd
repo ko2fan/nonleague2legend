@@ -94,4 +94,3 @@ func set_match(home_team, away_team, events):
 # For a so-called professional foul, a player will also receive a one-match ban.
 # If the foul in question is dissent, it will normally be a two-match ban.
 # If we are talking about violent conduct, the punishment is normally a three-match ban.
-

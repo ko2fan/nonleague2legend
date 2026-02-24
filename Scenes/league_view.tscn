@@ -1,12 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://fosf8vkw4b20"]
+[gd_scene format=3 uid="uid://fosf8vkw4b20"]
 
 [ext_resource type="Theme" uid="uid://ba4eko3hqyxp3" path="res://Themes/league_theme.tres" id="1_ox708"]
-[ext_resource type="Script" path="res://Scripts/league_view.gd" id="1_s0yvc"]
+[ext_resource type="Script" uid="uid://b6outd7pfxni5" path="res://Scripts/league_view.gd" id="1_s0yvc"]
 [ext_resource type="LabelSettings" uid="uid://ddcb7kmaryg2c" path="res://Themes/Title_settings.tres" id="2_jllxw"]
 [ext_resource type="LabelSettings" uid="uid://b4ymw1mjawc4d" path="res://Themes/league_settings.tres" id="3_n6k2u"]
 [ext_resource type="PackedScene" uid="uid://cue486lh24b7k" path="res://Scenes/league_row.tscn" id="4_4n4xo"]
 
-[node name="LeagueView" type="Control"]
+[node name="LeagueView" type="Control" unique_id=1579676135]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -15,7 +15,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_s0yvc")
 
-[node name="Panel" type="Panel" parent="."]
+[node name="Panel" type="Panel" parent="." unique_id=503409718]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -24,7 +24,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_ox708")
 
-[node name="Title" type="Label" parent="Panel"]
+[node name="Title" type="Label" parent="Panel" unique_id=557189306]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -36,7 +36,23 @@ grow_horizontal = 2
 text = "Division 99"
 label_settings = ExtResource("2_jllxw")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Panel"]
+[node name="Up" type="Button" parent="Panel" unique_id=1197384050]
+layout_mode = 0
+offset_left = 148.0
+offset_top = 32.0
+offset_right = 188.0
+offset_bottom = 72.0
+text = "<-"
+
+[node name="Down" type="Button" parent="Panel" unique_id=913062419]
+layout_mode = 0
+offset_left = 1080.0
+offset_top = 32.0
+offset_right = 1120.0
+offset_bottom = 72.0
+text = "->"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel" unique_id=1420268347]
 custom_minimum_size = Vector2(900, 530)
 layout_mode = 1
 anchors_preset = 8
@@ -51,17 +67,17 @@ offset_bottom = 300.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel/ScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/ScrollContainer" unique_id=937099061]
 layout_mode = 2
 theme_override_constants/separation = 3
 
-[node name="LeagueRow" parent="Panel/ScrollContainer/VBoxContainer" instance=ExtResource("4_4n4xo")]
+[node name="LeagueRow" parent="Panel/ScrollContainer/VBoxContainer" unique_id=168335695 instance=ExtResource("4_4n4xo")]
 layout_mode = 2
 
-[node name="LeagueRow2" parent="Panel/ScrollContainer/VBoxContainer" instance=ExtResource("4_4n4xo")]
+[node name="LeagueRow2" parent="Panel/ScrollContainer/VBoxContainer" unique_id=857737146 instance=ExtResource("4_4n4xo")]
 layout_mode = 2
 
-[node name="BackButton" type="Button" parent="Panel"]
+[node name="BackButton" type="Button" parent="Panel" unique_id=1884904561]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -76,7 +92,7 @@ grow_horizontal = 2
 grow_vertical = 0
 text = "Back"
 
-[node name="Header" type="HBoxContainer" parent="Panel"]
+[node name="Header" type="HBoxContainer" parent="Panel" unique_id=2121336259]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -88,66 +104,68 @@ offset_bottom = 131.0
 grow_horizontal = 2
 theme_override_constants/separation = 25
 
-[node name="Pos" type="Label" parent="Panel/Header"]
+[node name="Pos" type="Label" parent="Panel/Header" unique_id=610042190]
 layout_mode = 2
 text = "Pos"
 label_settings = ExtResource("3_n6k2u")
 
-[node name="TeamName" type="Label" parent="Panel/Header"]
+[node name="TeamName" type="Label" parent="Panel/Header" unique_id=2080508764]
 layout_mode = 2
 text = "Team"
 label_settings = ExtResource("3_n6k2u")
 
-[node name="Space1" type="Label" parent="Panel/Header"]
+[node name="Space1" type="Label" parent="Panel/Header" unique_id=902928252]
 layout_mode = 2
 text = "                      "
 label_settings = ExtResource("3_n6k2u")
 
-[node name="Played" type="Label" parent="Panel/Header"]
+[node name="Played" type="Label" parent="Panel/Header" unique_id=1988960174]
 layout_mode = 2
 tooltip_text = "Played"
 mouse_filter = 0
 text = "P"
 label_settings = ExtResource("3_n6k2u")
 
-[node name="Wins" type="Label" parent="Panel/Header"]
+[node name="Wins" type="Label" parent="Panel/Header" unique_id=1556558405]
 layout_mode = 2
 tooltip_text = "Wins"
 mouse_filter = 0
 text = "W"
 label_settings = ExtResource("3_n6k2u")
 
-[node name="Draws" type="Label" parent="Panel/Header"]
+[node name="Draws" type="Label" parent="Panel/Header" unique_id=365634620]
 layout_mode = 2
 tooltip_text = "Draws"
 mouse_filter = 0
 text = "D"
 label_settings = ExtResource("3_n6k2u")
 
-[node name="Losses" type="Label" parent="Panel/Header"]
+[node name="Losses" type="Label" parent="Panel/Header" unique_id=2014495397]
 layout_mode = 2
 tooltip_text = "Losses"
 mouse_filter = 0
 text = "L"
 label_settings = ExtResource("3_n6k2u")
 
-[node name="GoalsScored" type="Label" parent="Panel/Header"]
+[node name="GoalsScored" type="Label" parent="Panel/Header" unique_id=1993847149]
 layout_mode = 2
 tooltip_text = "Goals Scored"
 mouse_filter = 0
 text = "GF"
 label_settings = ExtResource("3_n6k2u")
 
-[node name="GoalsConceded" type="Label" parent="Panel/Header"]
+[node name="GoalsConceded" type="Label" parent="Panel/Header" unique_id=1111420973]
 layout_mode = 2
 tooltip_text = "Goals conceded"
 mouse_filter = 0
 text = "GA"
 label_settings = ExtResource("3_n6k2u")
 
-[node name="Points" type="Label" parent="Panel/Header"]
+[node name="Points" type="Label" parent="Panel/Header" unique_id=865294394]
 layout_mode = 2
 text = "Points"
 label_settings = ExtResource("3_n6k2u")
 
+[connection signal="pressed" from="Panel/Up" to="." method="_on_up_pressed"]
+[connection signal="pressed" from="Panel/Down" to="." method="_on_down_pressed"]
 [connection signal="pressed" from="Panel/BackButton" to="." method="_on_back_button_pressed"]

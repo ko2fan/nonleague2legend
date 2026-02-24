@@ -2,13 +2,20 @@ extends Control
 
 @onready var title = $Panel/Title
 @onready var league_table = $Panel/ScrollContainer/VBoxContainer
+@onready var up_button: Button = $Panel/Up
+@onready var down_button: Button = $Panel/Down
 
 @onready var league_row_prefab = preload("res://Scenes/league_row.tscn")
 
+var current_division
+
 func _ready():
 	cleanup()
+	current_division = GameManager.get_player_team().division
+	load_division(current_division)
+
+func load_division(division_id):
 	var season = GameManager.get_season()
-	var division_id = GameManager.get_player_team().division
 	var division = GameManager.get_division(division_id)
 	var table = division.get_league_table(season)
 	var league_position = 1
@@ -32,13 +39,33 @@ func _ready():
 		league_table.add_child(row)
 		league_position += 1
 	title.text = "Division " + str(division_id + 1)
-
+	
+	if division_id == 0:
+		up_button.disabled = true
+	if division_id == GameManager.get_num_divisions() - 1:
+		down_button.disabled = true
+	
 func cleanup():
 	for child in league_table.get_children():
 		child.queue_free()
 		league_table.remove_child(child)
+		
+	up_button.disabled = false
+	down_button.disabled = false
 
 func _on_back_button_pressed():
 	cleanup()
 	var child = get_tree().root.get_node("Management")
 	child.change_to_packed_scene("tiles_view")
+
+
+func _on_up_pressed() -> void:
+	cleanup()
+	current_division -= 1
+	load_division(current_division)
+
+
+func _on_down_pressed() -> void:
+	cleanup()
+	current_division += 1
+	load_division(current_division)

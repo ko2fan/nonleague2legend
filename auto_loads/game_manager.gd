@@ -266,6 +266,9 @@ func set_player_index(team_name):
 
 func get_last_division():
 	return game_data.divisions.back()
+	
+func get_num_divisions():
+	return len(game_data.divisions)
 
 func move_team_to_division(team, division_index):
 	var old_division_index = team.division
