@@ -18,16 +18,38 @@ func add_team(team_id: int):
 	teams.append(team_id)
 
 func create_season_fixtures():
-	var N = teams.size()
-	var halfN: int = int(N/2.0)
-	for i in range(0, N):
-		var weekly_fixtures := []
-		for x in range(0, halfN):
-			weekly_fixtures.append({ "home_team": (x + i) % N, "away_team": (N-1 - x + i) % N })
-		fixtures.append(weekly_fixtures)
-		weekly_fixtures.clear()
-		for x in range(halfN + 1, N):
-			weekly_fixtures.append({ "home_team": (x + i) % N, "away_team": (N-1 - x + i) % N })
+	# Round-robin: each team plays every other twice (home and away). Circle method.
+	# https://pimvanthof.github.io/rr.pdf
+	var N := teams.size()
+	if N < 2:
+		return
+	# Use even n (add dummy/bye if odd)
+	var n := N if (N % 2 == 0) else N + 1
+	var num_rounds_first_half := n - 1
+	# First half: rounds 0..num_rounds_first_half-1; second half: same pairings, home/away swapped
+	for round in range(2 * num_rounds_first_half):
+		var weekly_fixtures: Array = []
+		var r := round % num_rounds_first_half
+		# Team 0 (index 0) plays opponent (n-1 - r)
+		var opp0 := n - 1 - r
+		if opp0 < N:
+			var home_idx := 0 if round < num_rounds_first_half else opp0
+			var away_idx := opp0 if round < num_rounds_first_half else 0
+			weekly_fixtures.append({ "home_team": home_idx, "away_team": away_idx })
+		# Circle of teams 1..n-1 in rotated order; exclude opp0 (already paired with team 0)
+		var rest: Array = []
+		for p in range(n - 1):
+			var team_idx := ((p + r) % (n - 1)) + 1
+			if team_idx != opp0:
+				rest.append(team_idx)
+		# Pair rest[j] with rest[rest.size()-1-j]
+		for j in range(rest.size() / 2):
+			var a : int = rest[j]
+			var b : int = rest[rest.size() - 1 - j]
+			if a < N and b < N:  # skip bye if n > N
+				var home_idx := a if round < num_rounds_first_half else b
+				var away_idx := b if round < num_rounds_first_half else a
+				weekly_fixtures.append({ "home_team": home_idx, "away_team": away_idx })
 		fixtures.append(weekly_fixtures)
 		
 func get_league_table(season : int):
