@@ -1,12 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://dyapdjw0xnr3b"]
+[gd_scene format=3 uid="uid://dyapdjw0xnr3b"]
 
 [ext_resource type="Theme" uid="uid://dqg1g7207v4xn" path="res://Themes/finances_theme.tres" id="1_5ly0v"]
 [ext_resource type="LabelSettings" uid="uid://ddcb7kmaryg2c" path="res://Themes/Title_settings.tres" id="2_k83ys"]
-[ext_resource type="Script" path="res://Scripts/finances.gd" id="2_tdupe"]
+[ext_resource type="Script" uid="uid://vygp30mgof4" path="res://Scripts/finances.gd" id="2_tdupe"]
 [ext_resource type="LabelSettings" uid="uid://84pm1lu0xpl0" path="res://Themes/finance_header_settings.tres" id="3_dtrlj"]
 [ext_resource type="LabelSettings" uid="uid://bwh6q1lukkqdi" path="res://Themes/finance_settings.tres" id="4_luqpo"]
 
-[node name="Finances" type="Control"]
+[node name="Finances" type="Control" unique_id=153389149]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -16,7 +16,7 @@ grow_vertical = 2
 theme = ExtResource("1_5ly0v")
 script = ExtResource("2_tdupe")
 
-[node name="Panel" type="Panel" parent="."]
+[node name="Panel" type="Panel" parent="." unique_id=138844007]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -24,7 +24,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Title" type="Label" parent="Panel"]
+[node name="Title" type="Label" parent="Panel" unique_id=1940432754]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -36,7 +36,7 @@ grow_horizontal = 2
 text = "Finances"
 label_settings = ExtResource("2_k83ys")
 
-[node name="IncomeHeader" type="Label" parent="Panel"]
+[node name="IncomeHeader" type="Label" parent="Panel" unique_id=857914919]
 layout_mode = 0
 offset_left = 329.0
 offset_top = 125.0
@@ -45,7 +45,16 @@ offset_bottom = 199.0
 text = "Income"
 label_settings = ExtResource("3_dtrlj")
 
-[node name="ExpensesHeader" type="Label" parent="Panel"]
+[node name="WeekOrMonth" type="Label" parent="Panel" unique_id=920558490]
+layout_mode = 0
+offset_left = 507.0
+offset_top = 74.0
+offset_right = 695.0
+offset_bottom = 148.0
+text = "Week 0"
+label_settings = ExtResource("3_dtrlj")
+
+[node name="ExpensesHeader" type="Label" parent="Panel" unique_id=1266148505]
 layout_mode = 0
 offset_left = 658.0
 offset_top = 125.0
@@ -54,7 +63,7 @@ offset_bottom = 199.0
 text = "Expenses"
 label_settings = ExtResource("3_dtrlj")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Panel"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel" unique_id=343668365]
 custom_minimum_size = Vector2(650, 400)
 layout_mode = 1
 anchors_preset = 8
@@ -70,53 +79,53 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 80
 
-[node name="Income" type="VBoxContainer" parent="Panel/HBoxContainer"]
+[node name="Income" type="VBoxContainer" parent="Panel/HBoxContainer" unique_id=1410070911]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Panel/HBoxContainer/Income"]
-layout_mode = 2
-text = "Ticket Sales - £70,000"
-label_settings = ExtResource("4_luqpo")
-
-[node name="Label2" type="Label" parent="Panel/HBoxContainer/Income"]
+[node name="Label" type="Label" parent="Panel/HBoxContainer/Income" unique_id=772943046]
 layout_mode = 2
 text = "Ticket Sales - £70,000"
 label_settings = ExtResource("4_luqpo")
 
-[node name="Label3" type="Label" parent="Panel/HBoxContainer/Income"]
+[node name="Label2" type="Label" parent="Panel/HBoxContainer/Income" unique_id=803697075]
 layout_mode = 2
 text = "Ticket Sales - £70,000"
 label_settings = ExtResource("4_luqpo")
 
-[node name="Label4" type="Label" parent="Panel/HBoxContainer/Income"]
+[node name="Label3" type="Label" parent="Panel/HBoxContainer/Income" unique_id=529785064]
 layout_mode = 2
 text = "Ticket Sales - £70,000"
 label_settings = ExtResource("4_luqpo")
 
-[node name="Expenses" type="VBoxContainer" parent="Panel/HBoxContainer"]
+[node name="Label4" type="Label" parent="Panel/HBoxContainer/Income" unique_id=1000786186]
+layout_mode = 2
+text = "Ticket Sales - £70,000"
+label_settings = ExtResource("4_luqpo")
+
+[node name="Expenses" type="VBoxContainer" parent="Panel/HBoxContainer" unique_id=2102790889]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Panel/HBoxContainer/Expenses"]
+[node name="Label" type="Label" parent="Panel/HBoxContainer/Expenses" unique_id=213972419]
 layout_mode = 2
 text = "Player Wages - £40,000"
 label_settings = ExtResource("4_luqpo")
 
-[node name="Label2" type="Label" parent="Panel/HBoxContainer/Expenses"]
+[node name="Label2" type="Label" parent="Panel/HBoxContainer/Expenses" unique_id=459093949]
 layout_mode = 2
 text = "Player Wages - £40,000"
 label_settings = ExtResource("4_luqpo")
 
-[node name="Label3" type="Label" parent="Panel/HBoxContainer/Expenses"]
+[node name="Label3" type="Label" parent="Panel/HBoxContainer/Expenses" unique_id=1158304476]
 layout_mode = 2
 text = "Player Wages - £40,000"
 label_settings = ExtResource("4_luqpo")
 
-[node name="Label4" type="Label" parent="Panel/HBoxContainer/Expenses"]
+[node name="Label4" type="Label" parent="Panel/HBoxContainer/Expenses" unique_id=990593963]
 layout_mode = 2
 text = "Player Wages - £40,000"
 label_settings = ExtResource("4_luqpo")
 
-[node name="BackButton" type="Button" parent="Panel"]
+[node name="BackButton" type="Button" parent="Panel" unique_id=91520238]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -131,7 +140,37 @@ grow_horizontal = 2
 grow_vertical = 0
 text = "Back"
 
-[node name="CurrentMoney" type="Label" parent="Panel"]
+[node name="LastWeek" type="Button" parent="Panel" unique_id=912731709]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -526.0
+offset_top = -571.0
+offset_right = -459.0
+offset_bottom = -531.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Last Week"
+
+[node name="LastMonth" type="Button" parent="Panel" unique_id=2146448312]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -574.0
+offset_top = -514.0
+offset_right = -409.0
+offset_bottom = -474.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Last Month"
+
+[node name="CurrentMoney" type="Label" parent="Panel" unique_id=805094469]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -148,3 +187,5 @@ text = "Cash: £1,000,000"
 label_settings = ExtResource("3_dtrlj")
 
 [connection signal="pressed" from="Panel/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="Panel/LastWeek" to="." method="_on_last_week_pressed"]
+[connection signal="pressed" from="Panel/LastMonth" to="." method="_on_last_month_pressed"]

@@ -124,6 +124,9 @@ func create_players():
 func get_week():
 	return game_data.current_week
 	
+func get_month():
+	return game_data.current_week / 4;
+	
 func get_season():
 	return game_data.current_season
 	
@@ -602,33 +605,41 @@ func finish_week():
 	
 	if (game_data.current_week >= game_data.divisions[game_data.teams[game_data.human_index].division].fixtures.size()):
 		game_data.current_week = 0
-		get_tree().root.add_child(season_end_screen.instantiate())
-	
+		get_tree().root.add_child(season_end_screen.instantiate())	
 
 	# Add gate receipts if home
 	var player_team : Team = get_player_team()
-	var fixture = get_fixture(player_team.division, player_team.team_id)
-	var was_home = false
-	if fixture != null:
-		was_home = fixture["home_team"] == player_team.team_id
+	var was_home := false
+	if last_match != null:
+		was_home = last_match["home_team"] == get_division_team_id(player_team.division, player_team.team_id)
 	
-	var gate_receipts = FinanceEntry.new()
+	var gate_receipts: FinanceEntry = FinanceEntry.new()
 	gate_receipts.entry_name = "Gate Receipts"
 	gate_receipts.entry_amount = 0
+	var sponsors: FinanceEntry = FinanceEntry.new()
+	sponsors.entry_name = "Sponsors"
+	sponsors.entry_amount = 0
+	var ground_maintenance: FinanceEntry = FinanceEntry.new()
+	ground_maintenance.entry_name = "Ground Maintenance"
+	ground_maintenance.entry_amount = 0
 	if was_home:
 		var attendance = last_match["match_stats"].attendance
 		gate_receipts.entry_amount = attendance * player_team.avg_price
-	player_team.finances.income.append([gate_receipts])
-	player_team.finances.current_money += gate_receipts.entry_amount
+		print("Gate Receipts: " + str(gate_receipts.entry_amount))
+		sponsors.entry_amount = attendance * randf_range(1.2, 1.6)
+		ground_maintenance.entry_amount = 2000 * (5 - player_team.division)
+		print("Attendance: " + str(attendance))
+	player_team.finances.income.append([gate_receipts, sponsors])
+	player_team.finances.current_money += gate_receipts.entry_amount + sponsors.entry_amount
 	
 	# Deduct wages
 	var total_skill = player_team.get_picked_players().map(func(player): return player.player_skill).reduce(func(acc, sum): return acc + sum)
-	var wages = FinanceEntry.new()
+	var wages: FinanceEntry = FinanceEntry.new()
 	wages.entry_name = "Wages"
 	wages.entry_amount = total_skill * 500
 	
-	player_team.finances.expense.append([wages])
-	player_team.finances.current_money -= wages.entry_amount
+	player_team.finances.expense.append([wages, ground_maintenance])
+	player_team.finances.current_money -= wages.entry_amount + ground_maintenance.entry_amount
 		
 func finish_season():
 	for division: Division in game_data.divisions:

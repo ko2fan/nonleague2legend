@@ -4,7 +4,7 @@ class_name GameFileAccess
 
 func save_game_file(filename: String, game_data: GameData):
 	var save_file = FileAccess.open(filename, FileAccess.WRITE)
-	var version = 0x13
+	var version = 0x14
 	save_file.store_32(version)
 	# GLOBALS
 	save_file.store_32(game_data.human_index)
@@ -48,6 +48,8 @@ func save_game_file(filename: String, game_data: GameData):
 					save_file.store_32(event.player_id)
 					save_file.store_8(event.minute)
 					save_file.store_32(event.event_type)
+		save_file.store_32(division.attendance_min)
+		save_file.store_32(division.attendance_max)
 	# TEAMS
 	save_file.store_32(game_data.teams.size())
 	for team in game_data.teams:
@@ -100,7 +102,7 @@ func load_game_file(filename: String) -> GameData:
 	var load_file = FileAccess.open(filename, FileAccess.READ)
 	var version = load_file.get_32()
 	match version:
-		0x12:
+		0x13:
 			game_data.human_index = load_file.get_32()
 			game_data.current_season = load_file.get_32()
 			game_data.current_week = load_file.get_32()
@@ -212,14 +214,14 @@ func load_game_file(filename: String) -> GameData:
 				player.goals_scored = load_file.get_16()
 				player.yellow_cards = load_file.get_8()
 				player.suspended = load_file.get_8()
-				player.available = true
+				player.available = load_file.get_8()
 				var team_id = load_file.get_32()
 				if team_id != 4294967295:
 					var player_team = game_data.teams.filter(func(team): return team.team_id == team_id).front()
 					player_team.players.append(player)
 					player.team = player_team
 				game_data.players.append(player)
-		0x13:
+		0x14:
 			game_data.human_index = load_file.get_32()
 			game_data.current_season = load_file.get_32()
 			game_data.current_week = load_file.get_32()
@@ -278,6 +280,8 @@ func load_game_file(filename: String) -> GameData:
 									"match_stats": stats }
 						weekly_results.append(result)
 					division.results.append(weekly_results)
+					division.attendance_min = load_file.get_32()
+					division.attendance_max = load_file.get_32()
 				game_data.divisions.append(division)
 			var num_teams = load_file.get_32()
 			for i in num_teams:
