@@ -1,11 +1,11 @@
-[gd_scene load_steps=13 format=3 uid="uid://ce7e80p3jccnt"]
+[gd_scene format=3 uid="uid://ce7e80p3jccnt"]
 
 [ext_resource type="Texture2D" uid="uid://bbmso2w7s17hk" path="res://Sprites/pitch_prototype.png" id="1_a8t71"]
-[ext_resource type="Script" path="res://Scripts/match.gd" id="1_xn6wp"]
+[ext_resource type="Script" uid="uid://dal3xf28okkan" path="res://Scripts/match.gd" id="1_xn6wp"]
 [ext_resource type="PackedScene" uid="uid://837gjrpl2mu8" path="res://Scenes/football_player.tscn" id="2_vumxj"]
 [ext_resource type="FontFile" uid="uid://dxgro1ckyu2r8" path="res://fonts/quadratum-unum-font/QuadratumUnum-LW0Z.ttf" id="3_b4obx"]
 [ext_resource type="PackedScene" uid="uid://6gceaksn4gck" path="res://Scenes/ball.tscn" id="3_wt82p"]
-[ext_resource type="Script" path="res://Scripts/commentary.gd" id="3_x365g"]
+[ext_resource type="Script" uid="uid://ip2o56bvk50m" path="res://Scripts/commentary.gd" id="3_x365g"]
 [ext_resource type="Texture2D" uid="uid://l2sji30gjgeb" path="res://Sprites/indicator.png" id="4_tgytb"]
 [ext_resource type="Theme" uid="uid://dwl0ijkwl54k" path="res://Themes/match_theme.tres" id="4_w05nw"]
 [ext_resource type="LabelSettings" uid="uid://0qqbgljvltvc" path="res://Themes/match_label.tres" id="6_s6y5y"]
@@ -16,10 +16,10 @@
 font = ExtResource("3_b4obx")
 font_size = 24
 
-[node name="Match" type="Node2D"]
+[node name="Match" type="Node2D" unique_id=1603005104]
 script = ExtResource("1_xn6wp")
 
-[node name="UI" type="Control" parent="."]
+[node name="UI" type="Control" parent="." unique_id=1777904401]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -29,7 +29,7 @@ offset_bottom = 720.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorRect" type="ColorRect" parent="UI"]
+[node name="ColorRect" type="ColorRect" parent="UI" unique_id=1684530332]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -38,7 +38,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="HBoxContainer" type="HBoxContainer" parent="UI"]
+[node name="HBoxContainer" type="HBoxContainer" parent="UI" unique_id=234895740]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -49,34 +49,34 @@ offset_bottom = 26.0
 grow_horizontal = 2
 theme_override_constants/separation = 25
 
-[node name="HomeTeamName" type="Label" parent="UI/HBoxContainer"]
+[node name="HomeTeamName" type="Label" parent="UI/HBoxContainer" unique_id=727658870]
 layout_mode = 2
 text = "BRISTOL C"
 label_settings = ExtResource("6_umun2")
 uppercase = true
 
-[node name="HomeTeamScore" type="Label" parent="UI/HBoxContainer"]
+[node name="HomeTeamScore" type="Label" parent="UI/HBoxContainer" unique_id=1842536883]
 layout_mode = 2
 text = "1"
 label_settings = ExtResource("6_umun2")
 
-[node name="Divider" type="Label" parent="UI/HBoxContainer"]
+[node name="Divider" type="Label" parent="UI/HBoxContainer" unique_id=1736528503]
 layout_mode = 2
 text = "v"
 label_settings = ExtResource("6_umun2")
 
-[node name="AwayTeamScore" type="Label" parent="UI/HBoxContainer"]
+[node name="AwayTeamScore" type="Label" parent="UI/HBoxContainer" unique_id=1452514782]
 layout_mode = 2
 text = "3"
 label_settings = ExtResource("6_umun2")
 
-[node name="AwayTeamName" type="Label" parent="UI/HBoxContainer"]
+[node name="AwayTeamName" type="Label" parent="UI/HBoxContainer" unique_id=1800177607]
 layout_mode = 2
 text = "LIVERPOOL"
 label_settings = ExtResource("6_umun2")
 uppercase = true
 
-[node name="Minute" type="Label" parent="UI"]
+[node name="Minute" type="Label" parent="UI" unique_id=2073813186]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -92,7 +92,7 @@ grow_vertical = 0
 text = "90"
 label_settings = ExtResource("6_umun2")
 
-[node name="Commentary" type="ScrollContainer" parent="UI"]
+[node name="Commentary" type="ScrollContainer" parent="UI" unique_id=1844299303]
 custom_minimum_size = Vector2(650, 120)
 layout_mode = 1
 anchors_preset = 7
@@ -109,25 +109,25 @@ grow_vertical = 0
 horizontal_scroll_mode = 0
 script = ExtResource("3_x365g")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/Commentary"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Commentary" unique_id=416674310]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="UI/Commentary/VBoxContainer"]
+[node name="Label" type="Label" parent="UI/Commentary/VBoxContainer" unique_id=1181497050]
 layout_mode = 2
 text = "Bristol C have possession"
 label_settings = SubResource("LabelSettings_5a0nn")
 
-[node name="Label2" type="Label" parent="UI/Commentary/VBoxContainer"]
+[node name="Label2" type="Label" parent="UI/Commentary/VBoxContainer" unique_id=918167399]
 layout_mode = 2
 text = "Player shoots"
 label_settings = SubResource("LabelSettings_5a0nn")
 
-[node name="Label3" type="Label" parent="UI/Commentary/VBoxContainer"]
+[node name="Label3" type="Label" parent="UI/Commentary/VBoxContainer" unique_id=1058396355]
 layout_mode = 2
 text = "Player scores!"
 label_settings = SubResource("LabelSettings_5a0nn")
 
-[node name="ContinueButton" type="Button" parent="UI"]
+[node name="ContinueButton" type="Button" parent="UI" unique_id=2114831105]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -143,7 +143,7 @@ grow_vertical = 0
 theme = ExtResource("4_w05nw")
 text = "Continue"
 
-[node name="MatchStats" type="VBoxContainer" parent="UI"]
+[node name="MatchStats" type="VBoxContainer" parent="UI" unique_id=1563064840]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = 22.0
@@ -151,63 +151,76 @@ offset_top = 80.0
 offset_right = 196.0
 offset_bottom = 238.0
 
-[node name="Title" type="Label" parent="UI/MatchStats"]
+[node name="Title" type="Label" parent="UI/MatchStats" unique_id=1981151341]
 layout_mode = 2
 text = "Match Stats:"
 label_settings = ExtResource("6_s6y5y")
 
-[node name="Attendance" type="Label" parent="UI/MatchStats"]
+[node name="Attendance" type="Label" parent="UI/MatchStats" unique_id=2016499843]
 layout_mode = 2
 text = "Attendance: 0"
 label_settings = ExtResource("6_s6y5y")
 
-[node name="HomeStats" type="Label" parent="UI/MatchStats"]
+[node name="HomeStats" type="Label" parent="UI/MatchStats" unique_id=2025792723]
 layout_mode = 2
 text = "Bristol C"
 label_settings = ExtResource("6_s6y5y")
 horizontal_alignment = 1
 
-[node name="HomeShotsOnTarget" type="Label" parent="UI/MatchStats"]
+[node name="HomeShotsOnTarget" type="Label" parent="UI/MatchStats" unique_id=1016668019]
 layout_mode = 2
 text = "Shots On Target: 4"
 label_settings = ExtResource("6_s6y5y")
 
-[node name="HomeCorners" type="Label" parent="UI/MatchStats"]
+[node name="HomeCorners" type="Label" parent="UI/MatchStats" unique_id=1703964382]
 layout_mode = 2
 text = "Corners: 2"
 label_settings = ExtResource("6_s6y5y")
 
-[node name="AwayStats" type="Label" parent="UI/MatchStats"]
+[node name="AwayStats" type="Label" parent="UI/MatchStats" unique_id=1304434597]
 layout_mode = 2
 text = "Liverpool"
 label_settings = ExtResource("6_s6y5y")
 horizontal_alignment = 1
 
-[node name="AwayShotsOnTarget" type="Label" parent="UI/MatchStats"]
+[node name="AwayShotsOnTarget" type="Label" parent="UI/MatchStats" unique_id=1535338669]
 layout_mode = 2
 text = "Shots On Target: 9"
 label_settings = ExtResource("6_s6y5y")
 
-[node name="AwayCorners" type="Label" parent="UI/MatchStats"]
+[node name="AwayCorners" type="Label" parent="UI/MatchStats" unique_id=712116565]
 layout_mode = 2
 text = "Corners: 7"
 label_settings = ExtResource("6_s6y5y")
 
-[node name="Pitch" type="Sprite2D" parent="."]
+[node name="Scorers" type="VBoxContainer" parent="UI" unique_id=1834690888]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 1084.0
+offset_top = 71.0
+offset_right = 1258.0
+offset_bottom = 229.0
+
+[node name="Title" type="Label" parent="UI/Scorers" unique_id=1239316009]
+layout_mode = 2
+text = "Scorers:"
+label_settings = ExtResource("6_s6y5y")
+
+[node name="Pitch" type="Sprite2D" parent="." unique_id=801684145]
 position = Vector2(640, 280)
 scale = Vector2(1.66, 1.646)
 texture = ExtResource("1_a8t71")
 
-[node name="FootballPlayer" parent="Pitch" instance=ExtResource("2_vumxj")]
+[node name="FootballPlayer" parent="Pitch" unique_id=1566481453 instance=ExtResource("2_vumxj")]
 visible = false
 position = Vector2(-3.38434, -4.87621)
 
-[node name="Ball" parent="Pitch" instance=ExtResource("3_wt82p")]
+[node name="Ball" parent="Pitch" unique_id=301004296 instance=ExtResource("3_wt82p")]
 
-[node name="BallIndicator" type="Sprite2D" parent="Pitch"]
+[node name="BallIndicator" type="Sprite2D" parent="Pitch" unique_id=1772749185]
 texture = ExtResource("4_tgytb")
 offset = Vector2(-128, 0)
 
-[node name="MatchEngine" parent="." instance=ExtResource("8_vqxnr")]
+[node name="MatchEngine" parent="." unique_id=1935477404 instance=ExtResource("8_vqxnr")]
 
 [connection signal="pressed" from="UI/ContinueButton" to="." method="_on_continue_button_pressed"]

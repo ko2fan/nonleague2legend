@@ -15,6 +15,7 @@ extends Node2D
 @onready var match_stats_away_shotson = %MatchStats/AwayShotsOnTarget
 @onready var match_stats_home_corners = %MatchStats/HomeCorners
 @onready var match_stats_away_corners = %MatchStats/AwayCorners
+@onready var scorers: VBoxContainer = %Scorers
 
 @onready var minute_label = $UI/Minute
 @onready var continue_button = $UI/ContinueButton
@@ -90,6 +91,14 @@ func _on_match_event(match_event_type : MatchEngine.MatchEventType, match_event)
 			home_score_label.text = str(match_engine.current_home_goals)
 			away_score_label.text = str(match_engine.current_away_goals)
 			match_event_label.add_theme_color_override("font_color", Color.DARK_ORANGE)
+			var teamLabel = Label.new()
+			teamLabel.text = team_name
+			var scorerLabel = Label.new()
+			scorerLabel.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+			scorerLabel.text = GameManager.get_player_by_id(match_event.player_id).player_name + \
+			 " " + str(match_event.minute)
+			scorers.add_child(teamLabel)
+			scorers.add_child(scorerLabel)
 		MatchEngine.MatchEventType.HALF_TIME:
 			match_event_label.text = "Half Time, the score is " + \
 				str(match_engine.current_home_goals) + " - " + str(match_engine.current_away_goals)
