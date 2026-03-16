@@ -1,4 +1,4 @@
-[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://ddcb7kmaryg2c"]
+[gd_resource type="LabelSettings" format=3 uid="uid://ddcb7kmaryg2c"]
 
 [ext_resource type="FontFile" uid="uid://dxgro1ckyu2r8" path="res://fonts/quadratum-unum-font/QuadratumUnum-LW0Z.ttf" id="1_6gllv"]
 

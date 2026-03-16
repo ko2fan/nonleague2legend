@@ -3,10 +3,15 @@ extends Control
 @onready var scrolled_container = $Panel/ScrollContainer
 @onready var scouted_player_container = $Panel/ScrollContainer/VBoxContainer
 @onready var error_label = $Panel/ErrorLabel
+@onready var cash: Label = $Panel/Cash
 
 @onready var scout_row = preload("res://Scenes/scout_row.tscn")
 
+
 var scout_position
+
+func _ready() -> void:
+	cash.text = "Cash: £{0}".format([Utils.CommaNumber(GameManager.get_player_team().get_finances().current_money)])
 
 func cleanup():
 	for child in scouted_player_container.get_children():

@@ -1,18 +1,23 @@
-[gd_scene load_steps=8 format=3 uid="uid://cqe02nac78yfp"]
+[gd_scene format=3 uid="uid://cqe02nac78yfp"]
 
-[ext_resource type="Script" path="res://Scripts/scout_view.gd" id="1_o1kce"]
+[ext_resource type="Script" uid="uid://xji7xyh1rdjr" path="res://Scripts/scout_view.gd" id="1_o1kce"]
 [ext_resource type="Theme" uid="uid://dsm4fsf4wqwvg" path="res://Themes/scout_view_theme.tres" id="1_qjisd"]
 [ext_resource type="LabelSettings" uid="uid://ddcb7kmaryg2c" path="res://Themes/Title_settings.tres" id="2_p4dsx"]
 [ext_resource type="Theme" uid="uid://b3mxg4bwyrbo8" path="res://Themes/squad_view_theme.tres" id="4_awmjl"]
 [ext_resource type="FontFile" uid="uid://dxgro1ckyu2r8" path="res://fonts/quadratum-unum-font/QuadratumUnum-LW0Z.ttf" id="4_nxgc6"]
 [ext_resource type="PackedScene" uid="uid://22jfea3ikxr4" path="res://Scenes/scout_row.tscn" id="4_p23gr"]
 
+[sub_resource type="LabelSettings" id="LabelSettings_fljj8"]
+font = ExtResource("4_nxgc6")
+font_size = 42
+font_color = Color(0, 0, 0.545098, 1)
+
 [sub_resource type="LabelSettings" id="LabelSettings_prvxs"]
 font = ExtResource("4_nxgc6")
 font_size = 20
 font_color = Color(0, 0, 0.545098, 1)
 
-[node name="ScoutView" type="Control"]
+[node name="ScoutView" type="Control" unique_id=1052655877]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -21,7 +26,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_o1kce")
 
-[node name="Panel" type="Panel" parent="."]
+[node name="Panel" type="Panel" parent="." unique_id=972290495]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -30,7 +35,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_qjisd")
 
-[node name="Title" type="Label" parent="Panel"]
+[node name="Title" type="Label" parent="Panel" unique_id=185165554]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -42,7 +47,21 @@ grow_horizontal = 2
 text = "Scout Players"
 label_settings = ExtResource("2_p4dsx")
 
-[node name="ErrorLabel" type="Label" parent="Panel"]
+[node name="Cash" type="Label" parent="Panel" unique_id=1632465265]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -630.0
+offset_top = 57.0
+offset_right = -255.0
+offset_bottom = 115.0
+grow_horizontal = 2
+text = "Cash: £0"
+label_settings = SubResource("LabelSettings_fljj8")
+vertical_alignment = 1
+
+[node name="ErrorLabel" type="Label" parent="Panel" unique_id=1123732799]
 visible = false
 layout_mode = 1
 anchors_preset = 7
@@ -58,7 +77,7 @@ grow_horizontal = 2
 grow_vertical = 0
 label_settings = SubResource("LabelSettings_prvxs")
 
-[node name="ReturnButton" type="Button" parent="Panel"]
+[node name="ReturnButton" type="Button" parent="Panel" unique_id=1692456946]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -73,7 +92,7 @@ grow_horizontal = 2
 grow_vertical = 0
 text = "Return"
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Panel"]
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel" unique_id=1267473738]
 visible = false
 custom_minimum_size = Vector2(700, 400)
 layout_mode = 1
@@ -90,14 +109,14 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_qjisd")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel/ScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/ScrollContainer" unique_id=1053833329]
 layout_mode = 2
 theme = ExtResource("1_qjisd")
 
-[node name="ScoutRow" parent="Panel/ScrollContainer/VBoxContainer" instance=ExtResource("4_p23gr")]
+[node name="ScoutRow" parent="Panel/ScrollContainer/VBoxContainer" unique_id=2137119598 instance=ExtResource("4_p23gr")]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Panel"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel" unique_id=1180292855]
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 1
 anchors_preset = 5
@@ -110,12 +129,12 @@ offset_bottom = 130.0
 grow_horizontal = 2
 theme_override_constants/separation = 40
 
-[node name="ScoutPosition" type="OptionButton" parent="Panel/HBoxContainer"]
+[node name="ScoutPosition" type="OptionButton" parent="Panel/HBoxContainer" unique_id=395614706]
 custom_minimum_size = Vector2(90, 0)
 layout_mode = 2
 theme = ExtResource("4_awmjl")
-item_count = 5
 selected = 0
+item_count = 5
 popup/item_0/text = "Position"
 popup/item_0/id = 0
 popup/item_0/disabled = true
@@ -128,7 +147,7 @@ popup/item_3/id = 3
 popup/item_4/text = "ATT"
 popup/item_4/id = 4
 
-[node name="ScoutButton" type="Button" parent="Panel/HBoxContainer"]
+[node name="ScoutButton" type="Button" parent="Panel/HBoxContainer" unique_id=96435631]
 layout_mode = 2
 text = "Scout"
 
