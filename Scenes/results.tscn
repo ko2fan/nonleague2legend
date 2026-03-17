@@ -1,10 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://dnx8ulumgv3vg"]
+[gd_scene format=3 uid="uid://dnx8ulumgv3vg"]
 
-[ext_resource type="Script" path="res://Scripts/results.gd" id="1_2ifa8"]
+[ext_resource type="Script" uid="uid://vuttnabbi7ym" path="res://Scripts/results.gd" id="1_2ifa8"]
 [ext_resource type="Theme" uid="uid://mr5fhtu70yvi" path="res://Themes/results_theme.tres" id="1_ovnhi"]
 [ext_resource type="LabelSettings" uid="uid://ddcb7kmaryg2c" path="res://Themes/Title_settings.tres" id="2_u4d4h"]
 
-[node name="Results" type="Control"]
+[node name="Results" type="Control" unique_id=1281880072]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -13,7 +13,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_2ifa8")
 
-[node name="Panel" type="Panel" parent="."]
+[node name="Panel" type="Panel" parent="." unique_id=1251675347]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -22,7 +22,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_ovnhi")
 
-[node name="Title" type="Label" parent="Panel"]
+[node name="Title" type="Label" parent="Panel" unique_id=1927093404]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -34,7 +34,7 @@ grow_horizontal = 2
 text = "Results"
 label_settings = ExtResource("2_u4d4h")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Panel"]
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel" unique_id=635521252]
 custom_minimum_size = Vector2(720, 550)
 layout_mode = 1
 anchors_preset = 8
@@ -49,10 +49,10 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ResultContainer" type="VBoxContainer" parent="Panel/ScrollContainer"]
+[node name="ResultContainer" type="VBoxContainer" parent="Panel/ScrollContainer" unique_id=812640259]
 layout_mode = 2
 
-[node name="FinishWeekButton" type="Button" parent="Panel"]
+[node name="FinishWeekButton" type="Button" parent="Panel" unique_id=1900699339]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5

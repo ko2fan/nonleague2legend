@@ -9,6 +9,9 @@ func _ready():
 	var div = 0
 	for division in results:
 		var division_label = Label.new()
+		division_label.label_settings = LabelSettings.new()
+		division_label.label_settings.font_size = 36
+		division_label.label_settings.font_color = Color(0.93, 0.11, 0.051)
 		division_label.text = "Division " + str(div + 1)
 		result_container.add_spacer(false)
 		result_container.add_child(division_label)

@@ -71,7 +71,7 @@ func _ready():
 
 func _process(_delta: float) -> void:
 	if Input.is_action_pressed("ui_select"):
-		match_engine.match_speed = 0.25
+		match_engine.match_speed = 0.2
 	else:
 		match_engine.match_speed = 0.5
 		
